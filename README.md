@@ -12,7 +12,7 @@ simulator of a MIPS processor in C
 
 # Authors:
   Dalton Lima - sacinopatinete@gmail.com
-  Vitor
+  Victor Ribeiro
   Lucas Pinheiro
   Tadeu Martines
 
