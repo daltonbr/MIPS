@@ -1,0 +1,22 @@
+add $s0, $s1, $s2
+
+Funcao ADD
+opcode / funct
+0[16]/20[16]
+0000[16] / 0010 0000[2]
+
+20[16] = 0010 0000[2]
+
+opcode rs	 rt	   rd    shamt funct
+000000 10000 10001 10010 00000 000000 
+
+shamt NAO É USADO nas funcoes do tipo R em ponto fixo
+
+
+$s0   - 16[10]  - 10000[2]
+$s1   - 17[10]  - 10001[2]
+$s2   - 18[10]  - 10010[2]
+.
+.
+.
+$ra	-	31[10] -  11111[2]

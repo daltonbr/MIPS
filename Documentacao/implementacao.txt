@@ -25,10 +25,21 @@ ou
 * Assembly -> Binary
 
 - Precisamos de uma funcao pra abrir o arquivo no modo READ ONLY
+retun NULL se nao tiver arquivo leitura
 
 - Outra para criar um arquivo .TXT e gerar nele as linhas processadas
 
+
 - Precisamos de uma funcao pra ler um linha do arquivo .txt
+readLine ()
+parametros: tipos
+retornos: (void)
+
+- funcao Validacao de arquivo. Depois de lida a primeira linha de um arquivo, ela "identifica" se aquela linha é um word binary valido (32 bits)
+ou comando assembly valido.
+
+add $s0,$s1,Ss1
+j LABEL
 
 
 * Como faremos a seleção do modo de operação?

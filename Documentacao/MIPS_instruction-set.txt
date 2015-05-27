@@ -13,7 +13,7 @@ J-type instructions follow the opcode with a 26-bit jump target
 
 Type  -31-												-0-
 
-R	opcode(6)	rs(5)	rt(5)	rt(5)	shamt(5)	funct(6)
+R	opcode(6)	rs(5)	rt(5)	rd(5)	shamt(5)	funct(6)
 
 I	opcode(6)	rs(5)	rt(5)	imediate(16)
 
