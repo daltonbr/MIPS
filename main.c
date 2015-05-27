@@ -6,9 +6,10 @@ Primeiro faremos um PARSE
 
 autores:
 Dalton Lima - sacinopatinete@gmail.com
+
 Victor ?
-Lucas ?
 Tadeu ?
+Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 
 */
 int main () 
