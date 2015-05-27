@@ -1,0 +1,44 @@
+** Descricao da Implementacao **
+
+-- convencoes de nomenclaturas: http://en.wikipedia.org/wiki/Naming_convention_(programming)
+
+CONSTANTES	-	constantes escrevemos somente em maisculas, qdo mais de uma palavra, separamos com underscore
+MAX_PARTICIPANTS  -  pode ser usar numerais, mas nunca comecando com o numeral
+
+nomeDaFuncao ()	 -  usamos o lowerCamelCase - a primeira letra de cada palavra em Maisculas (exceto a primera palavra)
+
+
+Local variables, instance variables, and class variables are also written in lowerCamelCase. Variable names should not start with underscore (_) or dollar sign ($) characters, even though both are allowed. This is in contrast to other coding conventions that state that underscores should be used to prefix all instance variables.
+Variable names should be short yet meaningful. The choice of a variable name should be mnemonic — that is, designed to indicate to the casual observer the intent of its use. One-character variable names should be avoided except for temporary "throwaway" variables. Common names for temporary variables are i, j, k, m, and n for integers; c, d, and e for characters.
+int i;
+char c;
+float myWidth;
+
+
+
+***  Na primeira etapa do trabalho precisamos implementar um PARSER. o que consiste em:
+
+Ler um arquivo .txt e dar saida num arquivo .txt, com as seguintes caracteristicas.
+
+* Binary -> Assembly
+ou
+* Assembly -> Binary
+
+- Precisamos de uma funcao pra abrir o arquivo no modo READ ONLY
+
+- Outra para criar um arquivo .TXT e gerar nele as linhas processadas
+
+- Precisamos de uma funcao pra ler um linha do arquivo .txt
+
+
+* Como faremos a seleção do modo de operação?
+Menu? Quantos modos teremos?
+
+* Labels podem ser implementados livremente pelo grupo, porem precisam ser bem explicadas na documentacao.
+
+* A manipulacao da memoria tambem é livre, mas precisa ser explicada. 
+
+* O relatório final deve ter um "Manual de Instrução"
+Dalton: Sugiro a criaçao de um arquivo a parte no final dos trabalhos, um arquivo texto bem simples e direto.
+
+* Os arquivo binario deve conter apenas "numeros binarios"

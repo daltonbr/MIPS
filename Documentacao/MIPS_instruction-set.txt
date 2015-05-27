@@ -1,0 +1,35 @@
+Dados retirados de http://en.wikipedia.org/wiki/MIPS_instruction_set
+
+Instructions are divided into three types:
+
+R, I and J. Every instruction starts with a 6-bit opcode.
+
+In addition to the opcode, R-type instructions specify three registers, a shift amount field, and a function field;
+
+I-type instructions specify two registers and a 16-bit immediate value;
+
+J-type instructions follow the opcode with a 26-bit jump target
+
+
+Type  -31-												-0-
+
+R	opcode(6)	rs(5)	rt(5)	rt(5)	shamt(5)	funct(6)
+
+I	opcode(6)	rs(5)	rt(5)	imediate(16)
+
+J	opcode(6)	address(26)
+
+---
+
+** MIPS assembly language
+
+These are assembly language instructions that have direct hardware implementation,
+as opposed to pseudoinstructions which are translated into multiple real instructions before being assembled.
+In the following, the register letters d, t, and s are placeholders for (register) numbers or register names.
+C denotes a constant (immediate).
+
+** Integer
+
+MIPS has 32 integer registers.
+Data must be in registers to perform arithmetic.
+Register $0 always holds 0 and register $1 is normally reserved for the assembler (for handling pseudo instructions and large constants).
