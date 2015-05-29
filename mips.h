@@ -4,8 +4,9 @@
 // Header that defines registers, functions and constants for a MIPS processor
 //mips.h
 
-#define int Ss0 = 0;
-#define int Ss1 = 1;
+#define Szero 0
+#define Ss0 10  //teste
+#define Ss1 11  
 /*
 
 // 32 registers

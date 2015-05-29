@@ -12,7 +12,7 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 */
 
 #include <stdio.h>
-#include <mips.h>
+#include "mips.h"
 
 int main () 
 {
