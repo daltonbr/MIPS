@@ -1,4 +1,11 @@
-[0.1] 29/05/15 - Dalton
+[0.1.1] 29/05/15 - Dalton
 *Criado arquivo HEADER "mips.h" e fazendo as primeiras experiências com ele
+	-algumas constantes definidas (testes com registros)
+	-funcao xor - tabela verdade XOR (sem carry)
+	-struct de uma instrucao tipo R
+	-listagem dos 32 registros e seus valores em decimais (so comentarios)
+	
+*Criado arquivo filemanager.h para ler e escrever .txt - ainda vazio
+
 
  
