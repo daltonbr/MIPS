@@ -4,11 +4,42 @@
 // Header that defines registers, functions and constants for a MIPS processor
 //mips.h
 
-#define Szero 0
-#define Ss0 10  //teste
-#define Ss1 11  
-/*
+typedef struct {
+	char opcode[6];
+	char rs[5];
+	char rt[5];
+	char rd[5];
+	char shamt[5];
+	char funct[6];
+	char end[1];
+} instructionR;
 
+#define Szero 00000   // em 5 bits
+#define Ss0 10000  // 16
+#define Ss1 10001  // 17
+#define Ss2 10010  // 18
+#define Ss3 10011  // 19
+#define Ss4 10100  // 20
+#define Ss5 10101  // 21
+
+
+// opcode + funct em binary
+#define add 000000100000 // 0/20[hex] - criar um struct com 2 pedacos de 6 bits?
+#define sub 000000100010 // 0/22
+
+//soma binaria - desconsidera carry - nao verifica inputs
+int xor(int a, int b)
+{
+	if ( a==b )
+	{
+		return 0;
+	}
+	else
+	{
+		return a + b;
+	}
+}
+/*
 // 32 registers
 //name	number	use
 $zero	// 0	constant 0

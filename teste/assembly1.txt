@@ -1,1 +1,2 @@
 add $s0,$s1,$s2
+sub $s3,Ss4,$s5
