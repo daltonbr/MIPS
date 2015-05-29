@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 /*
 Este eh um programa que simula um processador MIPS em C
 Primeiro faremos um PARSE
@@ -12,7 +10,14 @@ Tadeu ?
 Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 
 */
+
+#include <stdio.h>
+#include <mips.h>
+
 int main () 
 {
-	printf("Hello MIPS!\n", );
+	printf("MIPS Parser!\n" );
+	
+	printf("%d", Ss1);
+	
 }
