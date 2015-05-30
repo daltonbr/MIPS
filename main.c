@@ -27,9 +27,11 @@ int main ()
 	teste3 = xor(0,1); // 1 
 	teste4 = xor(1,1); // 0
 	
+	printf("\n\nTeste da funcao XOR:\n");
 	printf("%d - %x - %o - %d\n", teste1,teste2, teste3, teste4);
 	
 	//teste de impressao de umas constantes (registers) do mips.h
+	printf("\n\nTeste de impressao de Registros:\n");
 	printf("%d - %x - %o - %d", add,Ss0,Ss1,Ss2);
 
 
@@ -44,7 +46,13 @@ strcpy (addFunction.funct,"666666");
 strcpy (addFunction.end, "\0");
 
 //imprime o struct do primeiro elemento, ate encontrar o 'terminator'
-printf("/n %s", addFunction.opcode);
+printf("\n\nTeste de impressao do Struct addFunction:\n");
+printf("%s", addFunction.opcode);
+
+
+printf("\n\nImprime Linha do arquivo binario:\n");
+//chama a funcao readBinary() do filemanager.h - soh le uma linha!
+readBinary ();
 
 return 0;
 }

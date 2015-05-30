@@ -7,5 +7,9 @@
 	
 *Criado arquivo filemanager.h para ler e escrever .txt - ainda vazio
 
+[0.1.2] 30/05/15 - Dalton
+* Criado no filemanager.h a funcao void readBinary ()
+	- A funcao le o arquivo .\teste\binary1.txt e imprime seu conteudo na tela
+	- Por enquanto so le a primeira linha do arquivo
 
  
