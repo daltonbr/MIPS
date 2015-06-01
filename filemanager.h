@@ -40,5 +40,5 @@ void readBinary ()
 	fclose( binaryFile );
 	}
 }
-
+//Tadeu passou por aqui
 #endif
