@@ -1,29 +1,52 @@
 char getRegisterAB(char reg[4]) // encontra registrador Assembly => Binário
 {
-	char regR[3];
+	char regR[4];
 
 	switch(reg)
 	{
 		//Constante '0'
-		case "$zero": regR="0000"; // retorna o numero em binário do respectivo registrador break;
-		//Temporário do assembler
-		case "$at": regR="0001"; break;
-		//resultados de funções
-		case "$v0": regR="0010"; break;
-		case "$v1": regR="0011"; break;
-		// argumentos
-		case "$a0": regR="0100"; break;
-		case "$a1": regR="0101"; break;
-		case "$a2": regR="0110"; break;
-		case "$a3": regR="0111"; break;
-		//temporários
-		case "$t0": regR="1000"; break;
-		case "$t1": regR="1001"; break;
-		case "$t2": regR="1010"; break;
-		case "$t3": regR="1011"; break;
-		case "$t4": regR="1100"; break;
-		case "$t5": regR="1101"; break;
-		case "$t6": regR="1110"; break;
-		case "$t7": regR="1111"; break;
+		case "$zero": regR="00000"; // retorna o numero em binário do respectivo registrador break;
+		//Temporário do Assembler
+		case "$at": regR="00001"; break;
+		//Resultados de Funções
+		case "$v0": regR="00010"; break;
+		case "$v1": regR="00011"; break;
+		//Argumentos
+		case "$a0": regR="00100"; break;
+		case "$a1": regR="00101"; break;
+		case "$a2": regR="00110"; break;
+		case "$a3": regR="00111"; break;
+		//Temporários
+		case "$t0": regR="01000"; break;
+		case "$t1": regR="01001"; break;
+		case "$t2": regR="01010"; break;
+		case "$t3": regR="01011"; break;
+		case "$t4": regR="01100"; break;
+		case "$t5": regR="01101"; break;
+		case "$t6": regR="01110"; break;
+		case "$t7": regR="01111"; break;
+		//Temporários Salvos
+		case "$s0": regR="10000"; break;
+		case "$s1": regR="10001"; break;
+		case "$s2": regR="10010"; break;
+		case "$s3": regR="10011"; break;
+		case "$s4": regR="10100"; break;
+		case "$s5": regR="10101"; break;
+		case "$s6": regR="10110"; break;
+		case "$s7": regR="10111"; break;
+		//Temporários
+		case "$t8": regR="11000"; break;
+		case "$t9": regR="11001"; break;
+		//Reservado para Kernel
+		case "$k0": regR="11010"; break;
+		case "$k1": regR="11011"; break;
+		//Ponteiro Global
+		case "$gp": regR="11100"; break;
+		//Ponteiro "Pilha"
+		case "$sp": regR="11101"; break;
+		//Frame Pointer
+		case "$fp": regR="11110"; break;
+		//Endereço de retorno
+		case "$ra": regR="11111"; break;
 	}
 }
