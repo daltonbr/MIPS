@@ -4,6 +4,7 @@
 // Header that defines registers, functions and constants for a MIPS processor
 //mips.h
 
+// Instruction R
 typedef struct {
 	char opcode[6];
 	char rs[5];
@@ -13,6 +14,22 @@ typedef struct {
 	char funct[6];
 	char end[1];
 } instructionR;
+
+// Instruction I
+typedef struct {
+	char opcode[6];
+	char rs[5];
+	char rt[5];
+	char immediate[16];
+	char end[1];
+} instructionI;
+
+// Instruction J
+typedef struct {
+	char opcode[6];
+	char immediate[26];
+	char end[1];
+} instructionJ;
 
 #define Szero 00000   // em 5 bits
 #define Ss0 10000  // 16
@@ -40,49 +57,90 @@ int xor(int a, int b)
 	}
 }
 /*
-// 32 registers
+// 32 registers (5 bits)
 //name	number	use
-$zero	// 0	constant 0
-$at		// 1 	Assemble temporary
+$zero = 00000 	// 0	constant 0
+$at	  = 00001	// 1 	Assemble temporary
 
-$v0		// 2 	Function Results and Expression Evaluation
-$v1		// 3
+$v0 = 00010	// 2 	Function Results and Expression Evaluation
+$v1	= 00011	// 3
 
-$a0		// 4	Arguments
-$a1		// 5
-$a2		// 6
-$a3		// 7
+$a0 = 00100	// 4	Arguments
+$a1	= 00101	// 5
+$a2 = 00110	// 6
+$a3 = 00111	// 7
 
-$t0		// 8	Temporaries
-$t1		// 9
-$t2		// 10
-$t3		// 11
-$t4		// 12
-$t5		// 13	
-$t6		// 14
-$t7		// 15
+$t0 = 01000	// 8	Temporaries
+$t1	= 01001	// 9
+$t2	= 01010	// 10
+$t3	= 01011	// 11
+$t4	= 01100	// 12
+$t5	= 01101	// 13	
+$t6	= 01110	// 14
+$t7	= 01111	// 15
 
-$s0		// 16	Saved Temporaries
-$s1		// 17
-$s2		// 18
-$s3		// 19
-$s4		// 20
-$s5		// 21
-$s6		// 22
-$s7		// 23
+$s0	= 10000	// 16	Saved Temporaries
+$s1	= 10001	// 17
+$s2	= 10010	// 18
+$s3	= 10011	// 19
+$s4	= 10100	// 20
+$s5	= 10101	// 21
+$s6	= 10110	// 22
+$s7	= 10111	// 23
 
-$t8		// 24	Temporaries
-$t9		// 25
+$t8	= 11000	// 24	Temporaries
+$t9	= 11001	// 25
 
-$k0		// 26	Reserved for OS Kernel
-$k1		// 27
+$k0	= 11010	// 26	Reserved for OS Kernel
+$k1	= 11011	// 27
 
-$gp		// 28	Global Pointer
-$sp		// 29	Stack Pointer
-$fp		// 30	Frame Pointer
+$gp	= 11100	// 28	Global Pointer
+$sp	= 11101	// 29	Stack Pointer
+$fp	= 11110	// 30	Frame Pointer
 
-$ra		// 31	Return Adress
+$ra	= 11111	// 31	Return Adress
 
 */
 
+//Core Instruction Set (tipo + 6bits)
+
+/*
+// R Format Instructions - 12 types (Tipo + 6 bits Funct) (opcode fixo 000000)
+add = R100000 	// 0/20
+addu = R100001 	// 0/21
+and = R100100 	// 0/24
+jr = R001000	// 0/08
+nor = R100111 	// 0/27
+or  = R100101 	// 0/25
+slt = R101010 	// 0/2a
+sltu = R101011	// 0/2b
+sll  = R000000	// 0/00
+srl  = R000010	// 0/02
+sub = R100010 	// 0/22
+subu = R100011  // 0/23
+
+// I Format Instructions - 17 types (Tipo + 6 bits opcode)
+addi = I001000 		// 8
+addiu = I001001		// 9
+andi = I001100		// c
+beq = I000100 		// 4
+bne = I000101		// 5
+lbu = I00100100 	// 24 
+lhu = I100101 		// 25
+ll = I110000		// 30
+lui = I001111		// f
+lw = I100011 		// 23
+ori = I001101 		// d
+slti = I001010 		// a
+sltiu = I001011 	// b  
+sb = I101000		// 28
+sc = I111000		// 38
+sh = I101001		// 29
+sw = I101011		// 2b
+
+// J Format Instructions - 2 types (tipo + 6 bits opcode) 
+j = J000010 		// 2
+jal = J000011 		// 3
+
+*/
 #endif
