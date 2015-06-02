@@ -152,6 +152,8 @@ jal = J000011 		// 3
 		case "$fp": regR="11110"; break;
 		//Endereço de retorno
 		case "$ra": regR="11111"; break;
+
+		default: /*ERRO:registrador não encontrado,programa abortado*/ break;
 	}
 	return regR;
 }
