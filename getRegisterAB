@@ -1,0 +1,29 @@
+char getRegisterAB(char reg[4]) // encontra registrador Assembly => Binário
+{
+	char regR[3];
+
+	switch(reg)
+	{
+		//Constante '0'
+		case "$zero": regR="0000"; // retorna o numero em binário do respectivo registrador break;
+		//Temporário do assembler
+		case "$at": regR="0001"; break;
+		//resultados de funções
+		case "$v0": regR="0010"; break;
+		case "$v1": regR="0011"; break;
+		// argumentos
+		case "$a0": regR="0100"; break;
+		case "$a1": regR="0101"; break;
+		case "$a2": regR="0110"; break;
+		case "$a3": regR="0111"; break;
+		//temporários
+		case "$t0": regR="1000"; break;
+		case "$t1": regR="1001"; break;
+		case "$t2": regR="1010"; break;
+		case "$t3": regR="1011"; break;
+		case "$t4": regR="1100"; break;
+		case "$t5": regR="1101"; break;
+		case "$t6": regR="1110"; break;
+		case "$t7": regR="1111"; break;
+	}
+}
