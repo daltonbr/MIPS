@@ -49,4 +49,5 @@ char getRegisterAB(char reg[4]) // encontra registrador Assembly => Binário
 		//Endereço de retorno
 		case "$ra": regR="11111"; break;
 	}
+	return regR;
 }
