@@ -109,53 +109,53 @@ jal = J000011 		// 3
 	switch(reg)
 	{
 		//Constante '0'
-		case "$zero": regR="00000";
+		case "$zero":strncpy (regR,"00000",5); break;
 		//Temporário do Assembler
-		case "$at": regR="00001"; break;
+		case "$at": strncpy (regR,"00001",5); break;
 		//Resultados de Funções
-		case "$v0": regR="00010"; break;
-		case "$v1": regR="00011"; break;
+		case "$v0": strncpy (regR,"00010",5); break;
+		case "$v1": strncpy (regR,"00011",5); break;
 		//Argumentos
-		case "$a0": regR="00100"; break;
-		case "$a1": regR="00101"; break;
-		case "$a2": regR="00110"; break;
-		case "$a3": regR="00111"; break;
+		case "$a0": strncpy (regR,"00100",5); break;
+		case "$a1": strncpy (regR,"00101",5); break;
+		case "$a2": strncpy (regR,"00110",5); break;
+		case "$a3": strncpy (regR,"00111",5); break;
 		//Temporários
-		case "$t0": regR="01000"; break;
-		case "$t1": regR="01001"; break;
-		case "$t2": regR="01010"; break;
-		case "$t3": regR="01011"; break;
-		case "$t4": regR="01100"; break;
-		case "$t5": regR="01101"; break;
-		case "$t6": regR="01110"; break;
-		case "$t7": regR="01111"; break;
+		case "$t0": strncpy (regR,"01000",5); break;
+		case "$t1": strncpy (regR,"01001",5); break;
+		case "$t2": strncpy (regR,"01010",5); break;
+		case "$t3": strncpy (regR,"01011",5); break;
+		case "$t4": strncpy (regR,"01100",5); break;
+		case "$t5": strncpy (regR,"01101",5); break;
+		case "$t6": strncpy (regR,"01110",5); break;
+		case "$t7": strncpy (regR,"01111",5); break;
 		//Temporários Salvos
-		case "$s0": regR="10000"; break;
-		case "$s1": regR="10001"; break;
-		case "$s2": regR="10010"; break;
-		case "$s3": regR="10011"; break;
-		case "$s4": regR="10100"; break;
-		case "$s5": regR="10101"; break;
-		case "$s6": regR="10110"; break;
-		case "$s7": regR="10111"; break;
+		case "$s0": strncpy (regR,"10000",5); break;
+		case "$s1": strncpy (regR,"10001",5); break;
+		case "$s2": strncpy (regR,"10010",5); break;
+		case "$s3": strncpy (regR,"10011",5); break;
+		case "$s4": strncpy (regR,"10100",5); break;
+		case "$s5": strncpy (regR,"10101",5); break;
+		case "$s6": strncpy (regR,"10110",5); break;
+		case "$s7": strncpy (regR,"10111",5); break;
 		//Temporários
-		case "$t8": regR="11000"; break;
-		case "$t9": regR="11001"; break;
+		case "$t8": strncpy (regR,"11000",5); break;
+		case "$t9": strncpy (regR,"11001",5); break;
 		//Reservado para Kernel
-		case "$k0": regR="11010"; break;
-		case "$k1": regR="11011"; break;
+		case "$k0": strncpy (regR,"11010",5); break;
+		case "$k1": strncpy (regR,"11011",5); break;
 		//Ponteiro Global
-		case "$gp": regR="11100"; break;
+		case "$gp": strncpy (regR,"11100",5); break;
 		//Ponteiro "Pilha"
-		case "$sp": regR="11101"; break;
+		case "$sp": strncpy (regR,"11101",5); break;
 		//Frame Pointer
-		case "$fp": regR="11110"; break;
+		case "$fp": strncpy (regR,"11110",5); break;
 		//Endereço de retorno
-		case "$ra": regR="11111"; break;
+		case "$ra": strncpy (regR,"11111",5); break;
 
 		default: /*ERRO:registrador não encontrado,programa abortado*/ break;
 	}
-	return regR;
+	return regR[4];
 }
 
 /* versao do Dalton

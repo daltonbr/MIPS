@@ -20,8 +20,7 @@ void readBinary ()
 	FILE *binaryFile;
 	// open a file
 	binaryFile = fopen(".\\teste\\binary1.txt", "r");
-	//fp=fopen("c:\\test.txt", "r");
-	
+		
 	/* fopen returns 0, the NULL pointer, on failure */
 	if ( binaryFile == NULL )
 	{
@@ -29,16 +28,14 @@ void readBinary ()
 	}
 	else // aqui que realmente le! 
 	{
-		int x;  //somente pra guardar um caracter por vez
-				/* read one character at a time from file, stopping at EOF, which
-	 			  indicates the end of the file.							*/
-	while  ( ( x = fgetc( binaryFile ) ) != EOF )
-	{
-	   	 printf( "%c", x );
-	}
+		int ch;  // read one character at a time from file
+		while  ( ( ch = fgetc( binaryFile ) != EOF ) && ( ch != '\n' ) )   // compares with endline "\n" or EOF
+		{
+		   	 printf( "%c", ch );
+		}
 	
 	fclose( binaryFile );
 	}
 }
-//Tadeu passou por aqui
+
 #endif
