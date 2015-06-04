@@ -52,7 +52,14 @@ printf("%s", addFunction.opcode);
 
 printf("\n\nImprime Linha do arquivo binario:\n");
 //chama a funcao readBinary() do filemanager.h - soh le uma linha!
+
 readBinary ();
+
+printf("\n\nImprime Linha do arquivo assembly:\n");
+//chama a funcao readAssembly() do filemanager.h - soh le uma linha!
+
+readAssembly ();
+printf ("\n");
 
 return 0;
 }

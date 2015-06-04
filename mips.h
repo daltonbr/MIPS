@@ -98,10 +98,12 @@ sw = I101011		// 2b
 j = J000010 		// 2
 jal = J000011 		// 3
 
-*/
+*/ 
 
  // registrador Assembly => Binário
  // dado o assembly do registrador, retorna o binário;
+ 
+ /*   comentado a funcao, enquanto o Victor arrumao o switch
  char getRegisterAB(char reg[4]) 
 {
 	char regR[4];
@@ -153,10 +155,12 @@ jal = J000011 		// 3
 		//Endereço de retorno
 		case "$ra": strncpy (regR,"11111",5); break;
 
-		default: /*ERRO:registrador não encontrado,programa abortado*/ break;
+		default: // ERRO:registrador não encontrado,programa abortado
+		break;
 	}
 	return regR[4];
 }
+*/
 
 /* versao do Dalton
 // 32 registers (5 bits)

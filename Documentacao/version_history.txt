@@ -12,4 +12,10 @@
 	- A funcao le o arquivo .\teste\binary1.txt e imprime seu conteudo na tela
 	- Por enquanto so le a primeira linha do arquivo
 
+[0.1.3] ??/??/15 - Victor
+* Implementou funcao getRegisterAB ()
+	em desenvolvimento
+
+[0.2.0] 04/06/15
+* Criado funcao readAssembly () no filemanager.h
  

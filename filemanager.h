@@ -28,8 +28,8 @@ void readBinary ()
 	}
 	else // aqui que realmente le! 
 	{
-		int ch;  // read one character at a time from file
-		while  ( ( ch = fgetc( binaryFile ) != EOF ) && ( ch != '\n' ) )   // compares with endline "\n" or EOF
+		char ch;  // read one character at a time from file
+		while  ( (( ch = fgetc( binaryFile )) != EOF ) && ( ch != '\n' ) )   // compares with endline "\n" or EOF
 		{
 		   	 printf( "%c", ch );
 		}
@@ -38,4 +38,26 @@ void readBinary ()
 	}
 }
 
+void readAssembly ()
+{
+	FILE *assemblyFile;
+	// open a file
+	assemblyFile = fopen(".\\teste\\assembly1.txt", "r");
+		
+	/* fopen returns 0, the NULL pointer, on failure */
+	if ( assemblyFile == NULL )
+	{
+		printf( "\nNao pode abrir o arquivo!\n" );
+	}
+	else // aqui que realmente le! 
+	{
+		char ch;  // read one character at a time from file
+		while  ( ( (ch = fgetc( assemblyFile )) != EOF ) && ( ch != '\n' ) )   // compares with endline "\n" or EOF
+		{
+		   	 printf( "%c", ch );
+		}
+	
+	fclose( assemblyFile );
+	}
+}
 #endif
