@@ -13,6 +13,23 @@ w+ - open for reading and writing (overwrite file)
 a+ - open for reading and writing (append if file exists)
 */
 
+//entrando uma linha, esta funcao retorna a primeira palavra antes do espaco
+char *getNameAssembly(char *fullLine)
+{
+	int i = 0;
+	char *name;
+	name = (char *)malloc(6); // tamanho maximo do nome das funcoes, incluindo terminator
+	
+	do
+	{
+		name[i] = fullLine[i];
+		i++;
+	} while ( fullLine[i] != ' ' );    //transcreve a primeira parte da linha ate encontrar um espaco em branco
+	name[i] = '\0';
+
+	return (char *)name;
+}
+
 // funcao que conta as linhas de um arquivo - no momento o binary1.txt
 unsigned long countLine ()
 {
@@ -39,7 +56,6 @@ unsigned long countLine ()
 	return lineCount;
 	
 }
-
 
 //funcao que le o arquivo binario
 void readBinary ()

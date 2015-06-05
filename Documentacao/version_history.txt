@@ -17,5 +17,14 @@
 	em desenvolvimento
 
 [0.2.0] 04/06/15
-* Criado funcao readAssembly () no filemanager.h
+* Criado funcao readAssembly () no filemanager.h (deprecated - em desuso)
  
+[0.3.0] 05/06/15 
+* Lendo linha por linha dos arquivos .txt
+ 
+[0.3.5] 05/06/15 - Dalton
+* Criado funcao getNameAssembly (no filemanager.h)
+	- A funcao recebe um array de char (linha de comando Assembly) e retorna um array com a PRIMEIRA PALAVRA (os comandos: add, sub, etc)
+
+* main.c levemente alterado
+*experimentos com: const char $s0[] = "10000";   - define um array char para cada string dada.

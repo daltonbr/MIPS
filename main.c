@@ -15,6 +15,11 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 #include <string.h>  //strcpy()
 #include "mips.h"
 #include "filemanager.h"
+#define BUFFER_SIZE 129   //line buffer max size
+const char $s0[] = "10000";
+const char $s1[] = "10001";
+const char $s2[] = "10010";
+
 
 int main () 
 {
@@ -57,7 +62,6 @@ totalLines = countLine ();
 printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
 
-
 char myLine[129];
 
 file = fopen(".\\teste\\assembly1.txt", "r");
@@ -69,8 +73,9 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 	{
 		printf("\narquivo aberto com sucesso!\n");
 		while (fgets (myLine, 129, file) ) 
-		{
-			puts (myLine); // myLine contem a linha a ser trabalhada"
+		{	
+			puts (myLine);				// myLine contem a linha a ser trabalhada"
+			puts(getNameAssembly(myLine));		//extrai a primeira palavra e poe na tela
 		}
 	}
 	
@@ -93,21 +98,5 @@ file = fopen(".\\teste\\binary1.txt", "r");
 	
 fclose(file);
 
-
-/*
-printf("\n\nImprime Linha do arquivo binario:\n");
-//chama a funcao readBinary() do filemanager.h - soh le uma linha!
-
-readBinary ();
-printf ("\n");
-readBinary ();
-printf ("\n");
-
-printf("\n\nImprime Linha do arquivo assembly:\n");
-//chama a funcao readAssembly() do filemanager.h - soh le uma linha!
-
-readAssembly ();
-printf ("\n");
-*/
 return 0;
 }
