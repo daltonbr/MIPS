@@ -19,6 +19,7 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 int main () 
 {
 	unsigned long totalLines = 0;
+	FILE *file;
 	
 	printf("MIPS Parser!\n" );
 	
@@ -53,10 +54,47 @@ printf("%s", addFunction.opcode);
 
 //conta linha do binary1.txt
 totalLines = countLine ();
-printf("\nNumero de linhas em binary1.txt : %llu \n", totalLines);
+printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
 
 
+char myLine[129];
+
+file = fopen(".\\teste\\assembly1.txt", "r");
+	if (!file)
+	{
+		printf("\nerro ao abrir arquivo!\n");
+	}
+	else
+	{
+		printf("\narquivo aberto com sucesso!\n");
+		while (fgets (myLine, 129, file) ) 
+		{
+			puts (myLine); // myLine contem a linha a ser trabalhada"
+		}
+	}
+	
+fclose(file);
+
+
+file = fopen(".\\teste\\binary1.txt", "r");
+	if (!file)
+	{
+		printf("\nerro ao abrir arquivo!\n");
+	}
+	else
+	{
+		printf("\narquivo aberto com sucesso!\n");
+		while (fgets (myLine, 129, file) ) 
+		{
+			puts (myLine);
+		}
+	}
+	
+fclose(file);
+
+
+/*
 printf("\n\nImprime Linha do arquivo binario:\n");
 //chama a funcao readBinary() do filemanager.h - soh le uma linha!
 
@@ -70,6 +108,6 @@ printf("\n\nImprime Linha do arquivo assembly:\n");
 
 readAssembly ();
 printf ("\n");
-
+*/
 return 0;
 }
