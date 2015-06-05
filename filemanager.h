@@ -13,6 +13,33 @@ w+ - open for reading and writing (overwrite file)
 a+ - open for reading and writing (append if file exists)
 */
 
+// funcao que conta as linhas de um arquivo - no momento o binary1.txt
+unsigned long countLine ()
+{
+	unsigned long lineCount = 0;
+	FILE *file;
+	file = fopen(".\\teste\\binary1.txt", "r");
+	
+	if ( file == NULL )
+	{
+		printf( "\nNao pode abrir o arquivo!\n" );
+		return -1; //erro
+	}
+	else //let's count!
+	{
+		char ch;
+		while ( (ch = fgetc(file)) != EOF ) 
+		{
+			if (ch == '\n')
+			lineCount++;
+		}	
+	}
+	lineCount++; // conta a ultima linha EOF - teoricamente precisa verificar se a ultima linha é vazia. Mas assumimos que nao!
+	fclose (file);
+	return lineCount;
+	
+}
+
 
 //funcao que le o arquivo binario
 void readBinary ()
@@ -52,6 +79,7 @@ void readAssembly ()
 	else // aqui que realmente le! 
 	{
 		char ch;  // read one character at a time from file
+		
 		while  ( ( (ch = fgetc( assemblyFile )) != EOF ) && ( ch != '\n' ) )   // compares with endline "\n" or EOF
 		{
 		   	 printf( "%c", ch );

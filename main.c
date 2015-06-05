@@ -18,6 +18,8 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 
 int main () 
 {
+	unsigned long totalLines = 0;
+	
 	printf("MIPS Parser!\n" );
 	
 	int teste1, teste2, teste3, teste4;
@@ -49,11 +51,19 @@ strcpy (addFunction.end, "\0");
 printf("\n\nTeste de impressao do Struct addFunction:\n");
 printf("%s", addFunction.opcode);
 
+//conta linha do binary1.txt
+totalLines = countLine ();
+printf("\nNumero de linhas em binary1.txt : %llu \n", totalLines);
+
+
 
 printf("\n\nImprime Linha do arquivo binario:\n");
 //chama a funcao readBinary() do filemanager.h - soh le uma linha!
 
 readBinary ();
+printf ("\n");
+readBinary ();
+printf ("\n");
 
 printf("\n\nImprime Linha do arquivo assembly:\n");
 //chama a funcao readAssembly() do filemanager.h - soh le uma linha!
