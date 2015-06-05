@@ -63,6 +63,7 @@ printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
 
 char myLine[129];
+char instructionName[6];  // guarda um nome de instrucao. Ex: "add", "sltu". Os casos maiores sao "addiu" + terminator = 6 espacos
 
 file = fopen(".\\teste\\assembly1.txt", "r");
 	if (!file)
@@ -75,7 +76,8 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 		while (fgets (myLine, 129, file) ) 
 		{	
 			puts (myLine);				// myLine contem a linha a ser trabalhada"
-			puts(getNameAssembly(myLine));		//extrai a primeira palavra e poe na tela
+			strcpy (instructionName, getNameAssembly(myLine) );  //extrai a primeira palavra e copia em instructionName
+			puts (instructionName);
 		}
 	}
 	
