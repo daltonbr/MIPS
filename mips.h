@@ -1,6 +1,17 @@
 #ifndef MIPS
 #define MIPS
 
+//Global Variables
+char opcodeBinary[6];
+char rsBinary[5];
+char rtBinary[5];
+char rdBinary[5];
+char shamtBinary[5];
+char functBinary[6];
+
+char immediateBinary[16];   // exclusive type I
+char addressBinary[26]; 	// exclusive type J
+
 // Header that defines registers, functions and constants for a MIPS processor
 //mips.h
 
@@ -90,6 +101,31 @@ j = J000010 		// 2
 jal = J000011 		// 3
 
 */
+
+void concatenateR(char *outputLine)  //generates R type line
+{
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, rsBinary);
+	strcat (outputLine, rtBinary);
+	strcat (outputLine, rdBinary);
+	strcat (outputLine, shamtBinary);
+	strcat (outputLine, functBinary);
+}
+
+void concatenateI(char *outputLine)	//generates I type line
+{
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, rsBinary);
+	strcat (outputLine, rtBinary);
+	strcat (outputLine, immediateBinary);
+}
+
+void concatenateJ(char *outputLine)	//generates J type line
+{
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, addressBinary);
+}
+
 
 // funcao que retorna os binarios de cada Registro - em caso de erro retorna xxxxx
 char *registerToBinary(char *registerAssembly)

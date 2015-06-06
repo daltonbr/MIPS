@@ -30,8 +30,15 @@
 *experimentos com: const char $s0[] = "10000";   - define um array char para cada string dada.
 
 [0.3.6] 06/06/15 - Dalton
-* Criado funcao char *registerToBinary(char *registerAssembly) (no mips.h)
+* Criado funcao char *registerToBinary(char *registerAssembly) (no mips.h)       -- substituindo a funcao getRegisterAB ()  
 	- Dado um string com o registro em assembly, ela retorna uma string com o respectivo valor em binario
 	- Retorna "xxxxx" caso nao encontre nenhum dos 32 registradores MIPS
 	
 * Aproveitei e dei uma "limpada" em funcoes nao utilizadas no main.c e mips.h
+
+[0.3.7] 06/05/15 - Dalton
+* Nesta versao optei por uma "mudanca leve de estrategia" - Ao inves de struct, optaremos por Global Vars para os campos.
+* Criado 3 funcoes que concatenam a linha de saida. concatenateR, concatenateI, concatenateJ
+	 - Uma versao para R, i e J.
+	 - Resumidamente as funcoes "juntam" os campos necessarios para dar o output.
+	
