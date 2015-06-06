@@ -4,7 +4,7 @@ Primeiro faremos um PARSE
 
 autores:
 Dalton Lima - sacinopatinete@gmail.com
-
+Stephany ?
 Victor ?
 Tadeu ?
 Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
@@ -27,21 +27,6 @@ int main ()
 	FILE *file;
 	
 	printf("MIPS Parser!\n" );
-	
-	int teste1, teste2, teste3, teste4;
-	// funcao xor no filemanager.h
-	teste1 = xor(0,0); // 0 
-	teste2 = xor(1,0); // 1
-	teste3 = xor(0,1); // 1 
-	teste4 = xor(1,1); // 0
-	
-	printf("\n\nTeste da funcao XOR:\n");
-	printf("%d - %x - %o - %d\n", teste1,teste2, teste3, teste4);
-	
-	//teste de impressao de umas constantes (registers) do mips.h
-	printf("\n\nTeste de impressao de Registros:\n");
-	printf("%d - %x - %o - %d", add,Ss0,Ss1,Ss2);
-
 
 instructionR addFunction; //instanciando um struct do tipo R
 
@@ -78,6 +63,7 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 			puts (myLine);				// myLine contem a linha a ser trabalhada"
 			strcpy (instructionName, getNameAssembly(myLine) );  //extrai a primeira palavra e copia em instructionName
 			puts (instructionName);
+			puts(registerToBinary(instructionName));
 		}
 	}
 	

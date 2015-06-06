@@ -28,3 +28,10 @@
 
 * main.c levemente alterado
 *experimentos com: const char $s0[] = "10000";   - define um array char para cada string dada.
+
+[0.3.6] 06/06/15 - Dalton
+* Criado funcao char *registerToBinary(char *registerAssembly) (no mips.h)
+	- Dado um string com o registro em assembly, ela retorna uma string com o respectivo valor em binario
+	- Retorna "xxxxx" caso nao encontre nenhum dos 32 registradores MIPS
+	
+* Aproveitei e dei uma "limpada" em funcoes nao utilizadas no main.c e mips.h

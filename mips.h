@@ -31,15 +31,6 @@ typedef struct {
 	char end[1];
 } instructionJ;
 
-#define Szero 00000   // em 5 bits
-#define Ss0 10000  // 16
-#define Ss1 10001  // 17
-#define Ss2 10010  // 18
-#define Ss3 10011  // 19
-#define Ss4 10100  // 20
-#define Ss5 10101  // 21
-
-
 // opcode + funct em binary
 #define add 000000100000 // 0/20[hex] - criar um struct com 2 pedacos de 6 bits?
 #define sub 000000100010 // 0/22
@@ -98,114 +89,85 @@ sw = I101011		// 2b
 j = J000010 		// 2
 jal = J000011 		// 3
 
-*/ 
+*/
 
- // registrador Assembly => Binário
- // dado o assembly do registrador, retorna o binário;
- 
- /*   comentado a funcao, enquanto o Victor arrumao o switch
- char getRegisterAB(char reg[4]) 
+// funcao que retorna os binarios de cada Registro - em caso de erro retorna xxxxx
+char *registerToBinary(char *registerAssembly)
 {
-	char regR[4];
-
-	switch(reg)
-	{
-		//Constante '0'
-		case "$zero":strncpy (regR,"00000",5); break;
-		//Temporário do Assembler
-		case "$at": strncpy (regR,"00001",5); break;
-		//Resultados de Funções
-		case "$v0": strncpy (regR,"00010",5); break;
-		case "$v1": strncpy (regR,"00011",5); break;
-		//Argumentos
-		case "$a0": strncpy (regR,"00100",5); break;
-		case "$a1": strncpy (regR,"00101",5); break;
-		case "$a2": strncpy (regR,"00110",5); break;
-		case "$a3": strncpy (regR,"00111",5); break;
-		//Temporários
-		case "$t0": strncpy (regR,"01000",5); break;
-		case "$t1": strncpy (regR,"01001",5); break;
-		case "$t2": strncpy (regR,"01010",5); break;
-		case "$t3": strncpy (regR,"01011",5); break;
-		case "$t4": strncpy (regR,"01100",5); break;
-		case "$t5": strncpy (regR,"01101",5); break;
-		case "$t6": strncpy (regR,"01110",5); break;
-		case "$t7": strncpy (regR,"01111",5); break;
-		//Temporários Salvos
-		case "$s0": strncpy (regR,"10000",5); break;
-		case "$s1": strncpy (regR,"10001",5); break;
-		case "$s2": strncpy (regR,"10010",5); break;
-		case "$s3": strncpy (regR,"10011",5); break;
-		case "$s4": strncpy (regR,"10100",5); break;
-		case "$s5": strncpy (regR,"10101",5); break;
-		case "$s6": strncpy (regR,"10110",5); break;
-		case "$s7": strncpy (regR,"10111",5); break;
-		//Temporários
-		case "$t8": strncpy (regR,"11000",5); break;
-		case "$t9": strncpy (regR,"11001",5); break;
-		//Reservado para Kernel
-		case "$k0": strncpy (regR,"11010",5); break;
-		case "$k1": strncpy (regR,"11011",5); break;
-		//Ponteiro Global
-		case "$gp": strncpy (regR,"11100",5); break;
-		//Ponteiro "Pilha"
-		case "$sp": strncpy (regR,"11101",5); break;
-		//Frame Pointer
-		case "$fp": strncpy (regR,"11110",5); break;
-		//Endereço de retorno
-		case "$ra": strncpy (regR,"11111",5); break;
-
-		default: // ERRO:registrador não encontrado,programa abortado
-		break;
+	int i = 0;
+	char *registerBinary;
+	registerBinary = (char *)malloc(6); // tamanho maximo do nome das funcoes, incluindo terminator
+	
+	if (!(strcmp(registerAssembly,"$zero"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
+		strcpy(registerBinary,"00000");
+	} else if (!(strcmp(registerAssembly,"$at"))) {   	// 1 	Assemble temporary
+		strcpy(registerBinary,"00001");		
+	} else if (!(strcmp(registerAssembly,"$v0"))) {		// 2 	Function Results and Expression Evaluation
+		strcpy(registerBinary,"00010");				
+	} else if (!(strcmp(registerAssembly,"$v1"))) {
+		strcpy(registerBinary,"00011");			
+	} else if (!(strcmp(registerAssembly,"$a0"))) {		// 4	Arguments
+		strcpy(registerBinary,"00100");		
+	} else if (!(strcmp(registerAssembly,"$a1"))) {
+		strcpy(registerBinary,"00101");		
+	} else if (!(strcmp(registerAssembly,"$a2"))) {
+		strcpy(registerBinary,"00110");		
+	} else if (!(strcmp(registerAssembly,"$a3"))) {
+		strcpy(registerBinary,"00111");		
+	} else if (!(strcmp(registerAssembly,"$t0"))) {		// 8	Temporaries
+		strcpy(registerBinary,"01000");		
+	} else if (!(strcmp(registerAssembly,"$t1"))) {
+		strcpy(registerBinary,"01001");
+	} else if (!(strcmp(registerAssembly,"$t2"))) {
+		strcpy(registerBinary,"01010");
+	} else if (!(strcmp(registerAssembly,"$t3"))) {
+		strcpy(registerBinary,"01011");
+	} else if (!(strcmp(registerAssembly,"$t4"))) {
+		strcpy(registerBinary,"01100");
+	} else if (!(strcmp(registerAssembly,"$t5"))) {
+		strcpy(registerBinary,"01101");
+	} else if (!(strcmp(registerAssembly,"$t6"))) {
+		strcpy(registerBinary,"01110");
+	} else if (!(strcmp(registerAssembly,"$t7"))) {
+		strcpy(registerBinary,"01111");												
+	} else if (!(strcmp(registerAssembly,"$s0"))) {		// 16	Saved Temporaries
+		strcpy(registerBinary,"10000");		
+	} else if (!(strcmp(registerAssembly,"$s1"))) {
+		strcpy(registerBinary,"10001");
+	} else if (!(strcmp(registerAssembly,"$s2"))) {
+		strcpy(registerBinary,"10010");
+	} else if (!(strcmp(registerAssembly,"$s3"))) {
+		strcpy(registerBinary,"10011");
+	} else if (!(strcmp(registerAssembly,"$s4"))) {
+		strcpy(registerBinary,"10100");
+	} else if (!(strcmp(registerAssembly,"$s5"))) {
+		strcpy(registerBinary,"10101");
+	} else if (!(strcmp(registerAssembly,"$s6"))) {
+		strcpy(registerBinary,"10110");
+	} else if (!(strcmp(registerAssembly,"$s7"))) {
+		strcpy(registerBinary,"10111");		
+	} else if (!(strcmp(registerAssembly,"$t8"))) {		// 24	Temporaries
+		strcpy(registerBinary,"11000");
+	} else if (!(strcmp(registerAssembly,"$t9"))) {
+		strcpy(registerBinary,"11001");			
+	} else if (!(strcmp(registerAssembly,"$k0"))) {		// 26	Reserved for OS Kernel
+		strcpy(registerBinary,"11010");
+	} else if (!(strcmp(registerAssembly,"$k1"))) {
+		strcpy(registerBinary,"11011");
+	} else if (!(strcmp(registerAssembly,"$gp"))) {
+		strcpy(registerBinary,"11100");
+	} else if (!(strcmp(registerAssembly,"$sp"))) {
+		strcpy(registerBinary,"11101");
+	} else if (!(strcmp(registerAssembly,"$fp"))) {
+		strcpy(registerBinary,"11110");
+	} else if (!(strcmp(registerAssembly,"$ra"))) {
+		strcpy(registerBinary,"11111");					
 	}
-	return regR[4];
+	else {
+		strcpy(registerBinary,"xxxxx");    //caso de Erro, nenhum registro compativel encontrado
+	}
+	
+	return (char *)registerBinary;
 }
-*/
-
-/* versao do Dalton
-// 32 registers (5 bits)
-//name	number	use
-$zero = 00000 	// 0	constant 0
-$at	  = 00001	// 1 	Assemble temporary
-
-$v0 = 00010	// 2 	Function Results and Expression Evaluation
-$v1	= 00011	// 3
-
-$a0 = 00100	// 4	Arguments
-$a1	= 00101	// 5
-$a2 = 00110	// 6
-$a3 = 00111	// 7
-
-$t0 = 01000	// 8	Temporaries
-$t1	= 01001	// 9
-$t2	= 01010	// 10
-$t3	= 01011	// 11
-$t4	= 01100	// 12
-$t5	= 01101	// 13	
-$t6	= 01110	// 14
-$t7	= 01111	// 15
-
-$s0	= 10000	// 16	Saved Temporaries
-$s1	= 10001	// 17
-$s2	= 10010	// 18
-$s3	= 10011	// 19
-$s4	= 10100	// 20
-$s5	= 10101	// 21
-$s6	= 10110	// 22
-$s7	= 10111	// 23
-
-$t8	= 11000	// 24	Temporaries
-$t9	= 11001	// 25
-
-$k0	= 11010	// 26	Reserved for OS Kernel
-$k1	= 11011	// 27
-
-$gp	= 11100	// 28	Global Pointer
-$sp	= 11101	// 29	Stack Pointer
-$fp	= 11110	// 30	Frame Pointer
-
-$ra	= 11111	// 31	Return Adress
-
-*/
 
 #endif
