@@ -16,9 +16,6 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 #include "mips.h"
 #include "filemanager.h"
 #define BUFFER_SIZE 129   //line buffer max size
-const char $s0[] = "10000";
-const char $s1[] = "10001";
-const char $s2[] = "10010";
 
 
 int main () 
@@ -47,7 +44,6 @@ totalLines = countLine ();
 printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
 
-char myLine[129];
 char instructionName[6];  // guarda um nome de instrucao. Ex: "add", "sltu". Os casos maiores sao "addiu" + terminator = 6 espacos
 
 file = fopen(".\\teste\\assembly1.txt", "r");
@@ -58,18 +54,23 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 	else
 	{
 		printf("\narquivo aberto com sucesso!\n");
-		while (fgets (myLine, 129, file) ) 
+		while (fgets (inputLine, 129, file) ) 
 		{	
-			puts (myLine);				// myLine contem a linha a ser trabalhada"
-			strcpy (instructionName, getNameAssembly(myLine) );  //extrai a primeira palavra e copia em instructionName
-			puts (instructionName);
-			puts(registerToBinary(instructionName));
+			puts (inputLine);				// inputLine contem a linha a ser trabalhada"
+			strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
+			//puts (instructionName);
+			
+			ripDataAssembly(inputLine);
+			puts(outputLine);			// imprime na tela a saida					
 		}
 	}
 	
+//	addToBinary(inputLine);
+	
+	
 fclose(file);
 
-
+/*
 file = fopen(".\\teste\\binary1.txt", "r");
 	if (!file)
 	{
@@ -78,13 +79,14 @@ file = fopen(".\\teste\\binary1.txt", "r");
 	else
 	{
 		printf("\narquivo aberto com sucesso!\n");
-		while (fgets (myLine, 129, file) ) 
+		while (fgets (inputLine, 129, file) ) 
 		{
-			puts (myLine);
+			puts (inputLine);
 		}
 	}
 	
 fclose(file);
+*/
 
 return 0;
 }

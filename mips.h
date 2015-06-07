@@ -2,6 +2,9 @@
 #define MIPS
 
 //Global Variables
+char inputLine[129];
+char outputLine[129];
+
 char opcodeBinary[6];
 char rsBinary[5];
 char rtBinary[5];
@@ -126,11 +129,76 @@ void concatenateJ(char *outputLine)	//generates J type line
 	strcat (outputLine, addressBinary);
 }
 
+void ripDataAssembly (char *myLine)    //primeira versao - soh extrai registros
+{
+	char rs[4], rt[4], rd[4];
+	char immediate[5];  //soh armazena ate 65536 = 2^16 = 65536 unsigned - maior numero que um immediate U de 16bits pode ter.
+	char address[26]; 	// *tamanho aberto a revisao
+	char ch;
+	int offset = 0;
+
+		do
+		{
+			offset++;
+			ch = myLine[offset]; 
+		} while (ch != '$' && ch != '\0');
+		
+		if ( ch == '$' )
+		{
+			strncpy(rd,(myLine + offset),3);		//achou o primeiro registro e poe no RD
+		}
+		
+		if ( ch != '\0' ) //ainda nao acabou ?
+		{
+			do
+			{
+				offset++;
+				ch = myLine[offset];
+			} while (ch != '$' && ch != '\0');
+			
+			if ( ch == '$' ) {
+				strncpy(rs,(myLine + offset),3);  //achou o segundo registro e poe no RS
+			}
+			
+			if ( ch != '\0' ) //ainda nao acabou  ?
+			{
+				do
+				{
+					offset++;
+					ch = myLine[offset];
+				} while (ch != '$' && ch != '\0');
+				
+				if ( ch == '$' ){
+					strncpy(rt,(myLine + offset),3);   //achou o terceiro registro e poe no RT			
+				}
+			}
+		}
+	
+	puts(rs);
+	puts(rt);
+	puts(rd);
+//	strcpy ( rsBinary, registerToBinary(&rs));  // os registros ja estao extraidos, e serao passados em forma de binario 
+//	strcpy ( rtBinary, registerToBinary(&rt));  // para as variaveis globais 
+//	strcpy ( rdBinary, registerToBinary(&rd));
+
+}
+
+void addToBinary (char *inputLine) //output nas variaveis globais - input precisa ser por referencia?
+{
+	// extrairemos os registros:
+	// ripDataAssembly (inputLine);   // escreve os registros nas globais
+	
+	//escrevemos nas globais
+	strcpy (opcodeBinary,"000000");	 	// fixo para o add
+	strcpy (shamtBinary,"00000"); 		// fixo para o add
+	strcpy (functBinary,"100000");	 	// fixo para o add
+	
+	concatenateR(outputLine);   // "empacota" a linha
+}
 
 // funcao que retorna os binarios de cada Registro - em caso de erro retorna xxxxx
 char *registerToBinary(char *registerAssembly)
 {
-	int i = 0;
 	char *registerBinary;
 	registerBinary = (char *)malloc(6); // tamanho maximo do nome das funcoes, incluindo terminator
 	

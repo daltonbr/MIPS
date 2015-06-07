@@ -7,7 +7,7 @@ Considerações:
 - Cada comando terá uma própria função que receberá uma string com o comando completo em assembly(ex: add $s0,$s1,$s2), e retornará uma string de 33 posições com o mesmo comando, em binário. A saída será por referencia ou por valor? (pensa ae seus viado).
 
 done [ 0.3.7] - Uma função para transformar um struct em um array com todos os campos, já em sequencia. (Obs: Essa função será diferente para cada tipo de struct)
-(done) Ao menos usando Global Variables
+*OBS:Ao menos usando Global Variables, ao inves de struct.
 
 - Função para converter uma string que representa um número, e retorna uma string binária de 5+1 algarismos (pro shamt)
 

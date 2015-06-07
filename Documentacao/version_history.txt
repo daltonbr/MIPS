@@ -38,7 +38,15 @@
 
 [0.3.7] 06/05/15 - Dalton
 * Nesta versao optei por uma "mudanca leve de estrategia" - Ao inves de struct, optaremos por Global Vars para os campos.
-* Criado 3 funcoes que concatenam a linha de saida. concatenateR, concatenateI, concatenateJ
+* Criado 3 funcoes que concatenam a linha de saida. concatenateR, concatenateI, concatenateJ  (todas no mips.h)
 	 - Uma versao para R, i e J.
 	 - Resumidamente as funcoes "juntam" os campos necessarios para dar o output.
 	
+[0.3.8] 07/06/15 - Dalton
+* Criado funcao ripDataAssembly (no mips.h) 
+	- a funcao extrai todos os registradores de uma linha
+	- ainda nao extrai inteiros
+	- ainda nao atribui aas variaveis globais
+
+* Enxugado alguns conteudos de teste do main.c
+		
