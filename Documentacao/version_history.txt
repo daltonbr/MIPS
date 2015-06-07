@@ -50,3 +50,10 @@
 
 * Enxugado alguns conteudos de teste do main.c
 		
+[0.3.9] 07/06/15 - Dalton		
+* Criado funcao: int isNumeric (char ch) 
+	- retorna 1 se o caracter eh numerico, incluindo o hifen para caso de negativos
+	- retorna 0 se qualquer outro.
+
+* Criado funcao isBinary (char ch) 
+	- logica identica a funcao acima.		

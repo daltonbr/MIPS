@@ -105,6 +105,44 @@ jal = J000011 		// 3
 
 */
 
+// retorna 1 se o caracter eh numerico, incluindo o hifen para caso de negativos
+// retorna 0 se qualquer outro.
+int isNumeric (char ch)
+{
+	int output;
+	switch (ch){
+		case '0': output = 1;
+		case '1': output = 1;
+		case '2': output = 1;
+		case '3': output = 1;
+		case '4': output = 1;
+		case '5': output = 1;
+		case '6': output = 1;
+		case '7': output = 1;
+		case '8': output = 1;
+		case '9': output = 1;
+		case '-': output = 1;   // podemos argumentar que pra outros usos esta nao eh uma escolha sabia =)
+		break;
+	default:
+		output = 0;
+	}
+	return output;
+}
+
+// similar a funcao isNumeric() 
+int isBinary (char ch)
+{
+	int output;
+	switch (ch){
+		case '0': output = 1;
+		case '1': output = 1;
+		break;
+	default:
+		output = 0;
+	}
+	return output;
+}
+
 void concatenateR(char *outputLine)  //generates R type line
 {
 	strcpy (outputLine, opcodeBinary);
@@ -137,6 +175,7 @@ void ripDataAssembly (char *myLine)    //primeira versao - soh extrai registros
 	char ch;
 	int offset = 0;
 
+//	essa primeira parte procura registradores - basicamente procurando por "$"
 		do
 		{
 			offset++;
@@ -173,10 +212,15 @@ void ripDataAssembly (char *myLine)    //primeira versao - soh extrai registros
 				}
 			}
 		}
+		
+// essa parte procura o immediate (inteiro), caso exista
+// a tecnica consiste em pegar um elemento depois da virgula que nao tenha "$"asicamente ele fica depois de uma virgula
+// assumimos que nao temos espacos depois da virgula, e que eventualmente tenhamos um immediate entre parenteses.
 	
 	puts(rs);
 	puts(rt);
 	puts(rd);
+	
 //	strcpy ( rsBinary, registerToBinary(&rs));  // os registros ja estao extraidos, e serao passados em forma de binario 
 //	strcpy ( rtBinary, registerToBinary(&rt));  // para as variaveis globais 
 //	strcpy ( rdBinary, registerToBinary(&rd));

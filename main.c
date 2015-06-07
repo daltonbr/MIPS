@@ -88,5 +88,15 @@ file = fopen(".\\teste\\binary1.txt", "r");
 fclose(file);
 */
 
+// teste da nova funcao isNumeric - apagarei no proximo commit
+	
+	int teste;
+	char alf1 = 'a';
+	char alf2 = '0' ;
+	teste = isNumeric (alf1);
+	printf("%d", teste); // esperamos 0
+	teste = isNumeric (alf2);
+	printf("%d", teste); // esperamos 1
+
 return 0;
 }
