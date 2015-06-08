@@ -167,27 +167,40 @@ void concatenateJ(char *outputLine)	//generates J type line
 	strcat (outputLine, addressBinary);
 }
 
-void ripDataAssembly (char *myLine)    //primeira versao - soh extrai registros
+void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registros
+										// precisaremos caso especial pra J e JAL ?
 {
 	char rs[4], rt[4], rd[4];
-	char immediate[5];  //soh armazena ate 65536 = 2^16 = 65536 unsigned - maior numero que um immediate U de 16bits pode ter.
+	char immediate[6];  //soh armazena ate 65536 = 2^16 = 65536 unsigned - maior numero que um immediate U de 16bits pode ter. + 1 terminator
 	char address[26]; 	// *tamanho aberto a revisao
-	char ch;
-	int offset = 0;
+	char ch, chProx;
+	int offset = 0, isNum = 0, tamanho = 0;
 
-//	essa primeira parte procura registradores - basicamente procurando por "$"
+	//	essa primeira parte procura registradores - basicamente procurando por "$"
+	do
+	{
+		offset++;
+		ch = myLine[offset]; 
+	} while (ch != '$' && ch != '\0');
+	
+	if ( ch == '$' )
+	{
+		strncpy(rd,(myLine + offset),3);		//achou o primeiro registro e poe no RD - copia os 3 chars seguintes
+	}
+	
+	if ( ch != '\0' ) //ainda nao acabou ?
+	{
 		do
 		{
 			offset++;
-			ch = myLine[offset]; 
+			ch = myLine[offset];
 		} while (ch != '$' && ch != '\0');
 		
-		if ( ch == '$' )
-		{
-			strncpy(rd,(myLine + offset),3);		//achou o primeiro registro e poe no RD
+		if ( ch == '$' ) {
+			strncpy(rs,(myLine + offset),3);  //achou o segundo registro e poe no RS
 		}
 		
-		if ( ch != '\0' ) //ainda nao acabou ?
+		if ( ch != '\0' ) //ainda nao acabou  ?
 		{
 			do
 			{
@@ -195,31 +208,45 @@ void ripDataAssembly (char *myLine)    //primeira versao - soh extrai registros
 				ch = myLine[offset];
 			} while (ch != '$' && ch != '\0');
 			
-			if ( ch == '$' ) {
-				strncpy(rs,(myLine + offset),3);  //achou o segundo registro e poe no RS
-			}
-			
-			if ( ch != '\0' ) //ainda nao acabou  ?
-			{
-				do
-				{
-					offset++;
-					ch = myLine[offset];
-				} while (ch != '$' && ch != '\0');
-				
-				if ( ch == '$' ){
-					strncpy(rt,(myLine + offset),3);   //achou o terceiro registro e poe no RT			
-				}
+			if ( ch == '$' ){
+				strncpy(rt,(myLine + offset),3);   //achou o terceiro registro e poe no RT			
 			}
 		}
+	}
 		
-// essa parte procura o immediate (inteiro), caso exista
-// a tecnica consiste em pegar um elemento depois da virgula que nao tenha "$"asicamente ele fica depois de uma virgula
-// assumimos que nao temos espacos depois da virgula, e que eventualmente tenhamos um immediate entre parenteses.
+	// essa parte procura o immediate (inteiro), caso exista
+	// a tecnica consiste em pegar um elemento depois da virgula que nao tenha "$"asicamente ele fica depois de uma virgula
+	// assumimos que nao temos espacos depois da virgula, e que eventualmente tenhamos um immediate entre parenteses.
 	
+	offset = 0;  //importante zerar o offset pois varreremos novamente a linha
+	do
+	{
+		offset++;
+		ch = myLine[offset];
+		if ( ch == ',' ) {    // se o char atual eh virgula, checa se o proximo eh numerico
+			offset++;
+			chProx = myLine[offset];
+			isNum = isNumeric(chProx);	
+		}
+	} while ( !isNum && ch != '\0' );  // soh sai desse loop qdo \0 ou encontrar uma virgula seguida de um numerico
+	
+	if ( ch != '\0' )  //pra entrar nesse if, somente se offset esta parado em nosso immediate 
+	{
+		tamanho = offset;   //offset guarda a posicao do primeiro caracter do immediate
+			do {			//verifica onde termina o imediate   
+				tamanho++;
+				chProx = myLine[tamanho];
+				isNum = isNumeric(chProx);
+			} while (isNum);    //sai do loop qdo encontra um "nao numerico"
+			tamanho = tamanho - offset;		 // faz a diferenca pra saber o tamanho do immediate
+			strncpy(immediate,(myLine + offset),tamanho);		//copia do immediate
+	}
+
+	// "saida" de dados por variaveis globais	
 	puts(rs);
 	puts(rt);
 	puts(rd);
+	puts(immediate);
 	
 //	strcpy ( rsBinary, registerToBinary(&rs));  // os registros ja estao extraidos, e serao passados em forma de binario 
 //	strcpy ( rtBinary, registerToBinary(&rt));  // para as variaveis globais 

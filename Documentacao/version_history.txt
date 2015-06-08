@@ -56,4 +56,10 @@
 	- retorna 0 se qualquer outro.
 
 * Criado funcao isBinary (char ch) 
-	- logica identica a funcao acima.		
+	- logica identica a funcao acima.
+
+[0.3.10] 07/06/15 - Dalton
+* Atualizado funcao ripDataAssembly (no mips.h)
+	- agora alem dos registradores, ela tambem os immediates (inteiros) =D
+	- nas linhas "j 2500" e "jal 2500" os inteiros nao sao extraidos, porem tecnicamente neste caso, eles nao sao immediate e sim address
+			
