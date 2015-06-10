@@ -16,3 +16,5 @@ done [ 0.3.7] - Uma função para transformar um struct em um array com todos os
 - Função para converter uma string que representa um número, e retorna uma string binária em sinal magnitude, de 16+1 algarismos (pra funções do tipo I)
 
 done [ 0.3.6] - Função registerToBinary() para consultar qual registrador será usado
+
+- charToBinary função que recebe um numero inteiro em char, e retorna um char com o mesmo numero em binário  (Terrorist nessa)
