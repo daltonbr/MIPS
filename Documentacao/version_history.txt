@@ -62,4 +62,14 @@
 * Atualizado funcao ripDataAssembly (no mips.h)
 	- agora alem dos registradores, ela tambem os immediates (inteiros) =D
 	- nas linhas "j 2500" e "jal 2500" os inteiros nao sao extraidos, porem tecnicamente neste caso, eles nao sao immediate e sim address
-			
+
+[0.3.11] 11/06/15 - Victor
+*Criado as funções:
+	- char *charTo5BitsU(char *charNumber) : 
+		- função que recebe um numero inteiro em string, e retorna uma string com o mesmo numero em binário 5bits Unsigned, Range: [0,31]
+
+	- char *charTo16BitsU(char *charNumber) :
+		- função que recebe um numero inteiro em string, e retorna um char com o mesmo numero em binário 16 bits em Complemento de 2, Range: [0,65535]  
+
+	- char *charTo16Bits (char *charNumber) :
+		- função que recebe um numero inteiro em string, e retorna um char com o mesmo numero em binário 16 bits Unsigned, Range: [-32768,32767]

@@ -345,36 +345,88 @@ char *registerToBinary(char *registerAssembly)
 	return (char *)registerBinary;
 }
 
-/*char *charToBinary(char *charNumber)  // recebe um numero real em char e retorna uma string de binário
+char *charTo5BitsU(char *charNumber)  // recebe um numero real em char e retorna uma string de binário  UNSIGNED de 5 bits 
 {
 	char *charBinary;
-	charBinary = (char *)malloc(6);
-	int i,result,aux,num=atoi(charNumber);//num receberá o char passado para int
-	for(i=0;i<5;)
+	charBinary = (char *)malloc(5);
+	int i,result,num=atoi(charNumber),j=0;// 'num' receberá o char passado para int
+	
+	if(0<=num<32) // limite do range de 5bits
 	{
-		result = isNumeric(charNumber[i]);    //teste se é um numero
-	}	
-	i=0;
-	if(result)
-	{
-		do
-		{
-			charBinary[i]=num%2;
-			num=num/2;
-			i++;
-		}while(aux!=1)
-		for(i=16;i>=0;i--) // passando para um char de 16 bits
-		{
-
-		}
-
+        //itoa(int ,char* ,base int);
+        itoa(num,charBinary,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
 		return (char *)charBinary;
 	}else
 	{
-		return null; // se não é numero entao não se retorna nada (teste)
+	    strcpy(charBinary,"XXXXX");
+		return (char *)charBinary; // se está no range, retorna-se um binário inválido
 	}
+}
 
+char *charTo16BitsU(char *charNumber)  // recebe um numero real em char e retorna uma string de binário  UNSIGNED de 5 bits 
+{
+	char *charBinary;
+	charBinary = (char *)malloc(16);
+	int i,result,num=atoi(charNumber),j=0;// 'num' receberá o char passado para int
 	
-}*/ //EM DESENVOLVIMENTO E TESTES
+	if(0<=num<65536) // limite do range de 16bits
+	{
+        //itoa(int ,char* ,base int);
+        itoa(num,charBinary,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+		return (char *)charBinary;
+	}else
+	{
+	    strcpy(charBinary,"XXXXXXXXXXXXXXXX");
+		return (char *)charBinary; // se está no range, retorna-se um binário inválido
+	}
+}
+
+char *charTo16Bits(char *charNumber)  // recebe um numero real em char e retorna uma string de binário em Complemento de 2
+{
+	char *charBinary;
+	charBinary = (char *)malloc(16);
+	int i,result,aux=0,num=atoi(charNumber);//num receberá o char passado para int	
+	if(-32768<num<32768)
+	{
+		if(num>=0) // se o numero é maior que 0, é passado pra binário normalmente
+		{
+	        //itoa(int ,char* ,base int);
+	        itoa(num,charBinary,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+			return (char *)charBinary;
+		}else
+		{
+		    itoa(num*(-1),charBinary,2); // se o numero é menor do q 0, ele é passado pra positivo, e jogado na string normalmente
+		    for(i=0;i<5;i++) 
+	        {
+	            if(charBinary[i]=='0') 
+	            {
+	                charBinary[i]='1';    				// corre o vetor invertendo os numeros
+	            }else
+	            {
+	                charBinary[i]='0';
+	            }
+	        }
+	        i=4;
+	        do   // soma 1
+	        {
+	            if(charBinary[i]=='0') // quando for zero para somar é só colocar o 1, e isso faz com que 'aux' seja válidado para sair do laço, pois a soma acabou
+	            {
+	                charBinary[i]='1';					 
+	                aux=1;
+	            }else
+	            {
+	                charBinary[i]='0'; // se o numero for 1, troca-se por 0 e o carry vai continuar somando com os seguintes
+	            }
+	            i--;
+	        }while(aux==0 && i>=0); 
+		    
+			return (char *)charBinary; 
+		}
+	}else
+	{
+		strcpy(charBinary,"XXXXXXXXXXXXXXXX");
+		return (char *)charBinary; // se está no range, retorna-se um binário inválido
+	}
+}
 
 #endif
