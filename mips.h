@@ -345,4 +345,36 @@ char *registerToBinary(char *registerAssembly)
 	return (char *)registerBinary;
 }
 
+/*char *charToBinary(char *charNumber)  // recebe um numero real em char e retorna uma string de binário
+{
+	char *charBinary;
+	charBinary = (char *)malloc(6);
+	int i,result,aux,num=atoi(charNumber);//num receberá o char passado para int
+	for(i=0;i<5;)
+	{
+		result = isNumeric(charNumber[i]);    //teste se é um numero
+	}	
+	i=0;
+	if(result)
+	{
+		do
+		{
+			charBinary[i]=num%2;
+			num=num/2;
+			i++;
+		}while(aux!=1)
+		for(i=16;i>=0;i--) // passando para um char de 16 bits
+		{
+
+		}
+
+		return (char *)charBinary;
+	}else
+	{
+		return null; // se não é numero entao não se retorna nada (teste)
+	}
+
+	
+}*/ //EM DESENVOLVIMENTO E TESTES
+
 #endif
