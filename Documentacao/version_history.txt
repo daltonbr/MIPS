@@ -84,3 +84,14 @@
 * Adicionado funcao void printPointer(char *string, int length)
 	- simplesmente imprime na tela uma string, dado o seu ponteiro e o tamanho
 	- util pra casos em que nao temos certeza de um terminator ao fim da string, ou pra imprimeir substrings		
+	
+[0.5.0] 14/06/15 - Dalton
+* Funcoes repaginadas: void charToBits (char *charInput, char *charOutput ) 
+	- agora todas essas funcoes sao do tipo VOID, agora basta passar um ponteiro com a entrada, e outro onde devera ser alocada a saida
+		- dessa forma evitamos o uso de malloc
+	- anteriormente elas nao davam saidas nos tamanhos especificados
+	- numeros negativos 'crash'avam o programa nas versoes Unsigned, agora retornam 'XXXXX'
+	- logicas interiores moduladas: vejam funcoes:
+		- not() faz complemento do array,
+		- padZero() completa com zeros a esquerda dinamicamente
+	- na funcao main.c temos um teste dessas funcoes na pratica

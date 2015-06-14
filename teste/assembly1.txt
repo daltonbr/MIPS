@@ -3,3 +3,7 @@ sub $t0,$t1,$t2
 addi $s0,$s1,15
 addi $s0,$s1,-15
 lw $s1,20($s2)
+addi $s0,$s1,5
+addi $s0,$s1,-5
+addi $s0,$s1,1000
+addi $s0,$s1,-1000

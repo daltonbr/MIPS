@@ -29,19 +29,6 @@ extern char addressAssembly[26]; 	// definimos address com
 
 // fim da declaracao de Global Variables
 
-//soma binaria - desconsidera carry - nao verifica inputs
-int xor(int a, int b)
-{
-	if ( a==b )
-	{
-		return 0;
-	}
-	else
-	{
-		return a + b;
-	}
-}
-
 //Core Instruction Set (tipo + 6bits)
 
 /*
@@ -83,6 +70,55 @@ j = J000010 		// 2
 jal = J000011 		// 3
 
 */
+
+//soma binaria - desconsidera carry - nao verifica inputs
+int xor(int a, int b)
+{
+	if ( a==b )
+	{
+		return 0;
+	}
+	else
+	{
+		return a + b;
+	}
+}
+
+
+void not (char *string)
+{
+	int i=0;
+	do
+	{
+		if (string[i] == '0') 
+		{
+			string[i] = '1';    				
+		}
+		else
+		{
+			string[i]='0';
+    	}
+		i++;
+	} while (string[i] != '\0');
+}
+
+void padZero(char *string, int length)
+{
+	int i=0, originalLength;
+	originalLength = strlen(string);  //tamanho antes do preenchimento
+	char stringTemp[17] = {0};        // array temporario
+	strncpy (stringTemp, string, originalLength);  //guarda a string original
+	stringTemp[originalLength] = '\0';
+	
+	int padLength = length - strlen(string);  // diferenca que preencheremos com '0'
+	if (padLength < 0) padLength = 0;    // Evitamos tamanhos negativos - nunca deveria ser
+	
+	for (i=0; i < padLength; i++)
+	{
+		string[i] = '0';		
+	}
+	strncpy ( (string + padLength) ,stringTemp, originalLength);   // concatena de volta na string (agora com zeros) o conteudo original
+}
 
 // retorna 1 se o caracter eh numerico, incluindo o hifen para caso de negativos
 // retorna 0 se qualquer outro.
@@ -241,6 +277,9 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 	}
 	// os registros ja estao extraidos, e serao passados em forma de binario 
 	strcpy ( rsAssembly, rs); //copiando variavel local pra global
+	strcpy ( rtAssembly, rt);
+	strcpy ( rdAssembly, rd);
+	strcpy ( immediateAssembly, immediate);
 	
 }
 
@@ -322,87 +361,69 @@ char *registerToBinary(char *registerAssembly)
 	return (char *)registerBinary;   //(char *)registerBinary;
 }
 
-char *charTo5BitsU(char *charNumber)  // recebe um numero real em char e retorna uma string de binário  UNSIGNED de 5 bits 
+// recebe duas strings por referencia, a primeira eh a entrada ("numeros")
+//  a segunda devolve a string de binário UNSIGNED de 5 bits
+void charTo5BitsU (char *charInput, char *charOutput)   
 {
-	char *charBinary;
-	charBinary = (char *)malloc(5);
-	int i,result,num=atoi(charNumber),j=0;// 'num' receberá o char passado para int
+	int num = 33; // gambiarra pra cair fora do segundo if
+	if ( charInput[0] != '-' ) //procura numeros negativos, eles nem deveriam ser chamados
+		num=atoi(charInput);   //num receberá o char passado para int
 	
-	if(0<=num<32) // limite do range de 5bits
+	if( num<32 ) // limite do range de 16bits
 	{
         //itoa(int ,char* ,base int);
-        itoa(num,charBinary,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
-		return (char *)charBinary;
+        itoa(num,charOutput,2);  // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+		padZero(charOutput, 5);
+		charOutput[5] = '\0';
 	}else
 	{
-	    strcpy(charBinary,"XXXXX");
-		return (char *)charBinary; // se está fora do range valido, retorna-se um binário inválido
+	    strcpy(charOutput,"XXXXX");  // saida de erro
+		charOutput[5] = '\0';
 	}
 }
-
-char *charTo16BitsU(char *charNumber)  // recebe um numero real em char e retorna uma string de binário  UNSIGNED de 5 bits 
+ // recebe duas strings por referencia, a primeira eh a entrada ("numeros")
+ //  a segunda devolve a string de binário UNSIGNED de 16 bits
+void charTo16BitsU (char *charInput, char *charOutput)   
 {
-	char *charBinary;
-	charBinary = (char *)malloc(16);
-	int i,result,num=atoi(charNumber),j=0;// 'num' receberá o char passado para int
+	int num = 65537; // gambiarra pra cair fora do segundo if
+	if ( charInput[0] != '-' ) //procura numeros negativos, eles nem deveriam ser chamados
+		num=atoi(charInput);   //num receberá o char passado para int
 	
-	if(0<=num<65536) // limite do range de 16bits
+	if( num<65536 ) // limite do range de 16bits
 	{
         //itoa(int ,char* ,base int);
-        itoa(num,charBinary,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
-		return (char *)charBinary;
+        itoa(num,charOutput,2);  // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+		padZero(charOutput, 16);
 	}else
 	{
-	    strcpy(charBinary,"XXXXXXXXXXXXXXXX");
-		return (char *)charBinary; // se está fora do range valido, retorna-se um binário inválido
+	    strcpy(charOutput,"XXXXXXXXXXXXXXXX");  // saida de erro
+		charOutput[16] = '\0';
 	}
 }
-
-char *charTo16Bits(char *charNumber)  // recebe um numero real em char e retorna uma string de binário em Complemento de 2
+// recebe duas strings por referencia, a primeira eh a entrada ("numeros")
+//  a segunda devolve a string de binário em Complemento de 2 em 16 bits
+void charTo16Bits (char *charInput, char *charOutput)
 {
-	char *charBinary;
-	charBinary = (char *)malloc(16);
-	int i,result,aux=0,num=atoi(charNumber);//num receberá o char passado para int	
-	if(-32768<num<32768)
+
+	int num=atoi(charInput);   //num receberá o char passado para int	
+	
+	if (-32768 <= num < 32768)
 	{
-		if(num>=0) // se o numero é maior que 0, é passado pra binário normalmente
+		if (num>=0) // se o numero é maior que 0, é passado pra binário normalmente
 		{
 	        //itoa(int ,char* ,base int);
-	        itoa(num,charBinary,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
-			return (char *)charBinary;
-		}else
+	        itoa(num,charOutput,2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+			padZero(charOutput, 16);  //completa com zeros
+		}
+		else
 		{
-		    itoa(num*(-1),charBinary,2); // se o numero é menor do q 0, ele é passado pra positivo, e jogado na string normalmente
-		    for(i=0;i<5;i++) 
-	        {
-	            if(charBinary[i]=='0') 
-	            {
-	                charBinary[i]='1';    				// corre o vetor invertendo os numeros - (esse trecho poderia ser encapsulado com uma funcao NOT ()
-	            }else
-	            {
-	                charBinary[i]='0';
-	            }
-	        }
-	        i=4;
-	        do   // soma 1
-	        {
-	            if(charBinary[i]=='0') // quando for zero para somar é só colocar o 1, e isso faz com que 'aux' seja válidado para sair do laço, pois a soma acabou
-	            {
-	                charBinary[i]='1';					 
-	                aux=1;
-	            }else
-	            {
-	                charBinary[i]='0'; // se o numero for 1, troca-se por 0 e o carry vai continuar somando com os seguintes
-	            }
-	            i--;
-	        }while(aux==0 && i>=0); 
-		    
-			return (char *)charBinary; 
+		    itoa ( (num*(-1)) -1 , charOutput,2 ); // se o numero é negativo, ele é passado pra positivo (e subtraimos 1)
+		    padZero(charOutput, 16);  //completa com zeros
+			not (charOutput);   	// complemento do array	 
 		}
 	}else
 	{
-		strcpy(charBinary,"XXXXXXXXXXXXXXXX");
-		return (char *)charBinary; // se está no range, retorna-se um binário inválido
+		strcpy(charOutput,"XXXXXXXXXXXXXXXX");  // saida de erro
 	}
 }
 

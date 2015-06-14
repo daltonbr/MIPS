@@ -77,10 +77,33 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 			ripDataAssembly(inputLine);
 			
 			printf("Registrador lido: ");
-			puts(rsAssembly);
 			
 			strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary
+			strcpy (rtBinary, registerToBinary(rtAssembly));
+			strcpy (rdBinary, registerToBinary(rdAssembly));
+			strcpy (rsBinary, registerToBinary(rsAssembly)); 
 			
+			puts(rsAssembly);
+			puts(rtAssembly);
+			puts(rdAssembly);
+			puts(immediateAssembly);
+			puts(rsBinary);
+			puts(rtBinary);
+			puts(rdBinary);
+					
+			//strcpy (immediateBinary, charTo16Bits(immediateAssembly) ); //supondo todos C2
+			charTo16Bits (immediateAssembly, immediateBinary );
+			printf("\nImmediate C2 em 16 bits: ");
+			puts(immediateBinary);
+			
+			charTo16BitsU (immediateAssembly, immediateBinary );
+			printf("\nImmediate UNSIGNED em 16 bits: ");
+			puts(immediateBinary);
+			
+			charTo5BitsU (immediateAssembly, immediateBinary );
+			printf("\nImmediate UNSIGNED em 5 bits: ");
+			puts(immediateBinary);
+						
 			printf("\nRegistrador Convertido: ");
 			printPointer(rsBinary,5);
 			printf("\n");
