@@ -1,53 +1,33 @@
+// Header that defines registers, functions and constants for a MIPS processor
+//mips.h
 #ifndef MIPS
 #define MIPS
 
 //Global Variables
-char inputLine[129];
-char outputLine[129];
+extern char inputLine[129];
+extern char outputLine[129];
 
-char opcodeBinary[6];
-char rsBinary[5];
-char rtBinary[5];
-char rdBinary[5];
-char shamtBinary[5];
-char functBinary[6];
+extern char opcodeBinary[7];        // G Var for Binary
+extern char rsBinary[6];
+extern char rtBinary[6];
+extern char rdBinary[6];
+extern char shamtBinary[6];
+extern char functBinary[7];
 
-char immediateBinary[16];   // exclusive type I
-char addressBinary[26]; 	// exclusive type J
+extern char immediateBinary[17];   // exclusive type I
+extern char addressBinary[27]; 	// exclusive type J
 
-// Header that defines registers, functions and constants for a MIPS processor
-//mips.h
+extern char functionAssembly[6];     // G Var for Assembly
+extern char rsAssembly[4];
+extern char rtAssembly[4];
+extern char rdAssembly[4];
+extern char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
+//extern char functAssembly[6];
 
-// Instruction R
-typedef struct {
-	char opcode[6];
-	char rs[5];
-	char rt[5];
-	char rd[5];
-	char shamt[5];
-	char funct[6];
-	char end[1];
-} instructionR;
+extern char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
+extern char addressAssembly[26]; 	// definimos address com 
 
-// Instruction I
-typedef struct {
-	char opcode[6];
-	char rs[5];
-	char rt[5];
-	char immediate[16];
-	char end[1];
-} instructionI;
-
-// Instruction J
-typedef struct {
-	char opcode[6];
-	char immediate[26];
-	char end[1];
-} instructionJ;
-
-// opcode + funct em binary
-#define add 000000100000 // 0/20[hex] - criar um struct com 2 pedacos de 6 bits?
-#define sub 000000100010 // 0/22
+// fim da declaracao de Global Variables
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -61,7 +41,6 @@ int xor(int a, int b)
 		return a + b;
 	}
 }
-
 
 //Core Instruction Set (tipo + 6bits)
 
@@ -167,6 +146,21 @@ void concatenateJ(char *outputLine)	//generates J type line
 	strcat (outputLine, addressBinary);
 }
 
+
+
+void addToBinary (char *inputLine) //output nas variaveis globais - input precisa ser por referencia?
+{
+	// extrairemos os registros:
+	// ripDataAssembly (inputLine);   // escreve os registros nas globais
+	
+	//escrevemos nas globais
+	strcpy (opcodeBinary,"000000");	 	// fixo para o add
+	strcpy (shamtBinary,"00000"); 		// fixo para o add
+	strcpy (functBinary,"100000");	 	// fixo para o add
+	
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
 void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registros
 										// precisaremos caso especial pra J e JAL ?
 {
@@ -186,6 +180,7 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 	if ( ch == '$' )
 	{
 		strncpy(rd,(myLine + offset),3);		//achou o primeiro registro e poe no RD - copia os 3 chars seguintes
+		rd[3] = '\0';
 	}
 	
 	if ( ch != '\0' ) //ainda nao acabou ?
@@ -198,6 +193,7 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 		
 		if ( ch == '$' ) {
 			strncpy(rs,(myLine + offset),3);  //achou o segundo registro e poe no RS
+			rs[3] = '\0';
 		}
 		
 		if ( ch != '\0' ) //ainda nao acabou  ?
@@ -210,6 +206,7 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 			
 			if ( ch == '$' ){
 				strncpy(rt,(myLine + offset),3);   //achou o terceiro registro e poe no RT			
+				rt[3] = '\0';
 			}
 		}
 	}
@@ -240,37 +237,17 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 			} while (isNum);    //sai do loop qdo encontra um "nao numerico"
 			tamanho = tamanho - offset;		 // faz a diferenca pra saber o tamanho do immediate
 			strncpy(immediate,(myLine + offset),tamanho);		//copia do immediate
+			immediate[tamanho] = '\0';
 	}
-
-	// "saida" de dados por variaveis globais	
-	puts(rs);
-	puts(rt);
-	puts(rd);
-	puts(immediate);
+	// os registros ja estao extraidos, e serao passados em forma de binario 
+	strcpy ( rsAssembly, rs); //copiando variavel local pra global
 	
-//	strcpy ( rsBinary, registerToBinary(&rs));  // os registros ja estao extraidos, e serao passados em forma de binario 
-//	strcpy ( rtBinary, registerToBinary(&rt));  // para as variaveis globais 
-//	strcpy ( rdBinary, registerToBinary(&rd));
-
-}
-
-void addToBinary (char *inputLine) //output nas variaveis globais - input precisa ser por referencia?
-{
-	// extrairemos os registros:
-	// ripDataAssembly (inputLine);   // escreve os registros nas globais
-	
-	//escrevemos nas globais
-	strcpy (opcodeBinary,"000000");	 	// fixo para o add
-	strcpy (shamtBinary,"00000"); 		// fixo para o add
-	strcpy (functBinary,"100000");	 	// fixo para o add
-	
-	concatenateR(outputLine);   // "empacota" a linha
 }
 
 // funcao que retorna os binarios de cada Registro - em caso de erro retorna xxxxx
 char *registerToBinary(char *registerAssembly)
 {
-	char *registerBinary;
+	static char *registerBinary;
 	registerBinary = (char *)malloc(6); // tamanho maximo do nome das funcoes, incluindo terminator
 	
 	if (!(strcmp(registerAssembly,"$zero"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
@@ -341,8 +318,8 @@ char *registerToBinary(char *registerAssembly)
 	else {
 		strcpy(registerBinary,"xxxxx");    //caso de Erro, nenhum registro compativel encontrado
 	}
-	
-	return (char *)registerBinary;
+	registerAssembly=registerBinary;
+	return (char *)registerBinary;   //(char *)registerBinary;
 }
 
 char *charTo5BitsU(char *charNumber)  // recebe um numero real em char e retorna uma string de binário  UNSIGNED de 5 bits 
@@ -359,7 +336,7 @@ char *charTo5BitsU(char *charNumber)  // recebe um numero real em char e retorna
 	}else
 	{
 	    strcpy(charBinary,"XXXXX");
-		return (char *)charBinary; // se está no range, retorna-se um binário inválido
+		return (char *)charBinary; // se está fora do range valido, retorna-se um binário inválido
 	}
 }
 
@@ -377,7 +354,7 @@ char *charTo16BitsU(char *charNumber)  // recebe um numero real em char e retorn
 	}else
 	{
 	    strcpy(charBinary,"XXXXXXXXXXXXXXXX");
-		return (char *)charBinary; // se está no range, retorna-se um binário inválido
+		return (char *)charBinary; // se está fora do range valido, retorna-se um binário inválido
 	}
 }
 
@@ -400,7 +377,7 @@ char *charTo16Bits(char *charNumber)  // recebe um numero real em char e retorna
 	        {
 	            if(charBinary[i]=='0') 
 	            {
-	                charBinary[i]='1';    				// corre o vetor invertendo os numeros
+	                charBinary[i]='1';    				// corre o vetor invertendo os numeros - (esse trecho poderia ser encapsulado com uma funcao NOT ()
 	            }else
 	            {
 	                charBinary[i]='0';

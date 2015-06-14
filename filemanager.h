@@ -13,6 +13,16 @@ w+ - open for reading and writing (overwrite file)
 a+ - open for reading and writing (append if file exists)
 */
 
+//imprime um pointeiro na tela de char, dado o tamanho - usado para Debug
+void printPointer(char *string, int length)
+{
+	int i;
+	for (i=0; i < length; i++){
+		printf("%c", string[i]);
+	}
+}
+
+
 //entrando uma linha, esta funcao retorna a primeira palavra antes do espaco
 char *getNameAssembly(char *fullLine)
 {

@@ -17,6 +17,34 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 #include "filemanager.h"
 #define BUFFER_SIZE 129   //line buffer max size
 
+//Global Variables
+char inputLine[129];
+char outputLine[129];
+
+char opcodeBinary[7];        // G Var for Binary
+char rsBinary[6];
+char rtBinary[6];
+char rdBinary[6];
+char shamtBinary[6];
+char functBinary[7];
+
+char immediateBinary[17];   // exclusive type I
+char addressBinary[27]; 	// exclusive type J
+
+char functionAssembly[6];     // G Var for Assembly
+char rsAssembly[4];
+char rtAssembly[4];
+char rdAssembly[4];
+char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
+//char functAssembly[6];
+
+char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
+char addressAssembly[26]; 	// definimos address com 
+
+// fim da declaracao de Global Variables
+
+void printPointer(char *string, int length);
+
 
 int main () 
 {
@@ -24,20 +52,6 @@ int main ()
 	FILE *file;
 	
 	printf("MIPS Parser!\n" );
-
-instructionR addFunction; //instanciando um struct do tipo R
-
-strcpy (addFunction.opcode,"123456");	
-strcpy (addFunction.rs,"54321");
-strcpy (addFunction.rt,"12345");
-strcpy (addFunction.rd,"99999");
-strcpy (addFunction.shamt,"00000");
-strcpy (addFunction.funct,"666666");
-strcpy (addFunction.end, "\0");
-
-//imprime o struct do primeiro elemento, ate encontrar o 'terminator'
-printf("\n\nTeste de impressao do Struct addFunction:\n");
-printf("%s", addFunction.opcode);
 
 //conta linha do binary1.txt
 totalLines = countLine ();
@@ -61,7 +75,17 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 			//puts (instructionName);
 			
 			ripDataAssembly(inputLine);
-			puts(outputLine);			// imprime na tela a saida					
+			
+			printf("Registrador lido: ");
+			puts(rsAssembly);
+			
+			strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary
+			
+			printf("\nRegistrador Convertido: ");
+			printPointer(rsBinary,5);
+			printf("\n");
+			
+			//puts(outputLine);			// imprime na tela a saida					
 		}
 	}
 	

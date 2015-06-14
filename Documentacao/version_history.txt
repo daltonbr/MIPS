@@ -73,3 +73,14 @@
 
 	- char *charTo16Bits (char *charNumber) :
 		- função que recebe um numero inteiro em string, e retorna um char com o mesmo numero em binário 16 bits Unsigned, Range: [-32768,32767]
+		
+[0.4.0] 14/06/15 - Dalton
+* "Enxugada" em linhas de teste das primeiras versões.
+* Alterado declaracao das variaveis Globais (extern)
+* Nesta versao temos um exemplo da funcao ripDataAssembly() convertendo um registrador em binario e escrevendo na variavel global referente.
+* Pequena melhoria na funcao ripDataAssembly()
+	- agora apos a "ripagem" colocamos um '\0' ao final das strings
+* Adicionado arquivo assembly liberado pelo professor (na pasta "teste")
+* Adicionado funcao void printPointer(char *string, int length)
+	- simplesmente imprime na tela uma string, dado o seu ponteiro e o tamanho
+	- util pra casos em que nao temos certeza de um terminator ao fim da string, ou pra imprimeir substrings		
