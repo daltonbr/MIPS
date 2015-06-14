@@ -6,7 +6,7 @@ autores:
 Dalton Lima - sacinopatinete@gmail.com
 Stephany ?
 Victor ?
-Tadeu ?
+Tadeu tadeumartines@yahoo.com.br
 Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 
 */
