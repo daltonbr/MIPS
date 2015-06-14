@@ -95,3 +95,8 @@
 		- not() faz complemento do array,
 		- padZero() completa com zeros a esquerda dinamicamente
 	- na funcao main.c temos um teste dessas funcoes na pratica
+	
+[0.5.1] 14/06/15 - Dalton
+* Aqui pela primeira vez conseguimos "printar" na tela a linha completa convertida,
+  porem soh funciona pra instrucao "add"
+  	- ver instrucao addToBinary ( )

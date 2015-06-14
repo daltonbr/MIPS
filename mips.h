@@ -186,15 +186,14 @@ void concatenateJ(char *outputLine)	//generates J type line
 
 void addToBinary (char *inputLine) //output nas variaveis globais - input precisa ser por referencia?
 {
-	// extrairemos os registros:
-	// ripDataAssembly (inputLine);   // escreve os registros nas globais
+	// ripDataAssembly (inputLine);   // ja ripou os registradores
 	
 	//escrevemos nas globais
 	strcpy (opcodeBinary,"000000");	 	// fixo para o add
 	strcpy (shamtBinary,"00000"); 		// fixo para o add
 	strcpy (functBinary,"100000");	 	// fixo para o add
-	
-	concatenateR(outputLine);   // "empacota" a linha
+		
+	// concatenateR(outputLine);   // "empacota" a linha
 }
 
 void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registros
