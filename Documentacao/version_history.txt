@@ -100,3 +100,11 @@
 * Aqui pela primeira vez conseguimos "printar" na tela a linha completa convertida,
   porem soh funciona pra instrucao "add"
   	- ver instrucao addToBinary ( )
+	  
+[0.5.2] 14/06/15 - Dalton
+* Implementado funcao void filterInstruction(char *instruction)
+	- simplesmente filtra e reencaminha cada funcao individualmente
+* Implementado algumas funcoes especificas de instrucoes, como:
+	- addToBinary(), addiToBinary(), addiuToBinary() e andToBinary()
+* As funcoes conseguem montar a linha e imprimir a linha convertida na tela
+* Enxugada no main.c

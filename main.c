@@ -45,7 +45,6 @@ char addressAssembly[26]; 	// definimos address com
 
 void printPointer(char *string, int length);
 
-
 int main () 
 {
 	unsigned long totalLines = 0;
@@ -70,52 +69,19 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 		printf("\narquivo aberto com sucesso!\n");
 		while (fgets (inputLine, 129, file) ) 
 		{	
-			puts (inputLine);				// inputLine contem a linha a ser trabalhada"
+			puts (inputLine);				// inputLine contem a linha a ser trabalhada
 			strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
-			//puts (instructionName);
-			
-			ripDataAssembly(inputLine);
-			
-			// printf("Registrador lido: ");
-			
-			strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary
+						
+			ripDataAssembly(inputLine);   // extrai alguns elementos da linha (registros e immediates) e poe em variaveis globais
+					
+			strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary (ainda em variaveis globais)
 			strcpy (rtBinary, registerToBinary(rtAssembly));
 			strcpy (rdBinary, registerToBinary(rdAssembly));
-						
-			puts(rsAssembly);
-			puts(rtAssembly);
-			puts(rdAssembly);
-			puts(immediateAssembly);
-			puts(rsBinary);
-			puts(rtBinary);
-			puts(rdBinary);
-					
-			//strcpy (immediateBinary, charTo16Bits(immediateAssembly) ); //supondo todos C2
-			// charTo16Bits (immediateAssembly, immediateBinary );
-			// printf("\nImmediate C2 em 16 bits: ");
-			// puts(immediateBinary);
-			
-			// charTo16BitsU (immediateAssembly, immediateBinary );
-			// printf("\nImmediate UNSIGNED em 16 bits: ");
-			// puts(immediateBinary);
-			
-			// charTo5BitsU (immediateAssembly, immediateBinary );
-			// printf("\nImmediate UNSIGNED em 5 bits: ");
-			// puts(immediateBinary);
-						
-			// printf("\nRegistrador Convertido: ");
-			// printPointer(rsBinary,5);
-			// printf("\n");
-			
-								
-		    addToBinary(inputLine);
-			concatenateR(outputLine);   // "empacota" a linha
+									
+			filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
 			puts(outputLine);			// imprime na tela a saida
 		}
-	}
-	
-	
-	
+	}	
 	
 fclose(file);
 

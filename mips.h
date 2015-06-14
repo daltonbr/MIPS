@@ -33,7 +33,7 @@ extern char addressAssembly[26]; 	// definimos address com
 
 /*
 // R Format Instructions - 12 types (Tipo + 6 bits Funct) (opcode fixo 000000)
-add = R100000 	// 0/20
+add = R100000 	// 0/20 *
 addu = R100001 	// 0/21
 and = R100100 	// 0/24
 jr = R001000	// 0/08
@@ -70,6 +70,11 @@ j = J000010 		// 2
 jal = J000011 		// 3
 
 */
+//declaracao de funcoes
+void charTo16Bits (char *charInput, char *charOutput);
+void charTo16BitsU (char *charInput, char *charOutput);
+void charTo5BitsU (char *charInput, char *charOutput);
+
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -160,6 +165,9 @@ int isBinary (char ch)
 
 void concatenateR(char *outputLine)  //generates R type line
 {
+	strcpy (opcodeBinary,"000000");	 	// fixo para R
+	strcpy (shamtBinary,"00000"); 		// fixo para R
+	
 	strcpy (outputLine, opcodeBinary);
 	strcat (outputLine, rsBinary);
 	strcat (outputLine, rtBinary);
@@ -170,9 +178,19 @@ void concatenateR(char *outputLine)  //generates R type line
 
 void concatenateI(char *outputLine)	//generates I type line
 {
+	charTo16Bits (immediateAssembly, immediateBinary );
 	strcpy (outputLine, opcodeBinary);
-	strcat (outputLine, rsBinary);
-	strcat (outputLine, rtBinary);
+	strcat (outputLine, rtBinary);  //rs na verdade
+	strcat (outputLine, rdBinary);  //rt na verdade
+	strcat (outputLine, immediateBinary);
+}
+
+void concatenateIU(char *outputLine)	//generates I type line
+{
+	charTo16BitsU (immediateAssembly, immediateBinary );
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, rtBinary);  //rs na verdade
+	strcat (outputLine, rdBinary);  //rt na verdade
 	strcat (outputLine, immediateBinary);
 }
 
@@ -182,18 +200,30 @@ void concatenateJ(char *outputLine)	//generates J type line
 	strcat (outputLine, addressBinary);
 }
 
-
-
-void addToBinary (char *inputLine) //output nas variaveis globais - input precisa ser por referencia?
+void addToBinary() // R
 {
-	// ripDataAssembly (inputLine);   // ja ripou os registradores
-	
-	//escrevemos nas globais
-	strcpy (opcodeBinary,"000000");	 	// fixo para o add
-	strcpy (shamtBinary,"00000"); 		// fixo para o add
 	strcpy (functBinary,"100000");	 	// fixo para o add
-		
-	// concatenateR(outputLine);   // "empacota" a linha
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
+void addiToBinary()  // I
+{
+	strcpy (opcodeBinary,"001000");
+	concatenateI(outputLine);   // "empacota" a linha
+}
+
+void addiuToBinary()  // IU
+{
+	strcpy (opcodeBinary,"001001");
+	concatenateIU(outputLine);   // "empacota" a linha
+}
+
+// faltando addu  // R
+
+void andToBinary() //  R
+{
+	strcpy (functBinary,"100100");
+	concatenateR(outputLine);   // "empacota" a linha
 }
 
 void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registros
@@ -214,8 +244,8 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 	
 	if ( ch == '$' )
 	{
-		strncpy(rd,(myLine + offset),3);		//achou o primeiro registro e poe no RD - copia os 3 chars seguintes
-		rd[3] = '\0';
+		strncpy(rt,(myLine + offset),3);		//achou o primeiro registro e poe no RT - copia os 3 chars seguintes
+		rt[3] = '\0';
 	}
 	
 	if ( ch != '\0' ) //ainda nao acabou ?
@@ -227,8 +257,8 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 		} while (ch != '$' && ch != '\0');
 		
 		if ( ch == '$' ) {
-			strncpy(rs,(myLine + offset),3);  //achou o segundo registro e poe no RS
-			rs[3] = '\0';
+			strncpy(rd,(myLine + offset),3);  //achou o segundo registro e poe no RD
+			rd[3] = '\0';
 		}
 		
 		if ( ch != '\0' ) //ainda nao acabou  ?
@@ -240,8 +270,8 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 			} while (ch != '$' && ch != '\0');
 			
 			if ( ch == '$' ){
-				strncpy(rt,(myLine + offset),3);   //achou o terceiro registro e poe no RT			
-				rt[3] = '\0';
+				strncpy(rs,(myLine + offset),3);   //achou o terceiro registro e poe no RS			
+				rs[3] = '\0';
 			}
 		}
 	}
@@ -424,6 +454,23 @@ void charTo16Bits (char *charInput, char *charOutput)
 	{
 		strcpy(charOutput,"XXXXXXXXXXXXXXXX");  // saida de erro
 	}
+}
+
+
+void filterInstruction(char *instruction)
+{
+	if (!(strcmp(instruction,"add"))){
+		addToBinary();
+	} else if (!(strcmp(instruction,"addi"))){
+		addiToBinary();
+	} else if (!(strcmp(instruction,"addiu"))){
+		addiuToBinary();	
+	} else if (!(strcmp(instruction,"and"))){
+		andToBinary();
+	}
+	else {
+		printf("\nERRO! - Funcao nao existente!\n");  //caso de Erro, funcao nao encontrada
+	}		
 }
 
 #endif

@@ -5,3 +5,12 @@ bne $t0,$s50, Exit
 addi $s3,$s3,1
 j Loop
 Exit:
+add $s0,$s1,$s2
+sub $t0,$t1,$t2
+addi $s0,$s1,15
+addi $s0,$s1,-15
+lw $s1,20($s2)
+addi $s0,$s1,5
+addi $s0,$s1,-5
+addi $s0,$s1,1000
+addi $s0,$s1,-1000
