@@ -164,8 +164,12 @@
 	- Repare que a funcao eh void, e nao necessita alocar dinamicamente mais memoria
 	- Similar a funcao registerToBinary (porem a implementacao anterior usava memoria dinamica),
 	   
- [0.7.7] 15/06/15 - Dalton 
+[0.7.7] 15/06/15 - Dalton 
 * Impementado funcao ripBinaryI(),ripBinaryJ(),  ripBinaryR(), ripBinaryLabel()
  	- Basicamente elas "recortam" as words binarias de acordo com o tipo
 * Implementado void registerToAssembly() 
-	- funcionando parcialmente, a partir do funct da todas as instrucoes R em Assembly	     
+	- funcionando parcialmente, a partir do funct da todas as instrucoes R em Assembly	 
+
+[0.7.8] 15/06/15 - Dalton 
+* Impementado funcao void instructionI (), void instructionJ ()
+      

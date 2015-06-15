@@ -82,6 +82,8 @@ void ripBinaryJ();
 // # funcoes Assembly -> Binary
 void registerToAssembly(char *registerBinary, char *registerAssembly);
 void instructionR ();
+void instructionI ();
+void instructionJ ();
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -760,6 +762,7 @@ void ripBinaryR()
 void ripBinaryJ()
 {
 	strncpy(addressBinary, inputLine+6, 26);   // faz o split de acordo com a funcao J
+	instructionJ ();  // escreve o funct na global
 }
 
 void ripBinaryI()
@@ -770,6 +773,7 @@ void ripBinaryI()
 	
 	registerToAssembly(rsBinary, rsAssembly);  // converte os registros
 	registerToAssembly(rtBinary, rtAssembly);
+	instructionI ();
 }
 
 void ripBinaryLabel()
@@ -881,5 +885,56 @@ void instructionR ()
 	}	
 }
 
+void instructionJ ()
+{
+	if (!(strcmp(opcodeBinary,"000010"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
+		strcpy(instructionAssembly,"j");
+	} else if (!(strcmp(opcodeBinary,"000011"))){  		 
+		strcpy(instructionAssembly,"jal");
+	} else {
+		strcpy(instructionAssembly ,"Jxxxx");    //caso de Erro, nenhum instruction compativel encontrado
+	}	
+}
+
+void instructionI ()
+{
+	if (!(strcmp(opcodeBinary,"001000"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
+		strcpy(instructionAssembly,"addi");
+	} else if (!(strcmp(opcodeBinary,"001001"))){  		 
+		strcpy(instructionAssembly,"addiu");
+	} else if (!(strcmp(opcodeBinary,"001100"))){
+		strcpy(instructionAssembly,"andi");
+	} else if (!(strcmp(opcodeBinary,"000100"))){
+		strcpy(instructionAssembly,"beq");
+	} else if (!(strcmp(opcodeBinary,"000101"))){
+		strcpy(instructionAssembly,"bne");			
+	} else if (!(strcmp(opcodeBinary,"100100"))){
+		strcpy(instructionAssembly,"lbu");
+	} else if (!(strcmp(opcodeBinary,"100101"))){
+		strcpy(instructionAssembly,"lhu");
+	} else if (!(strcmp(opcodeBinary,"110000"))){
+		strcpy(instructionAssembly,"ll");
+	} else if (!(strcmp(opcodeBinary,"001111"))){
+		strcpy(instructionAssembly,"lui");
+	} else if (!(strcmp(opcodeBinary,"100011"))){
+		strcpy(instructionAssembly,"lw");
+	} else if (!(strcmp(opcodeBinary,"001101"))){
+		strcpy(instructionAssembly,"ori");
+	} else if (!(strcmp(opcodeBinary,"001010"))){
+		strcpy(instructionAssembly,"slti");
+	} else if (!(strcmp(opcodeBinary,"001011"))){
+		strcpy(instructionAssembly,"sltiu");
+	} else if (!(strcmp(opcodeBinary,"101000"))){
+		strcpy(instructionAssembly,"sb");
+	} else if (!(strcmp(opcodeBinary,"111000"))){
+		strcpy(instructionAssembly,"sc");
+	} else if (!(strcmp(opcodeBinary,"101001"))){
+		strcpy(instructionAssembly,"sh");
+	} else if (!(strcmp(opcodeBinary,"101011"))){
+		strcpy(instructionAssembly,"sw");
+	} else {
+		strcpy(instructionAssembly ,"Ixxxx");    //caso de Erro, nenhum instruction compativel encontrado
+	}	
+}
 
 #endif
