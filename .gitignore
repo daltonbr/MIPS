@@ -1,3 +1,6 @@
+.teste/outputAssembly.txt   # arquivos de teste
+.teste/outputBinary.txt	    # arquivos de teste
+
 # Compiled source #
 ###################
 *.com
