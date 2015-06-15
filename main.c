@@ -126,10 +126,18 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 			while (fgets (inputLine, 129, inputFile) ) 
 			{
 				puts (inputLine);			// inputLine contem a linha a ser trabalhada
+				
+				getOpcodeBinary(inputLine);
+				puts(opcodeBinary);
+				
+				//strcpy (instructionName, getOpcodeBinary(inputLine) );  //extrai o opcode
+				
 						
 				// ripDataBinary(inputLine);   // extrai elementos da linha (registros e immediates) e poe em variaveis globais
 																			
 				puts(outputLine);			// imprime na tela a saida
+				
+				
 				//fputs(inputLine, outputFile);  // imprime a linha no arquivo de saida
 				//fputs("\n", outputFile);  //    \n  pula linha se precisar
 				

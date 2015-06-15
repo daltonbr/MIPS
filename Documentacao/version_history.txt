@@ -149,4 +149,8 @@
 * Feita a mesma estrura de escrever arquivo para Binario -> Assembly  (no main.c)
 	- escreveremos no teste/outputAssembly.txt e teste/outputBinary.txt
 	
+[0.7.2] 15/06/15 - Dalton 
+* Implementado void getOpcodeBinary (char *inputLine)
+	- extrai o opcode dos binarios	
+	
  

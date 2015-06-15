@@ -714,4 +714,12 @@ void filterInstruction(char *instruction)
 	}		
 }
 
+
+// #######  Funcoes de binary -> Assembly
+
+void getOpcodeBinary (char *inputLine)
+{
+	strncpy (opcodeBinary, inputLine, 6);
+	opcodeBinary[6] = '\0';
+}
 #endif
