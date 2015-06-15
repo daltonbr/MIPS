@@ -766,4 +766,83 @@ void ripBinaryLabel()
 	//strncpy(addressBinary, inputLine+6, 26);
 }
 
+// funcao que converte um registro binario em assembly
+void registerToAssembly(char *registerBinary, char *registerAssembly)
+{
+	// static char *registerBinary;
+	// registerBinary = (char *)malloc(6); // tamanho maximo do nome das funcoes, incluindo terminator
+	
+	if (!(strcmp(registerBinary,"00000"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
+		strcpy(registerAssembly,"$zero");
+	} else if (!(strcmp(registerBinary,"00001"))) {   	// 1 	Assemble temporary
+		strcpy(registerAssembly,"$at");		
+	} else if (!(strcmp(registerBinary,"00010"))) {		// 2 	Function Results and Expression Evaluation
+		strcpy(registerAssembly,"$v0");				
+	} else if (!(strcmp(registerBinary,"00011"))) {
+		strcpy(registerAssembly,"$v1");			
+	} else if (!(strcmp(registerBinary,"00100"))) {		// 4	Arguments
+		strcpy(registerAssembly,"$a0");		
+	} else if (!(strcmp(registerBinary,"00101"))) {
+		strcpy(registerAssembly,"$a1");		
+	} else if (!(strcmp(registerBinary,"00110"))) {
+		strcpy(registerAssembly,"$a2");		
+	} else if (!(strcmp(registerBinary,"00111"))) {
+		strcpy(registerAssembly,"$a3");		
+	} else if (!(strcmp(registerBinary,"01000"))) {		// 8	Temporaries
+		strcpy(registerAssembly,"$t0");		
+	} else if (!(strcmp(registerBinary,"01001"))) {
+		strcpy(registerAssembly,"$t1");
+	} else if (!(strcmp(registerBinary,"01010"))) {
+		strcpy(registerAssembly,"$t2");
+	} else if (!(strcmp(registerBinary,"01011"))) {
+		strcpy(registerAssembly,"$t3");
+	} else if (!(strcmp(registerBinary,"01100"))) {
+		strcpy(registerAssembly,"$t4");
+	} else if (!(strcmp(registerBinary,"01101"))) {
+		strcpy(registerAssembly,"$t5");
+	} else if (!(strcmp(registerBinary,"01110"))) {
+		strcpy(registerAssembly,"$t6");
+	} else if (!(strcmp(registerBinary,"01111"))) {
+		strcpy(registerAssembly,"$t7");												
+	} else if (!(strcmp(registerBinary,"10000"))) {		// 16	Saved Temporaries
+		strcpy(registerAssembly,"$s0");		
+	} else if (!(strcmp(registerBinary,"10001"))) {
+		strcpy(registerAssembly,"$s1");
+	} else if (!(strcmp(registerBinary,"10010"))) {
+		strcpy(registerAssembly,"$s2");
+	} else if (!(strcmp(registerBinary,"10011"))) {
+		strcpy(registerAssembly,"$s3");
+	} else if (!(strcmp(registerBinary,"10100"))) {
+		strcpy(registerAssembly,"$s4");
+	} else if (!(strcmp(registerBinary,"10101"))) {
+		strcpy(registerAssembly,"$s5");
+	} else if (!(strcmp(registerBinary,"10110"))) {
+		strcpy(registerAssembly,"$s6");
+	} else if (!(strcmp(registerBinary,"10111"))) {
+		strcpy(registerAssembly,"$s7");		
+	} else if (!(strcmp(registerBinary,"11000"))) {		// 24	Temporaries
+		strcpy(registerAssembly,"$t8");
+	} else if (!(strcmp(registerBinary,"11001"))) {
+		strcpy(registerAssembly,"$t9");			
+	} else if (!(strcmp(registerBinary,"11010"))) {		// 26	Reserved for OS Kernel
+		strcpy(registerAssembly,"$k0");
+	} else if (!(strcmp(registerBinary,"11011"))) {
+		strcpy(registerAssembly,"$k1");
+	} else if (!(strcmp(registerBinary,"11100"))) {
+		strcpy(registerAssembly,"$gp");
+	} else if (!(strcmp(registerBinary,"11101"))) {
+		strcpy(registerAssembly,"$sp");
+	} else if (!(strcmp(registerBinary,"11110"))) {
+		strcpy(registerAssembly,"$fp");
+	} else if (!(strcmp(registerBinary,"11111"))) {
+		strcpy(registerAssembly,"$ra");					
+	}
+	else {
+		strcpy(registerAssembly ,"$xx");    //caso de Erro, nenhum registro compativel encontrado
+	}
+	//registerBinary=registerAssembly;
+	//return (char *)registerAssembly;
+}
+
+
 #endif

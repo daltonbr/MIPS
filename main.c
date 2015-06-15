@@ -131,12 +131,19 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 				getOpcodeBinary(inputLine);
 				ripDataBinary(opcodeBinary);
 
+				registerToAssembly(rsBinary, rsAssembly);
+				registerToAssembly(rtBinary, rtAssembly);
+				registerToAssembly(rdBinary, rdAssembly);
+				
 				printf("RS:");
 				puts(rsBinary);
+				puts(rsAssembly);
 				printf("RT:");
 				puts(rtBinary);
+				puts(rtAssembly);
 				printf("RD:");
 				puts(rdBinary);
+				puts(rdAssembly);
 				printf("Shamt:");
 				puts(shamtBinary);
 				printf("Funct:");

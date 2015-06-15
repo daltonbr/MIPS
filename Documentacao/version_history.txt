@@ -156,5 +156,12 @@
 [0.7.5] 15/06/15 - Dalton
 * Implementado void ripDataBinary(char *opcodeBinary)
 	- determina pelo OPCODE se a funcao eh R, I , J ou LABEL (111111)
-* Implementado funcao que "recorta" devidadmente os 32 bits, dados que eles possam ser R, I ou J ou LABEL 	
+* Implementado funcao que "recorta" devidadmente os 32 bits, dados que eles possam ser R, I ou J ou LABEL
+
+[0.7.6] 15/06/15 - Dalton
+* Implementado funcao void registerToAssembly(char *registerBinary, char *registerAssembly)
+	- Funcao que converte registros de Assembly para Binario, dado duas variaveis globais.
+	- Repare que a funcao eh void, e nao necessita alocar dinamicamente mais memoria
+	- Similar a funcao registerToBinary (porem a implementacao anterior usava memoria dinamica),
+	  no proximo commit iremos alterar isso.
  
