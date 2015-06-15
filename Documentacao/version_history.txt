@@ -144,3 +144,9 @@
 		
 [0.7.0] 14/06/15 - Dalton
  * Agora imprime o arquivo binario - output.txt (na pasta teste)
+ 
+[0.7.1] 14/06/15 - Dalton
+* Feita a mesma estrura de escrever arquivo para Binario -> Assembly  (no main.c)
+	- escreveremos no teste/outputAssembly.txt e teste/outputBinary.txt
+	
+ 

@@ -59,8 +59,8 @@ printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
 char instructionName[6];  // guarda um nome de instrucao. Ex: "add", "sltu". Os casos maiores sao "addiu" + terminator = 6 espacos
 
-inputFile = fopen(".\\teste\\assembly1.txt", "r");
-outputFile = fopen("./teste/output.txt", "w");
+inputFile = fopen("./teste/assembly1.txt", "r");
+outputFile = fopen("./teste/outputBinary.txt", "w");
 			// "r"	Opens a file for reading. The file must exist.
 			// "w"	Creates an empty file for writing. If a file with the same name already exists, its content is erased and the file is considered as a new empty file.
 			// "a"	Appends to a file. Writing operations, append data at the end of the file. The file is created if it does not exist.
@@ -70,54 +70,75 @@ outputFile = fopen("./teste/output.txt", "w");
 	if (!outputFile)
 	{
 		printf("\nerro ao abrir arquivo de escrita!\n");
-		// bolar um loop aqui ?	
 	}
-
-	if (!inputFile)
+	else  // arquivo de escrita aberto corretamente
 	{
-		printf("\nerro ao abrir arquivo de leitura!\n");
-	}
-	else
-	{
-		printf("\narquivo aberto com sucesso!\n");
-		while (fgets (inputLine, 129, inputFile) ) 
-		{	
-			puts (inputLine);				// inputLine contem a linha a ser trabalhada
-			strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
-						
-			ripDataAssembly(inputLine);   // extrai alguns elementos da linha (registros e immediates) e poe em variaveis globais
-					
-			strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary (ainda em variaveis globais)
-			strcpy (rtBinary, registerToBinary(rtAssembly));
-			strcpy (rdBinary, registerToBinary(rdAssembly));
-									
-			filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
-			puts(outputLine);			// imprime na tela a saida
-			fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
-			fputs("\n", outputFile);  //    \n
+		if (!inputFile)
+		{
+			printf("\nerro ao abrir arquivo de leitura!\n");
 		}
-	}	
+		else   // arquivo de leitura aberto corretamente
+		{
+			printf("\narquivo Assembly aberto com sucesso!\n");
+			while (fgets (inputLine, 129, inputFile) ) 
+			{	
+				puts (inputLine);				// inputLine contem a linha a ser trabalhada
+				strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
+							
+				ripDataAssembly(inputLine);   // extrai alguns elementos da linha (registros e immediates) e poe em variaveis globais
+						
+				strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary (ainda em variaveis globais)
+				strcpy (rtBinary, registerToBinary(rtAssembly));
+				strcpy (rdBinary, registerToBinary(rdAssembly));
+										
+				filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
+				puts(outputLine);			// imprime na tela a saida
+				fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
+				fputs("\n", outputFile);  //    \n
+			}
+		}	
+	}
 	
 fclose(inputFile);
 fclose(outputFile);
 
-/*
-file = fopen(".\\teste\\binary1.txt", "r");
-	if (!file)
+// ### aqui termina a conversar Ass -> Bin e comeca a contraria
+
+inputLine[0] = '\0';  // zera a sujeira anterior
+outputLine[0] = '\0';
+
+inputFile = fopen("./teste/binary1.txt", "r");
+outputFile = fopen("./teste/outputAssembly.txt", "w");
+			
+	if (!outputFile)
 	{
-		printf("\nerro ao abrir arquivo!\n");
+		printf("\nerro ao abrir arquivo de escrita!\n");	
 	}
-	else
+	else  // arquivo de escrita aberto corretamente
 	{
-		printf("\narquivo aberto com sucesso!\n");
-		while (fgets (inputLine, 129, file) ) 
+		if (!inputFile)
 		{
-			puts (inputLine);
+			printf("\nerro ao abrir arquivo de leitura!\n");
+		}
+		else   // arquivo de leitura aberto corretamente
+		{
+			printf("\narquivo Binario aberto com sucesso!\n");
+			while (fgets (inputLine, 129, inputFile) ) 
+			{
+				puts (inputLine);			// inputLine contem a linha a ser trabalhada
+						
+				// ripDataBinary(inputLine);   // extrai elementos da linha (registros e immediates) e poe em variaveis globais
+																			
+				puts(outputLine);			// imprime na tela a saida
+				//fputs(inputLine, outputFile);  // imprime a linha no arquivo de saida
+				//fputs("\n", outputFile);  //    \n  pula linha se precisar
+				
+			}
 		}
 	}
 	
-fclose(file);
-*/
+fclose(inputFile);
+fclose(outputFile);
 
 return 0;
 }
