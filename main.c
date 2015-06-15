@@ -125,19 +125,28 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 			printf("\narquivo Binario aberto com sucesso!\n");
 			while (fgets (inputLine, 129, inputFile) ) 
 			{
+				printf("\nLinha Binaria:");
 				puts (inputLine);			// inputLine contem a linha a ser trabalhada
 				
 				getOpcodeBinary(inputLine);
-				puts(opcodeBinary);
+				ripDataBinary(opcodeBinary);
+
+				printf("RS:");
+				puts(rsBinary);
+				printf("RT:");
+				puts(rtBinary);
+				printf("RD:");
+				puts(rdBinary);
+				printf("Shamt:");
+				puts(shamtBinary);
+				printf("Funct:");
+				puts(functBinary);
+				printf("immed:");
+				puts(immediateBinary);
+				printf("Address:");
+				puts(addressBinary);
 				
-				//strcpy (instructionName, getOpcodeBinary(inputLine) );  //extrai o opcode
-				
-						
-				// ripDataBinary(inputLine);   // extrai elementos da linha (registros e immediates) e poe em variaveis globais
-																			
-				puts(outputLine);			// imprime na tela a saida
-				
-				
+				//puts(outputLine);			// imprime na tela a saida
 				//fputs(inputLine, outputFile);  // imprime a linha no arquivo de saida
 				//fputs("\n", outputFile);  //    \n  pula linha se precisar
 				

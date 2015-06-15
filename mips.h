@@ -74,7 +74,10 @@ jal = J000011 		// 3
 void charTo16Bits (char *charInput, char *charOutput);
 void charTo16BitsU (char *charInput, char *charOutput);
 void charTo5BitsU (char *charInput, char *charOutput);
-
+void ripBinaryLabel();
+void ripBinaryR();
+void ripBinaryI();
+void ripBinaryJ();
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -722,4 +725,45 @@ void getOpcodeBinary (char *inputLine)
 	strncpy (opcodeBinary, inputLine, 6);
 	opcodeBinary[6] = '\0';
 }
+
+void ripDataBinary(char *opcodeBinary)
+{
+	if (!(strcmp(opcodeBinary,"000000"))){  // R
+		ripBinaryR();
+	} else if ( (!(strcmp(opcodeBinary,"000010"))) || (!(strcmp(opcodeBinary,"000011"))) ){  // J
+		ripBinaryJ();
+	} else if (!(strcmp(opcodeBinary,"111111"))) { // LABEL ?
+		ripBinaryLabel();
+	} else {  // I
+		ripBinaryI();
+	}	
+}
+
+void ripBinaryR()
+{
+	strncpy(rsBinary, inputLine+6, 5);
+	strncpy(rtBinary, inputLine+11, 5);
+	strncpy(rdBinary, inputLine+16, 5);
+	strncpy(shamtBinary, inputLine+21, 5);
+	strncpy(functBinary, inputLine+26, 6);
+}
+
+void ripBinaryJ()
+{
+	strncpy(addressBinary, inputLine+6, 26);
+}
+
+void ripBinaryI()
+{
+	strncpy(rsBinary, inputLine+6, 5);
+	strncpy(rtBinary, inputLine+11, 5);
+	strncpy(immediateBinary, inputLine+16, 16);
+}
+
+void ripBinaryLabel()
+{
+	printf("\nLABEL NOS BINARIOS\n");
+	//strncpy(addressBinary, inputLine+6, 26);
+}
+
 #endif
