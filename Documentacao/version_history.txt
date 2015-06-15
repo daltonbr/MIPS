@@ -108,3 +108,36 @@
 	- addToBinary(), addiToBinary(), addiuToBinary() e andToBinary()
 * As funcoes conseguem montar a linha e imprimir a linha convertida na tela
 * Enxugada no main.c
+
+[0.6.0] 14/06/15 - Dalton
+* filterInstruction () finalizado com todas as funcoes a seguir (todas void):
+		addToBinary();
+		addiToBinary();
+		addiuToBinary();
+		andToBinary();
+		andToBinary();
+		andiToBinary();
+		beqToBinary();
+		bneToBinary();
+		jToBinary();
+		jalToBinary();
+		jrToBinary();
+		lbuToBinary();
+		lhuToBinary();
+		llToBinary();
+		luiToBinary();
+		andToBinary();
+		norToBinary();
+		orToBinary();
+		oriToBinary();
+		sltToBinary();
+		sltiToBinary();
+		sltiuToBinary();
+		sltuToBinary();		
+		sllToBinary();
+		srlToBinary();
+		sbToBinary();
+		scToBinary();
+		shToBinary();
+		subToBinary();
+		subuToBinary();	

@@ -218,13 +218,202 @@ void addiuToBinary()  // IU
 	concatenateIU(outputLine);   // "empacota" a linha
 }
 
-// faltando addu  // R
+void adduToBinary() // R   -- revisar
+{
+	strcpy (functBinary,"100001");	// fixo para o addu
+	concatenateR(outputLine);   // "empacota" a linha
+}
 
 void andToBinary() //  R
 {
 	strcpy (functBinary,"100100");
 	concatenateR(outputLine);   // "empacota" a linha
 }
+
+void andiToBinary() // I
+{
+	strcpy (opcodeBinary,"001100");
+	concatenateI(outputLine);   // "empacota" a linha
+}
+		
+void beqToBinary() // I
+{
+	strcpy (opcodeBinary,"000100");
+	concatenateI(outputLine);   // "empacota" a linha
+}
+
+void bneToBinary() // I
+{
+	strcpy (opcodeBinary,"000101");
+	concatenateI(outputLine);   // "empacota" a linha
+}
+
+void jToBinary()  // J  -atencao
+{
+	strcpy (opcodeBinary,"000010");
+	concatenateJ(outputLine);   // "empacota" a linha
+}
+
+void jalToBinary()  // J   -atencao
+{
+	strcpy (opcodeBinary,"000011");
+	concatenateJ(outputLine);   // "empacota" a linha
+}
+
+void jrToBinary()   // R   --- provavelmente? zerar todo o resto!
+{					//  usar rs, rt ou rd ???
+	strcpy (functBinary,"001000");	
+	strcpy (opcodeBinary,"000000");	 	// fixo para R
+	strcpy (shamtBinary,"00000"); 		// fixo para R
+	
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, rsBinary);  //primeiro que extrai
+	strcat (outputLine, "00000");   //rt
+	strcat (outputLine, "00000");   //rd
+	strcat (outputLine, shamtBinary);
+	strcat (outputLine, functBinary);
+	
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
+void lbuToBinary() // I
+{
+	strcpy (opcodeBinary,"100100");
+	concatenateIU(outputLine);   // "empacota" a linha	
+}
+
+void lhuToBinary() // I  Unsigned
+{
+	strcpy (opcodeBinary,"100101");
+	concatenateIU(outputLine);   // "empacota" a linha	
+}
+
+void llToBinary() // I
+{
+	strcpy (opcodeBinary,"110000");
+	concatenateI(outputLine);   // "empacota" a linha	
+}
+
+void luiToBinary() // I  C2?  Load Upper Immed  - nao eh Unsigned
+{
+	strcpy (opcodeBinary,"001111");
+	concatenateI(outputLine);   // "empacota" a linha	
+}
+
+void lwToBinary() // I
+{
+	strcpy (opcodeBinary,"100011");
+	concatenateI(outputLine);   // "empacota" a linha	
+}
+
+void norToBinary()   // R
+{
+	strcpy (functBinary,"100111");	
+	concatenateR(outputLine);   // "empacota" a linha
+}	
+
+void orToBinary()   // R
+{
+	strcpy (functBinary,"100101");	
+	concatenateR(outputLine);   // "empacota" a linha
+}	
+
+void oriToBinary() // I
+{
+	strcpy (opcodeBinary,"001101");
+	concatenateI(outputLine);   // "empacota" a linha	
+}		
+
+void sltToBinary() // R
+{
+	strcpy (functBinary,"101010");	
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
+void sltiToBinary() // I
+{
+	strcpy (opcodeBinary,"001010");	
+	concatenateI(outputLine);   // "empacota" a linha
+}
+
+void sltiuToBinary() // I
+{
+	strcpy (opcodeBinary,"001011");	
+	concatenateIU(outputLine);   // "empacota" a linha
+}
+
+void sltuToBinary() // R   e U how???
+{
+	strcpy (functBinary,"101011");	
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
+void sllToBinary() // R    -- atencao tem shamt
+{
+	strcpy (opcodeBinary,"000000");
+	strcpy (functBinary,"000000");	
+	charTo5BitsU (immediateAssembly, shamtBinary ); //escreve no shamt
+	
+	strcpy (outputLine, opcodeBinary);  // concatena avulso por causa do shamt
+	strcat (outputLine, rsBinary);
+	strcat (outputLine, rtBinary);
+	strcat (outputLine, rdBinary);
+	strcat (outputLine, shamtBinary);
+	strcat (outputLine, functBinary);
+}
+
+void srlToBinary() // R   -- atencao tem shamt
+{
+	strcpy (opcodeBinary,"000000");
+	strcpy (functBinary,"000010");	
+	charTo5BitsU (immediateAssembly, shamtBinary ); //escreve no shamt
+	
+	strcpy (outputLine, opcodeBinary);  // concatena avulso por causa do shamt
+	strcat (outputLine, rsBinary);
+	strcat (outputLine, rtBinary);
+	strcat (outputLine, rdBinary);
+	strcat (outputLine, shamtBinary);
+	strcat (outputLine, functBinary);
+}
+
+void sbToBinary() // I
+{
+	strcpy (opcodeBinary,"101000");	
+	concatenateI(outputLine);   // "empacota" a linha
+}		
+
+void scToBinary() // I
+{
+	strcpy (opcodeBinary,"111000");	
+	concatenateI(outputLine);   // "empacota" a linha
+}		
+
+void shToBinary() // I
+{
+	strcpy (opcodeBinary,"101001");	
+	concatenateI(outputLine);   // "empacota" a linha
+}			
+
+void swToBinary() // I
+{
+	strcpy (opcodeBinary,"101011");	
+	concatenateI(outputLine);   // "empacota" a linha
+}	
+
+void subToBinary() // R
+{
+	strcpy (functBinary,"100010");	
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
+void subuToBinary() // R  --- atencao funcao R! mas eh U?
+{
+	strcpy (functBinary,"100011");	
+	concatenateR(outputLine);   // "empacota" a linha
+}
+
+// ##################
+
 
 void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registros
 										// precisaremos caso especial pra J e JAL ?
@@ -467,6 +656,58 @@ void filterInstruction(char *instruction)
 		addiuToBinary();	
 	} else if (!(strcmp(instruction,"and"))){
 		andToBinary();
+	} else if (!(strcmp(instruction,"andi"))){
+		andiToBinary();
+	} else if (!(strcmp(instruction,"beq"))){  // label?
+		beqToBinary();
+	} else if (!(strcmp(instruction,"bne"))){  // label?
+		bneToBinary();
+	} else if (!(strcmp(instruction,"j"))){    // J
+		jToBinary();
+	} else if (!(strcmp(instruction,"jal"))){   // J
+		jalToBinary();
+	} else if (!(strcmp(instruction,"jr"))){   // R
+		jrToBinary();
+	} else if (!(strcmp(instruction,"lbu"))){
+		lbuToBinary();
+	} else if (!(strcmp(instruction,"lhu"))){
+		lhuToBinary();
+	} else if (!(strcmp(instruction,"ll"))){
+		llToBinary();
+	} else if (!(strcmp(instruction,"lui"))){
+		luiToBinary();
+	} else if (!(strcmp(instruction,"lw"))){
+		andToBinary();
+	} else if (!(strcmp(instruction,"nor"))){
+		norToBinary();
+	} else if (!(strcmp(instruction,"or"))){
+		orToBinary();
+	} else if (!(strcmp(instruction,"ori"))){
+		oriToBinary();
+	} else if (!(strcmp(instruction,"slt"))){
+		sltToBinary();
+	} else if (!(strcmp(instruction,"slti"))){
+		sltiToBinary();
+	} else if (!(strcmp(instruction,"sltiu"))){
+		sltiuToBinary();
+	} else if (!(strcmp(instruction,"sltu"))){
+		sltuToBinary();		
+	} else if (!(strcmp(instruction,"sll"))){
+		sllToBinary();
+	} else if (!(strcmp(instruction,"srl"))){
+		srlToBinary();
+	} else if (!(strcmp(instruction,"sb"))){
+		sbToBinary();
+	} else if (!(strcmp(instruction,"sc"))){
+		scToBinary();
+	} else if (!(strcmp(instruction,"sh"))){
+		shToBinary();
+	} else if (!(strcmp(instruction,"sw"))){		
+		swToBinary();
+	} else if (!(strcmp(instruction,"sub"))){
+		subToBinary();
+	} else if (!(strcmp(instruction,"subu"))){
+		subuToBinary();	
 	}
 	else {
 		printf("\nERRO! - Funcao nao existente!\n");  //caso de Erro, funcao nao encontrada
