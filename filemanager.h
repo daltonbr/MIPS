@@ -13,6 +13,7 @@ w+ - open for reading and writing (overwrite file)
 a+ - open for reading and writing (append if file exists)
 */
 
+
 //imprime um pointeiro na tela de char, dado o tamanho - usado para Debug
 void printPointer(char *string, int length)
 {

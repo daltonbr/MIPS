@@ -17,7 +17,7 @@ extern char functBinary[7];
 extern char immediateBinary[17];   // exclusive type I
 extern char addressBinary[27]; 	// exclusive type J
 
-extern char functionAssembly[6];     // G Var for Assembly
+extern char instructionAssembly[6];     // G Var for Assembly
 extern char rsAssembly[4];
 extern char rtAssembly[4];
 extern char rdAssembly[4];
@@ -78,6 +78,10 @@ void ripBinaryLabel();
 void ripBinaryR();
 void ripBinaryI();
 void ripBinaryJ();
+
+// # funcoes Assembly -> Binary
+void registerToAssembly(char *registerBinary, char *registerAssembly);
+void instructionR ();
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -741,23 +745,31 @@ void ripDataBinary(char *opcodeBinary)
 
 void ripBinaryR()
 {
-	strncpy(rsBinary, inputLine+6, 5);
+	strncpy(rsBinary, inputLine+6, 5);  // faz o split de acordo com a funcao R
 	strncpy(rtBinary, inputLine+11, 5);
 	strncpy(rdBinary, inputLine+16, 5);
 	strncpy(shamtBinary, inputLine+21, 5);
 	strncpy(functBinary, inputLine+26, 6);
+	
+	registerToAssembly(rsBinary, rsAssembly);  // converte os registros
+	registerToAssembly(rtBinary, rtAssembly);
+	registerToAssembly(rdBinary, rdAssembly);
+	instructionR ();  // escreve o funct na global
 }
 
 void ripBinaryJ()
 {
-	strncpy(addressBinary, inputLine+6, 26);
+	strncpy(addressBinary, inputLine+6, 26);   // faz o split de acordo com a funcao J
 }
 
 void ripBinaryI()
 {
-	strncpy(rsBinary, inputLine+6, 5);
+	strncpy(rsBinary, inputLine+6, 5);   // faz o split de acordo com a funcao I
 	strncpy(rtBinary, inputLine+11, 5);
 	strncpy(immediateBinary, inputLine+16, 16);
+	
+	registerToAssembly(rsBinary, rsAssembly);  // converte os registros
+	registerToAssembly(rtBinary, rtAssembly);
 }
 
 void ripBinaryLabel()
@@ -769,9 +781,6 @@ void ripBinaryLabel()
 // funcao que converte um registro binario em assembly
 void registerToAssembly(char *registerBinary, char *registerAssembly)
 {
-	// static char *registerBinary;
-	// registerBinary = (char *)malloc(6); // tamanho maximo do nome das funcoes, incluindo terminator
-	
 	if (!(strcmp(registerBinary,"00000"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
 		strcpy(registerAssembly,"$zero");
 	} else if (!(strcmp(registerBinary,"00001"))) {   	// 1 	Assemble temporary
@@ -836,12 +845,40 @@ void registerToAssembly(char *registerBinary, char *registerAssembly)
 		strcpy(registerAssembly,"$fp");
 	} else if (!(strcmp(registerBinary,"11111"))) {
 		strcpy(registerAssembly,"$ra");					
-	}
-	else {
+	} else {
 		strcpy(registerAssembly ,"$xx");    //caso de Erro, nenhum registro compativel encontrado
 	}
-	//registerBinary=registerAssembly;
-	//return (char *)registerAssembly;
+}
+
+void instructionR ()
+{
+	if (!(strcmp(functBinary,"100000"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
+		strcpy(instructionAssembly,"add");
+	} else if (!(strcmp(functBinary,"100001"))){  		 
+		strcpy(instructionAssembly,"addu");
+	} else if (!(strcmp(functBinary,"100100"))){
+		strcpy(instructionAssembly,"and");
+	} else if (!(strcmp(functBinary,"001000"))){
+		strcpy(instructionAssembly,"jr");
+	} else if (!(strcmp(functBinary,"100111"))){
+		strcpy(instructionAssembly,"nor");			
+	} else if (!(strcmp(functBinary,"100101"))){
+		strcpy(instructionAssembly,"or");
+	} else if (!(strcmp(functBinary,"101010"))){
+		strcpy(instructionAssembly,"slt");
+	} else if (!(strcmp(functBinary,"101011"))){
+		strcpy(instructionAssembly,"sltu");
+	} else if (!(strcmp(functBinary,"000000"))){
+		strcpy(instructionAssembly,"sll");
+	} else if (!(strcmp(functBinary,"000010"))){
+		strcpy(instructionAssembly,"srl");
+	} else if (!(strcmp(functBinary,"100010"))){
+		strcpy(instructionAssembly,"sub");
+	} else if (!(strcmp(functBinary,"100011"))){
+		strcpy(instructionAssembly,"subu");
+	} else {
+		strcpy(instructionAssembly ,"Rxxxx");    //caso de Erro, nenhum instruction compativel encontrado
+	}	
 }
 
 

@@ -31,7 +31,7 @@ char functBinary[7];
 char immediateBinary[17];   // exclusive type I
 char addressBinary[27]; 	// exclusive type J
 
-char functionAssembly[6];     // G Var for Assembly
+char instructionAssembly[6];     // G Var for Assembly
 char rsAssembly[4];
 char rtAssembly[4];
 char rdAssembly[4];
@@ -130,11 +130,7 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 				
 				getOpcodeBinary(inputLine);
 				ripDataBinary(opcodeBinary);
-
-				registerToAssembly(rsBinary, rsAssembly);
-				registerToAssembly(rtBinary, rtAssembly);
-				registerToAssembly(rdBinary, rdAssembly);
-				
+			
 				printf("RS:");
 				puts(rsBinary);
 				puts(rsAssembly);
@@ -152,6 +148,8 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 				puts(immediateBinary);
 				printf("Address:");
 				puts(addressBinary);
+				printf("Instruction R:");
+				puts(instructionAssembly);
 				
 				//puts(outputLine);			// imprime na tela a saida
 				//fputs(inputLine, outputFile);  // imprime a linha no arquivo de saida

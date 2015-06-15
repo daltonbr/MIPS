@@ -163,5 +163,9 @@
 	- Funcao que converte registros de Assembly para Binario, dado duas variaveis globais.
 	- Repare que a funcao eh void, e nao necessita alocar dinamicamente mais memoria
 	- Similar a funcao registerToBinary (porem a implementacao anterior usava memoria dinamica),
-	  no proximo commit iremos alterar isso.
- 
+	   
+ [0.7.7] 15/06/15 - Dalton 
+* Impementado funcao ripBinaryI(),ripBinaryJ(),  ripBinaryR(), ripBinaryLabel()
+ 	- Basicamente elas "recortam" as words binarias de acordo com o tipo
+* Implementado void registerToAssembly() 
+	- funcionando parcialmente, a partir do funct da todas as instrucoes R em Assembly	     
