@@ -151,9 +151,9 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 				printf("Instruction R:");
 				puts(instructionAssembly);
 				
-				//puts(outputLine);			// imprime na tela a saida
-				//fputs(inputLine, outputFile);  // imprime a linha no arquivo de saida
-				//fputs("\n", outputFile);  //    \n  pula linha se precisar
+				puts(outputLine);			// imprime na tela a saida
+				fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
+				fputs("\n", outputFile);  //    \n  pula linha se precisar
 				
 			}
 		}

@@ -172,4 +172,8 @@
 
 [0.7.8] 15/06/15 - Dalton 
 * Impementado funcao void instructionI (), void instructionJ ()
-      
+
+[0.8.0] 15/06/15 - Dalton
+* Implementado demais funcoes de concatenar linhas: void concatenateRBinary()
+	- R, I e J
+* montando linhas Binarias e escrevendo no arquivo teste/outputAssembly.txt      

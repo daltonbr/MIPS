@@ -84,6 +84,9 @@ void registerToAssembly(char *registerBinary, char *registerAssembly);
 void instructionR ();
 void instructionI ();
 void instructionJ ();
+void concatenateRBinary();
+void concatenateIBinary();
+void concatenateJBinary(); 
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -883,6 +886,7 @@ void instructionR ()
 	} else {
 		strcpy(instructionAssembly ,"Rxxxx");    //caso de Erro, nenhum instruction compativel encontrado
 	}	
+	concatenateRBinary(); // monta a linha
 }
 
 void instructionJ ()
@@ -894,6 +898,8 @@ void instructionJ ()
 	} else {
 		strcpy(instructionAssembly ,"Jxxxx");    //caso de Erro, nenhum instruction compativel encontrado
 	}	
+	concatenateJBinary(); // monta a linha
+	
 }
 
 void instructionI ()
@@ -935,6 +941,46 @@ void instructionI ()
 	} else {
 		strcpy(instructionAssembly ,"Ixxxx");    //caso de Erro, nenhum instruction compativel encontrado
 	}	
+	concatenateIBinary(); // monta a linha
+}
+
+void concatenateRBinary()  //generates R type line Binary
+{
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
+	strcat (outputLine, rtAssembly);
+	strcat (outputLine, ",");
+	strcat (outputLine, rdAssembly);
+	strcat (outputLine, ",");
+	strcat (outputLine, rsAssembly);
+}
+
+void concatenateIBinary()	//generates I type line Binary
+{
+	//charTo16Bits (immediateAssembly, immediateBinary );
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
+	strcat (outputLine, rtAssembly);  //rs na verdade
+	strcat (outputLine, ",");
+	strcat (outputLine, rdAssembly);  //rt na verdade
+	strcat (outputLine, ",");
+	strcat (outputLine, immediateAssembly);  //necessita converter
+}
+
+//void concatenateIUBinary()	//generates I type line Binary
+//{
+//	charTo16BitsU (immediateAssembly, immediateBinary );
+//	strcpy (outputLine, instructionAssembly);
+//	strcat (outputLine, rtAssembly);  //rs na verdade
+//	strcat (outputLine, rdAssembly);  //rt na verdade
+//	strcat (outputLine, immediateAssembly);
+//}
+
+void concatenateJBinary()	//generates J type line Binary
+{
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
+	strcat (outputLine, addressAssembly);
 }
 
 #endif
