@@ -48,7 +48,7 @@ void printPointer(char *string, int length);
 int main () 
 {
 	unsigned long totalLines = 0;
-	FILE *file;
+	FILE *inputFile, *outputFile;
 	
 	printf("MIPS Parser!\n" );
 
@@ -59,15 +59,28 @@ printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
 char instructionName[6];  // guarda um nome de instrucao. Ex: "add", "sltu". Os casos maiores sao "addiu" + terminator = 6 espacos
 
-file = fopen(".\\teste\\assembly1.txt", "r");
-	if (!file)
+inputFile = fopen(".\\teste\\assembly1.txt", "r");
+outputFile = fopen("./teste/output.txt", "w");
+			// "r"	Opens a file for reading. The file must exist.
+			// "w"	Creates an empty file for writing. If a file with the same name already exists, its content is erased and the file is considered as a new empty file.
+			// "a"	Appends to a file. Writing operations, append data at the end of the file. The file is created if it does not exist.
+			// "r+"	Opens a file to update both reading and writing. The file must exist.
+			// "w+"	Creates an empty file for both reading and writing.
+			// "a+"	Opens a file for reading and appending.
+	if (!outputFile)
 	{
-		printf("\nerro ao abrir arquivo!\n");
+		printf("\nerro ao abrir arquivo de escrita!\n");
+		// bolar um loop aqui ?	
+	}
+
+	if (!inputFile)
+	{
+		printf("\nerro ao abrir arquivo de leitura!\n");
 	}
 	else
 	{
 		printf("\narquivo aberto com sucesso!\n");
-		while (fgets (inputLine, 129, file) ) 
+		while (fgets (inputLine, 129, inputFile) ) 
 		{	
 			puts (inputLine);				// inputLine contem a linha a ser trabalhada
 			strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
@@ -80,10 +93,13 @@ file = fopen(".\\teste\\assembly1.txt", "r");
 									
 			filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
 			puts(outputLine);			// imprime na tela a saida
+			fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
+			fputs("\n", outputFile);  //    \n
 		}
 	}	
 	
-fclose(file);
+fclose(inputFile);
+fclose(outputFile);
 
 /*
 file = fopen(".\\teste\\binary1.txt", "r");

@@ -141,3 +141,6 @@
 		shToBinary();
 		subToBinary();
 		subuToBinary();	
+		
+[0.7.0] 14/06/15 - Dalton
+ * Agora imprime o arquivo binario - output.txt (na pasta teste)
