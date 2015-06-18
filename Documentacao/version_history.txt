@@ -176,4 +176,9 @@
 [0.8.0] 15/06/15 - Dalton
 * Implementado demais funcoes de concatenar linhas: void concatenateRBinary()
 	- R, I e J
-* montando linhas Binarias e escrevendo no arquivo teste/outputAssembly.txt      
+* montando linhas Binarias e escrevendo no arquivo teste/outputAssembly.txt   
+
+[0.8.1] 18/06/15 - victor
+* Adicionada a função: Binary16ToChar();
+	-Convertendo uma string binário (com complemento de 2) e passando para uma string em inteiro
+	-OBS: não são necessárias até o momento funções 'binary -> int' unsigned, pois a função strtol() faz essa conversão tranquilamente      

@@ -657,6 +657,58 @@ void charTo16Bits (char *charInput, char *charOutput)
 	}
 }
 
+//recebe duas strings por referencia, sendo a primeiro uma string em binário 16bits
+//segunda("a saída") em uma string representando inteiro
+//OBS: somente é necessário a função em complemento de 2, pois para as unsigned a conversão é feita por strtol(string,string,base int);
+void Binary16ToChar(char *charInput, char *charOutput)
+{
+	int i,aux=0,n=0;
+	if(charInput[0]=='0') // o ultimo bit, em complemento de 2, é reservado para a representação de sinal, entao se ele for '0' significa que o numero é positivo
+	{
+		strtol(charInput,charOutput,10); // função que converte binary, em uma string, para um decimal em outra string
+	}else if(charInput[0]=='1') // tratamento para numeros negativo
+	{
+		i=15;
+		aux=0;
+		while(aux==0 && i!=0)
+		{
+			if(charInput[i]=='0')
+			{
+				charInput[i]='1';					// Subtrai 1
+			}else if(charInput[i]=='1')   												
+			{
+				charInput[i]='0';
+				aux=1;    // a subtração de 1 de binários vai até quando 1-1 que o resuldado da 0 e acaba
+			}
+			i--;
+		}		
+		for(i=0;i<16;i++)
+		{
+			if(charInput[i]=='0')
+			{
+				charInput[i]='1';
+			}else if(charInput[i]=='1')				//inverte para binário positivo
+			{
+				charInput[i]='0';
+			}
+		}
+		aux=0;		
+		for(i=15;i>=0;i--)  // roda o vetor decrescentemente
+		{
+            if(charInput[i]=='0')
+            {
+                n+=0*(2^aux);
+            }else if(charInput[i]=='1')     // passa para inteiro;
+            {
+                n+=pow(2,aux);
+            }
+			aux++;
+		}
+		n=n*(-1);           //inverte o numero inteiro para negativo novamente
+		itoa(n,charOutput,10); // converte o inteiro negativo em string
+	}
+}
+
 
 void filterInstruction(char *instruction)
 {
