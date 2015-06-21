@@ -225,4 +225,7 @@
 
 [0.10.4] 21/06/15 - Dalton
 * BugFix - O registrador $zero nao era lido, pois era o unico que tinha 5 caracteres
+
+[0.10.4] 21/06/15 - Lucas
+* Incluído relatório ainda não terminado
 	
