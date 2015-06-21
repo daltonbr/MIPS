@@ -1,0 +1,4 @@
+sll $s1,$s2,$s0
+sub $t1,$t2,$t0
+addi $s1,$t2,Ðcü
+addi $s1,$t2,46416

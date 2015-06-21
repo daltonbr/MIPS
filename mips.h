@@ -98,6 +98,9 @@ void concatenateIBinary();
 void concatenateILabel(char *outputLine);	//generates I type line
 void concatenateJBinary(); 
 
+// cabecalho
+unsigned long countLine ();
+
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
 {
@@ -138,46 +141,37 @@ void fillJumpAdressTable(){
     unsigned long numberOfLines = countLine();
     FILE *file;
     
-    file = fopen("./teste/assembly2.txt", "r");
+    file = fopen("./teste/assembly1.txt", "r");
     
     if (file == NULL){
         printf( "\nNao pode abrir o arquivo!\n" );
     }
     else{
-        char ch;
-        while(lineCounter <= numberOfLines){
-            i = 0;
-            do{
-                ch = fgetc(file);
-                if(ch != '\n' && ch != EOF){
-                    line[i] = ch;
-                    i++;
-                }
-                else{
-                    line[i] = '\0';
-                }
-            }while(ch != '\n' && ch != EOF);
-            if(isLabel(line)){
-                i = 0;
-                do{
-                    ch = line[i];
-                    if(ch != ':'){
-                        label[i] = ch;
-                        i++;
-                    }
-                    else{
-                        label[i] = '\0';
-                    }
-                }while(ch != ':');
-                strcpy(JumpAdressTable[jumpTableCounter].label, label);
-                JumpAdressTable[jumpTableCounter].line = lineCounter;
-                jumpTableCounter++;
+		while ( fgets (line, 129, file)  ) // le a linha inteira, uma por vez ate o fim do arquivo
+		{
+			// printf( "\nteste linha table: " );
+			// puts (line);
+	        char ch;	   
+	        if(isLabel(line)){
+	                i = 0;
+	                do{
+	                    ch = line[i];
+	                    if(ch != ':'){
+	                        label[i] = ch;
+	                        i++;
+	                    }
+	                    else{
+	                        label[i] = '\0';
+	                    }
+	                }while(ch != ':');
+	                strcpy(JumpAdressTable[jumpTableCounter].label, label);
+	                JumpAdressTable[jumpTableCounter].line = lineCounter;
+	                jumpTableCounter++;
             }
             lineCounter++;
             i = 0;
-        }
-    }
-    
+		}
+	}
     fclose(file);
 }
 
@@ -276,11 +270,16 @@ void concatenateI(char *outputLine)	//generates I type line
 
 void concatenateILabel(char *outputLine)	//generates I type line
 {
+	int offsetLabel;
 	strcpy (outputLine, opcodeBinary);
 	strcat (outputLine, rtBinary);  //rs na verdade
 	strcat (outputLine, rdBinary);  //rt na verdade
-	strcat (outputLine, labelAssembly);  // converte Label
-	//strcat (outputLine, labelBinary);  // converte Label
+	//strcat (outputLine, labelAssembly);  // converte Label
+	puts(labelAssembly);
+	offsetLabel = searchLabel(labelAssembly);
+	printf("@%d@", offsetLabel);
+	sprintf(addressBinary , "%d" , offsetLabel );	
+	strcat (outputLine, addressBinary);  // converte Label
 }
 
 void concatenateIU(char *outputLine)	//generates I type line
@@ -590,7 +589,7 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 			} while (isNum);    //sai do loop qdo encontra um "nao numerico"
 			tamanho = tamanho - offset;		 // faz a diferenca pra saber o tamanho do immediate
 			strncpy(immediate,(myLine + offset),tamanho);		//copia do immediate
-			label[tamanho] = '\0';
+			immediate[tamanho] = '\0';
 	}
 	
 	
@@ -609,13 +608,13 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 					offset++;
 					tamanho = offset;   //offset guarda a posicao do primeiro caracter a ser copiado
 					
-					while (ch != '\0' )    //ate o fim da linha
+					do 				   //ate o fim da linha
 					{						//verifica onde termina o label   
 						tamanho++;
 						ch = myLine[tamanho];
-					} 
+					} while ( ch != '\0' );  
 					
-					tamanho = tamanho - offset;		 // faz a diferenca pra saber o tamanho do immediate
+					tamanho = tamanho - offset-1;		 // faz a diferenca pra saber o tamanho do immediate
 					strncpy(label,(myLine + offset),tamanho);		//copia do immediate
 					label[tamanho] = '\0';
 				}

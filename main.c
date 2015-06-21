@@ -50,9 +50,13 @@ void printPointer(char *string, int length);
 
 int main () 
 {
+	fillJumpAdressTable();   // varre o arquivo de entrada em busca de Labels e cria uma tabela
+	puts(JumpAdressTable[0].label);
+	puts(JumpAdressTable[1].label);
+	
 	unsigned long totalLines = 0;
 	FILE *inputFile, *outputFile;
-	
+		
 	printf("MIPS Parser!\n" );
 
 //conta linha do binary1.txt
@@ -105,8 +109,6 @@ outputFile = fopen("./teste/outputBinary.txt", "w");
 					fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
 					fputs("\n", outputFile);  //    \n
 				}
-				
-				
 			}
 		}	
 	}
