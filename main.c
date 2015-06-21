@@ -41,12 +41,11 @@ char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 //char functAssembly[6];
 
 char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
-char addressAssembly[26]; 	// definimos address com 
+char addressAssembly[27]; 	// definimos address com 
 char labelAssembly[20];    // label para funcoes bne e beq
 int pcAssembly = 0;         // Program Counter Assembly (numero da linha lida)
 
 // fim da declaracao de Global Variables
-
 void printPointer(char *string, int length);
 
 int main () 

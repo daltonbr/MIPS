@@ -32,7 +32,7 @@ extern char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 //extern char functAssembly[6];
 
 extern char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
-extern char addressAssembly[26]; 	// definimos address com
+extern char addressAssembly[27]; 	// definimos address com
 extern char labelAssembly[20];    // label para funcoes bne e beq
 extern int pcAssembly;         // Program Counter Assembly (numero da linha lida)
 
@@ -83,12 +83,15 @@ jal = J000011 		// 3
 void charTo16Bits (char *charInput, char *charOutput);
 void charTo16BitsU (char *charInput, char *charOutput);
 void charTo5BitsU (char *charInput, char *charOutput);
+void charTo26BitsU (char *charInput, char *charOutput); // usada nas funcoes J  //ou nao?
 void ripBinaryLabel();
 void ripBinaryR();
 void ripBinaryI();
 void ripBinaryJ();
-void Binary16ToChar(char *charInput, char *charOutput);  // converte binarios em decimal char C2
-void Binary16ToCharU(char *charInput, char *charOutput); // converte binarios em decimal char Unsigned
+void binary16ToChar(char *charInput, char *charOutput);  // converte binarios em decimal char C2
+void binary16ToCharU(char *charInput, char *charOutput); // converte binarios em decimal char Unsigned
+void binary26ToCharU(char *charInput, char *charOutput);
+
 
 // # funcoes Assembly -> Binary
 void registerToAssembly(char *registerBinary, char *registerAssembly);
@@ -782,9 +785,27 @@ void charTo16Bits (char *charInput, char *charOutput)
 	}
 }
 
+void charTo26BitsU (char *charInput, char *charOutput)
+{
+	int num = 67108865; // gambiarra pra cair fora do segundo if
+	if ( charInput[0] != '-' ) //procura numeros negativos, eles nem deveriam ser chamados
+		num=atoi(charInput);   //num receberá o char passado para int
+	
+	if( num<67108864 ) // limite do range de 26bits
+	{
+        //itoa(int ,char* ,base int);
+        itoa(num,charOutput,2);  // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+		padZero(charOutput, 26);
+	}else
+	{
+	    strcpy(charOutput,"XXXXXXXXXXXXXXXXXXXXXXXXXX");  // saida de erro
+		charOutput[26] = '\0';
+	}
+}
+
 //recebe duas strings por referencia, sendo a primeiro uma string em binário 16bits
 //segunda("a saída") em uma string representando inteiro
-void Binary16ToChar(char *charInput, char *charOutput)
+void binary16ToChar(char *charInput, char *charOutput)
 {
 	int i,aux=0;
 	char tempInput[17];
@@ -807,12 +828,25 @@ void Binary16ToChar(char *charInput, char *charOutput)
 	strcpy(immediateAssembly,charOutput);
 }
 
-void Binary16ToCharU(char *charInput, char *charOutput)
+void binary16ToCharU(char *charInput, char *charOutput)
 {
-	strtol(charInput,&charOutput,2); // função que converte binary, em uma string, para um decimal em outra string		
-	strcpy(immediateAssembly,charOutput);
+	int aux=0;
+	char tempInput[17];
+	strcpy(tempInput,charInput);
+	aux = strtol(tempInput, &charOutput, 2); // função que converte binary, em uma string, para um decimal em outra string
+	itoa ( aux, charOutput, 10 );
+	strcpy(immediateAssembly,charOutput); // corrigir logica
 }
 
+void binary26ToCharU(char *charInput, char *charOutput)
+{
+	int aux=0;
+	char tempInput[27];
+	strcpy(tempInput,charInput);
+	aux = strtol(tempInput, &charOutput, 2); // função que converte binary, em uma string, para um decimal em outra string
+	itoa ( aux, charOutput, 10 );
+	strcpy(addressAssembly,charOutput); // corrigir logica
+}
 
 void filterInstruction(char *instruction)
 {
@@ -1111,7 +1145,7 @@ void concatenateIBinary()	//generates I type line Binary
 	strcat (outputLine, ",");
 	strcat (outputLine, rdAssembly);  //rt na verdade
 	strcat (outputLine, ",");
-	Binary16ToChar(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
+	binary16ToChar(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
 	printf("teste imm: ");
 	puts(immediateAssembly);	
 	strcat (outputLine, immediateAssembly);  //necessita converter
@@ -1122,7 +1156,7 @@ void concatenateIUBinary()	//generates I type line Binary
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, rtAssembly);  //rs na verdade
 	strcat (outputLine, rdAssembly);  //rt na verdade
-	Binary16ToCharU(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
+	binary16ToCharU(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
 	strcat (outputLine, immediateAssembly);
 }
 
@@ -1130,6 +1164,10 @@ void concatenateJBinary()	//generates J type line Binary
 {
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, " ");
+	binary26ToCharU(addressBinary, addressAssembly);
+	printf("teste address: ");
+	puts(addressAssembly);
+	puts(addressBinary);
 	strcat (outputLine, addressAssembly);
 }
 

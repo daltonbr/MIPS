@@ -2,3 +2,5 @@ sll $s1,$s2,$s0
 sub $t1,$t2,$t0
 addi $s1,$t2,15
 addi $s1,$t2,-15
+j 2
+jal 5

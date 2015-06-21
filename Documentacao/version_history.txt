@@ -213,3 +213,13 @@
 [0.10.1] 21/06/15 - Dalton
 * funcoes void Binary16ToChar reformuladas, agora estao fazendo a conversao 
 	- versao Binary16ToCharU feita tb (somento o strtol nao foi suficiente)
+	
+[0.10.2] 21/06/15 - Dalton
+* Implementado void charTo26BitsU 
+	- funcoes tipo J usam essa conversao 
+
+[0.10.3] 21/06/15 - Dalton
+* Implementado void binary26ToCharU
+	- funcoes tipo J usam essa conversao 
+	- A funcao anterior talvez nao seja necessaria void charTo26BitsU 
+	
