@@ -277,8 +277,10 @@ void concatenateILabel(char *outputLine)	//generates I type line
 	//strcat (outputLine, labelAssembly);  // converte Label
 	puts(labelAssembly);
 	offsetLabel = searchLabel(labelAssembly);
-	printf("@%d@", offsetLabel);
-	sprintf(addressBinary , "%d" , offsetLabel );	
+	printf("\nlinha do label: %d - PC: %d", offsetLabel, pcAssembly);
+	offsetLabel = (offsetLabel - pcAssembly - 1);
+	sprintf(addressAssembly , "%d" , offsetLabel );	
+	charTo16Bits(addressAssembly, addressBinary);
 	strcat (outputLine, addressBinary);  // converte Label
 }
 
