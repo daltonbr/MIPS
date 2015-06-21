@@ -34,9 +34,9 @@ char immediateBinary[17];   // exclusive type I
 char addressBinary[27]; 	// exclusive type J
 
 char instructionAssembly[6];     // G Var for Assembly
-char rsAssembly[4];
-char rtAssembly[4];
-char rdAssembly[4];
+char rsAssembly[6];
+char rtAssembly[6];
+char rdAssembly[6];
 char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 //char functAssembly[6];
 
@@ -116,63 +116,63 @@ fclose(outputFile);
 
 // ### aqui termina a conversar Ass -> Bin e comeca a contraria
 
-inputLine[0] = '\0';  // zera a sujeira anterior
-outputLine[0] = '\0';
+// inputLine[0] = '\0';  // zera a sujeira anterior
+// outputLine[0] = '\0';
 
-inputFile = fopen("./teste/binary1.txt", "r");
-outputFile = fopen("./teste/outputAssembly.txt", "w");
+// inputFile = fopen("./teste/binary1.txt", "r");
+// outputFile = fopen("./teste/outputAssembly.txt", "w");
 			
-	if (!outputFile)
-	{
-		printf("\nerro ao abrir arquivo de escrita!\n");	
-	}
-	else  // arquivo de escrita aberto corretamente
-	{
-		if (!inputFile)
-		{
-			printf("\nerro ao abrir arquivo de leitura!\n");
-		}
-		else   // arquivo de leitura aberto corretamente
-		{
-			printf("\narquivo Binario aberto com sucesso!\n");
-			while (fgets (inputLine, 129, inputFile) ) 
-			{
-				printf("\nLinha Binaria:");
-				puts (inputLine);			// inputLine contem a linha a ser trabalhada
+// 	if (!outputFile)
+// 	{
+// 		printf("\nerro ao abrir arquivo de escrita!\n");	
+// 	}
+// 	else  // arquivo de escrita aberto corretamente
+// 	{
+// 		if (!inputFile)
+// 		{
+// 			printf("\nerro ao abrir arquivo de leitura!\n");
+// 		}
+// 		else   // arquivo de leitura aberto corretamente
+// 		{
+// 			printf("\narquivo Binario aberto com sucesso!\n");
+// 			while (fgets (inputLine, 129, inputFile) ) 
+// 			{
+// 				printf("\nLinha Binaria:");
+// 				puts (inputLine);			// inputLine contem a linha a ser trabalhada
 				
-				getOpcodeBinary(inputLine);
-				ripDataBinary(opcodeBinary);
+// 				getOpcodeBinary(inputLine);
+// 				ripDataBinary(opcodeBinary);
 			
-				printf("RS:");
-				puts(rsBinary);
-				puts(rsAssembly);
-				printf("RT:");
-				puts(rtBinary);
-				puts(rtAssembly);
-				printf("RD:");
-				puts(rdBinary);
-				puts(rdAssembly);
-				printf("Shamt:");
-				puts(shamtBinary);
-				printf("Funct:");
-				puts(functBinary);
-				printf("immed:");
-				puts(immediateBinary);
-				printf("Address:");
-				puts(addressBinary);
-				printf("Instruction:");
-				puts(instructionAssembly);
+// 				printf("RS:");
+// 				puts(rsBinary);
+// 				puts(rsAssembly);
+// 				printf("RT:");
+// 				puts(rtBinary);
+// 				puts(rtAssembly);
+// 				printf("RD:");
+// 				puts(rdBinary);
+// 				puts(rdAssembly);
+// 				printf("Shamt:");
+// 				puts(shamtBinary);
+// 				printf("Funct:");
+// 				puts(functBinary);
+// 				printf("immed:");
+// 				puts(immediateBinary);
+// 				printf("Address:");
+// 				puts(addressBinary);
+// 				printf("Instruction:");
+// 				puts(instructionAssembly);
 				
-				puts(outputLine);			// imprime na tela a saida
-				fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
-				fputs("\n", outputFile);  //    \n  pula linha se precisar
+// 				puts(outputLine);			// imprime na tela a saida
+// 				fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
+// 				fputs("\n", outputFile);  //    \n  pula linha se precisar
 				
-			}
-		}
-	}
+// 			}
+// 		}
+// 	}
 	
-fclose(inputFile);
-fclose(outputFile);
+// fclose(inputFile);
+// fclose(outputFile);
 
 return 0;
 }

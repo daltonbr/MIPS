@@ -222,4 +222,7 @@
 * Implementado void binary26ToCharU
 	- funcoes tipo J usam essa conversao 
 	- A funcao anterior talvez nao seja necessaria void charTo26BitsU 
+
+[0.10.4] 21/06/15 - Dalton
+* BugFix - O registrador $zero nao era lido, pois era o unico que tinha 5 caracteres
 	

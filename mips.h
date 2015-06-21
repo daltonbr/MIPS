@@ -25,9 +25,9 @@ extern char immediateBinary[17];   // exclusive type I
 extern char addressBinary[27]; 	// exclusive type J
 
 extern char instructionAssembly[6];     // G Var for Assembly
-extern char rsAssembly[4];
-extern char rtAssembly[4];
-extern char rdAssembly[4];
+extern char rsAssembly[6];
+extern char rtAssembly[6];
+extern char rdAssembly[6];
 extern char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 //extern char functAssembly[6];
 
@@ -631,6 +631,12 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 		
 	} while ( ch != '\0' );  // soh sai desse loop qdo \0 ou encontrar uma virgula seguida de um numerico
 	
+	if (!(strcmp(rs,"$ze")))
+		strcpy(rs,"$zero");
+	if (!(strcmp(rt,"$ze")))
+		strcpy(rt,"$zero");
+	if (!(strcmp(rd,"$ze")))
+		strcpy(rd,"$zero");
 	
 	// os registros ja estao extraidos, e serao passados em forma de binario 
 	strcpy ( rsAssembly, rs); //copiando variavel local pra global
