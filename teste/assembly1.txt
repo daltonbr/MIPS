@@ -1,5 +1,7 @@
 add $s0,$s1,$s2
 addi $s0,$s1,15
+loop:
 addi $s0,$s1,-15
 and $t0,$t1,$t2
+exit:
 addiu $t3,$t4,52000

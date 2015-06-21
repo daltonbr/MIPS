@@ -40,6 +40,7 @@ char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 
 char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
 char addressAssembly[26]; 	// definimos address com 
+int pcAssembly = 0;         // Program Counter Assembly (numero da linha lida)
 
 // fim da declaracao de Global Variables
 
@@ -79,22 +80,31 @@ outputFile = fopen("./teste/outputBinary.txt", "w");
 		}
 		else   // arquivo de leitura aberto corretamente
 		{
-			printf("\narquivo Assembly aberto com sucesso!\n");
+			printf("\narquivo Assembly aberto com sucesso!\n");				
 			while (fgets (inputLine, 129, inputFile) ) 
 			{	
+				printf("\nInput Assembly: ");
 				puts (inputLine);				// inputLine contem a linha a ser trabalhada
-				strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
+				pcAssembly++;    //var global que conta o Program Counter (Assembly)
+				printf("\nLinha (pc) = %d \n", pcAssembly);  //soh imprime a linha atual
+				
+				if ( !isLabel(inputLine) ) // se a linha eh um NAO eh label executa a linha, senao incrementa o PC e vai pra proxima linha			
+				{
+					strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
+					ripDataAssembly(inputLine);   // extrai alguns elementos da linha (registros e immediates) e poe em variaveis globais
 							
-				ripDataAssembly(inputLine);   // extrai alguns elementos da linha (registros e immediates) e poe em variaveis globais
-						
-				strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary (ainda em variaveis globais)
-				strcpy (rtBinary, registerToBinary(rtAssembly));
-				strcpy (rdBinary, registerToBinary(rdAssembly));
-										
-				filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
-				puts(outputLine);			// imprime na tela a saida
-				fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
-				fputs("\n", outputFile);  //    \n
+					strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary (ainda em variaveis globais)
+					strcpy (rtBinary, registerToBinary(rtAssembly));
+					strcpy (rdBinary, registerToBinary(rdAssembly));
+											
+					filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
+					printf("\nOutput Binary: ");
+					puts(outputLine);			// imprime na tela a saida
+					fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
+					fputs("\n", outputFile);  //    \n
+				}
+				
+				
 			}
 		}	
 	}

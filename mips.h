@@ -26,6 +26,7 @@ extern char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 
 extern char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
 extern char addressAssembly[26]; 	// definimos address com 
+extern int pcAssembly;         // Program Counter Assembly (numero da linha lida)
 
 // fim da declaracao de Global Variables
 
@@ -793,8 +794,6 @@ void ripDataBinary(char *opcodeBinary)
 		ripBinaryR();
 	} else if ( (!(strcmp(opcodeBinary,"000010"))) || (!(strcmp(opcodeBinary,"000011"))) ){  // J
 		ripBinaryJ();
-	} else if (!(strcmp(opcodeBinary,"111111"))) { // LABEL ?
-		ripBinaryLabel();
 	} else {  // I
 		ripBinaryI();
 	}	
@@ -829,12 +828,6 @@ void ripBinaryI()
 	registerToAssembly(rsBinary, rsAssembly);  // converte os registros
 	registerToAssembly(rtBinary, rtAssembly);
 	instructionI ();
-}
-
-void ripBinaryLabel()
-{
-	printf("\nLABEL NOS BINARIOS\n");
-	//strncpy(addressBinary, inputLine+6, 26);
 }
 
 // funcao que converte um registro binario em assembly
@@ -1009,24 +1002,24 @@ void concatenateRBinary()  //generates R type line Binary
 
 void concatenateIBinary()	//generates I type line Binary
 {
-	//charTo16Bits (immediateAssembly, immediateBinary );
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, " ");
 	strcat (outputLine, rtAssembly);  //rs na verdade
 	strcat (outputLine, ",");
 	strcat (outputLine, rdAssembly);  //rt na verdade
 	strcat (outputLine, ",");
+	Binary16ToChar(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
 	strcat (outputLine, immediateAssembly);  //necessita converter
 }
 
-//void concatenateIUBinary()	//generates I type line Binary
-//{
-//	charTo16BitsU (immediateAssembly, immediateBinary );
-//	strcpy (outputLine, instructionAssembly);
-//	strcat (outputLine, rtAssembly);  //rs na verdade
-//	strcat (outputLine, rdAssembly);  //rt na verdade
-//	strcat (outputLine, immediateAssembly);
-//}
+void concatenateIUBinary()	//generates I type line Binary
+{
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, rtAssembly);  //rs na verdade
+	strcat (outputLine, rdAssembly);  //rt na verdade
+	strtol(immediateBinary,immediateAssembly,10);  // converte bits Unsigned to decimal
+	strcat (outputLine, immediateAssembly);
+}
 
 void concatenateJBinary()	//generates J type line Binary
 {

@@ -13,6 +13,8 @@ w+ - open for reading and writing (overwrite file)
 a+ - open for reading and writing (append if file exists)
 */
 
+//cabecalho de funcoes
+int isLabel (char *inputline);
 
 //imprime um pointeiro na tela de char, dado o tamanho - usado para Debug
 void printPointer(char *string, int length)
@@ -23,6 +25,20 @@ void printPointer(char *string, int length)
 	}
 }
 
+//verifica se a linha eh um label em Assembly - retorna 0 se não eh
+int isLabel (char *inputline)
+{
+	char ch;
+	int i=0;
+	do
+	{
+		ch = inputline[i];
+		if (ch == ':')      // procuramos por ':'
+			return 1;  //eh label
+		i++; 
+	} while (ch != '\0');
+	return 0;  //nao eh label
+}
 
 //entrando uma linha, esta funcao retorna a primeira palavra antes do espaco
 char *getNameAssembly(char *fullLine)

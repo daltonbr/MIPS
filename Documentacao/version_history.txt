@@ -181,4 +181,14 @@
 [0.8.1] 18/06/15 - victor
 * Adicionada a função: Binary16ToChar();
 	-Convertendo uma string binário (com complemento de 2) e passando para uma string em inteiro
-	-OBS: não são necessárias até o momento funções 'binary -> int' unsigned, pois a função strtol() faz essa conversão tranquilamente      
+	-OBS: não são necessárias até o momento funções 'binary -> int' unsigned, pois a função strtol() faz essa conversão tranquilamente
+	
+[0.9.0] 15/06/15 - Dalton
+* Implementado funcao int isLabel (*char inputline)
+	- Verifica se a linha eh um label em Assembly - retorna 0 se não eh
+* no main.c filtramos se a linha lida eh label ou instrucao. / 
+	- labels SEMPRE DEVEM ocupar uma unica linha. EX: NAO eh permitido LABEL: add $s0,$s1,$s2
+* implementado Contador de linha Program Counter no Assembly
+	- variaval global int pcAssembly
+* contateBinary`s () melhoradas
+	- agora elas convertem os immediates para decimais (ou deveriam)
