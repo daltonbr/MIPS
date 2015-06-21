@@ -1,6 +1,8 @@
 add $s0,$s1,$s2
+bne $s0,$s1,loop
 addi $s0,$s1,15
 loop:
+beq $t0,$t1,exit
 addi $s0,$s1,-15
 and $t0,$t1,$t2
 exit:

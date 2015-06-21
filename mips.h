@@ -32,7 +32,8 @@ extern char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 //extern char functAssembly[6];
 
 extern char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
-extern char addressAssembly[26]; 	// definimos address com 
+extern char addressAssembly[26]; 	// definimos address com
+extern char labelAssembly[20];    // label para funcoes bne e beq
 extern int pcAssembly;         // Program Counter Assembly (numero da linha lida)
 
 // fim da declaracao de Global Variables
@@ -94,6 +95,7 @@ void instructionI ();
 void instructionJ ();
 void concatenateRBinary();
 void concatenateIBinary();
+void concatenateILabel(char *outputLine);	//generates I type line
 void concatenateJBinary(); 
 
 //soma binaria - desconsidera carry - nao verifica inputs
@@ -220,6 +222,15 @@ void concatenateI(char *outputLine)	//generates I type line
 	strcat (outputLine, immediateBinary);
 }
 
+void concatenateILabel(char *outputLine)	//generates I type line
+{
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, rtBinary);  //rs na verdade
+	strcat (outputLine, rdBinary);  //rt na verdade
+	strcat (outputLine, labelAssembly);  // converte Label
+	//strcat (outputLine, labelBinary);  // converte Label
+}
+
 void concatenateIU(char *outputLine)	//generates I type line
 {
 	charTo16BitsU (immediateAssembly, immediateBinary );
@@ -274,13 +285,14 @@ void andiToBinary() // I
 void beqToBinary() // I
 {
 	strcpy (opcodeBinary,"000100");
-	concatenateI(outputLine);   // "empacota" a linha
+	concatenateILabel(outputLine);
 }
 
 void bneToBinary() // I
 {
 	strcpy (opcodeBinary,"000101");
-	concatenateI(outputLine);   // "empacota" a linha
+	//ripar o label
+	concatenateILabel(outputLine);
 }
 
 void jToBinary()  // J  -atencao
@@ -449,13 +461,13 @@ void subuToBinary() // R  --- atencao funcao R! mas eh U?
 
 // ##################
 
-
 void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registros
 										// precisaremos caso especial pra J e JAL ?
 {
 	char rs[4], rt[4], rd[4];
 	char immediate[6];  //soh armazena ate 65536 = 2^16 = 65536 unsigned - maior numero que um immediate U de 16bits pode ter. + 1 terminator
 	char address[26]; 	// *tamanho aberto a revisao
+	char label[20];
 	char ch, chProx;
 	int offset = 0, isNum = 0, tamanho = 0;
 
@@ -526,13 +538,47 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 			} while (isNum);    //sai do loop qdo encontra um "nao numerico"
 			tamanho = tamanho - offset;		 // faz a diferenca pra saber o tamanho do immediate
 			strncpy(immediate,(myLine + offset),tamanho);		//copia do immediate
-			immediate[tamanho] = '\0';
+			label[tamanho] = '\0';
 	}
+	
+	
+	// rip Label (bne e beq)
+	offset = 0;  //importante zerar o offset pois varreremos novamente a linha
+	do
+	{
+		offset++;
+		ch = myLine[offset];
+		if ( ch == ',' ) {    // 1a virgula
+			do
+			{
+				offset++;
+				ch = myLine[offset];
+				if ( ch == ',' ) {    // 2a virgula
+					offset++;
+					tamanho = offset;   //offset guarda a posicao do primeiro caracter a ser copiado
+					
+					while (ch != '\0' )    //ate o fim da linha
+					{						//verifica onde termina o label   
+						tamanho++;
+						ch = myLine[tamanho];
+					} 
+					
+					tamanho = tamanho - offset;		 // faz a diferenca pra saber o tamanho do immediate
+					strncpy(label,(myLine + offset),tamanho);		//copia do immediate
+					label[tamanho] = '\0';
+				}
+			} while ( ch != '\0' );
+		}
+		
+	} while ( ch != '\0' );  // soh sai desse loop qdo \0 ou encontrar uma virgula seguida de um numerico
+	
+	
 	// os registros ja estao extraidos, e serao passados em forma de binario 
 	strcpy ( rsAssembly, rs); //copiando variavel local pra global
 	strcpy ( rtAssembly, rt);
 	strcpy ( rdAssembly, rd);
 	strcpy ( immediateAssembly, immediate);
+	strcpy ( labelAssembly, label);
 	
 }
 

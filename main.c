@@ -27,6 +27,7 @@ char rtBinary[6];
 char rdBinary[6];
 char shamtBinary[6];
 char functBinary[7];
+struct JumpTable JumpAdressTable[20];
 
 char immediateBinary[17];   // exclusive type I
 char addressBinary[27]; 	// exclusive type J
@@ -40,6 +41,7 @@ char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 
 char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
 char addressAssembly[26]; 	// definimos address com 
+char labelAssembly[20];    // label para funcoes bne e beq
 int pcAssembly = 0;         // Program Counter Assembly (numero da linha lida)
 
 // fim da declaracao de Global Variables
