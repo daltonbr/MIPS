@@ -3,6 +3,12 @@
 #ifndef MIPS
 #define MIPS
 
+// struct que armazenará cada label
+struct JumpTable{
+	int line;
+	char label[16];
+};
+
 //Global Variables
 extern char inputLine[129];
 extern char outputLine[129];
@@ -13,6 +19,7 @@ extern char rtBinary[6];
 extern char rdBinary[6];
 extern char shamtBinary[6];
 extern char functBinary[7];
+extern struct JumpTable JumpAdressTable[20]; //array de structs para armazenamento de labels
 
 extern char immediateBinary[17];   // exclusive type I
 extern char addressBinary[27]; 	// exclusive type J
@@ -117,6 +124,21 @@ void not (char *string)
     	}
 		i++;
 	} while (string[i] != '\0');
+}
+
+int searchLabel(char label[]){
+
+	int line, i = 0, found = 0;
+
+	while(i < 20 && !found){
+		if(!strcmp(label, JumpAdressTable[i].label)){ // achou
+			line = JumpAdressTable[i].line;
+			found = 1;
+		}
+		i++;
+	}
+
+	return line;
 }
 
 void padZero(char *string, int length)
@@ -613,7 +635,7 @@ void charTo5BitsU (char *charInput, char *charOutput)
 }
  // recebe duas strings por referencia, a primeira eh a entrada ("numeros")
  //  a segunda devolve a string de binário UNSIGNED de 16 bits
-void charTo16BitsU (char *charInput, char *charOutput)   
+void charTo16BitsU (char *charInput, char *charOutput)
 {
 	int num = 65537; // gambiarra pra cair fora do segundo if
 	if ( charInput[0] != '-' ) //procura numeros negativos, eles nem deveriam ser chamados
@@ -649,7 +671,7 @@ void charTo16Bits (char *charInput, char *charOutput)
 		{
 		    itoa ( (num*(-1)) -1 , charOutput,2 ); // se o numero é negativo, ele é passado pra positivo (e subtraimos 1)
 		    padZero(charOutput, 16);  //completa com zeros
-			not (charOutput);   	// complemento do array	 
+			not (charOutput);   	// complemento do array
 		}
 	}else
 	{
@@ -797,7 +819,7 @@ void ripDataBinary(char *opcodeBinary)
 		ripBinaryLabel();
 	} else {  // I
 		ripBinaryI();
-	}	
+	}
 }
 
 void ripBinaryR()
