@@ -209,3 +209,7 @@
 [0.10.0] 21/06/15 - Dalton
 * Finalmente agora estamos escrevendo binarios com os labels em posicao relativa
 	- ainda falta os labels em posicao absoluta (J e JAL)	
+	
+[0.10.1] 21/06/15 - Dalton
+* funcoes void Binary16ToChar reformuladas, agora estao fazendo a conversao 
+	- versao Binary16ToCharU feita tb (somento o strtol nao foi suficiente)

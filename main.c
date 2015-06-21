@@ -12,6 +12,7 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>  //strcpy()
 #include "mips.h"
 #include "filemanager.h"
@@ -51,9 +52,7 @@ void printPointer(char *string, int length);
 int main () 
 {
 	fillJumpAdressTable();   // varre o arquivo de entrada em busca de Labels e cria uma tabela
-	puts(JumpAdressTable[0].label);
-	puts(JumpAdressTable[1].label);
-	
+
 	unsigned long totalLines = 0;
 	FILE *inputFile, *outputFile;
 		
@@ -162,7 +161,7 @@ outputFile = fopen("./teste/outputAssembly.txt", "w");
 				puts(immediateBinary);
 				printf("Address:");
 				puts(addressBinary);
-				printf("Instruction R:");
+				printf("Instruction:");
 				puts(instructionAssembly);
 				
 				puts(outputLine);			// imprime na tela a saida

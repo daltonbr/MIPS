@@ -87,6 +87,8 @@ void ripBinaryLabel();
 void ripBinaryR();
 void ripBinaryI();
 void ripBinaryJ();
+void Binary16ToChar(char *charInput, char *charOutput);  // converte binarios em decimal char C2
+void Binary16ToCharU(char *charInput, char *charOutput); // converte binarios em decimal char Unsigned
 
 // # funcoes Assembly -> Binary
 void registerToAssembly(char *registerBinary, char *registerAssembly);
@@ -97,6 +99,7 @@ void concatenateRBinary();
 void concatenateIBinary();
 void concatenateILabel(char *outputLine);	//generates I type line
 void concatenateJBinary(); 
+
 
 // cabecalho
 unsigned long countLine ();
@@ -278,7 +281,7 @@ void concatenateILabel(char *outputLine)	//generates I type line
 	puts(labelAssembly);
 	offsetLabel = searchLabel(labelAssembly);
 	printf("\nlinha do label: %d - PC: %d", offsetLabel, pcAssembly);
-	offsetLabel = (offsetLabel - pcAssembly - 1);
+	offsetLabel = (offsetLabel - pcAssembly - 1);     // 
 	sprintf(addressAssembly , "%d" , offsetLabel );	
 	charTo16Bits(addressAssembly, addressBinary);
 	strcat (outputLine, addressBinary);  // converte Label
@@ -781,54 +784,33 @@ void charTo16Bits (char *charInput, char *charOutput)
 
 //recebe duas strings por referencia, sendo a primeiro uma string em binário 16bits
 //segunda("a saída") em uma string representando inteiro
-//OBS: somente é necessário a função em complemento de 2, pois para as unsigned a conversão é feita por strtol(string,string,base int);
 void Binary16ToChar(char *charInput, char *charOutput)
 {
-	int i,aux=0,n=0;
+	int i,aux=0;
+	char tempInput[17];
+	
 	if(charInput[0]=='0') // o ultimo bit, em complemento de 2, é reservado para a representação de sinal, entao se ele for '0' significa que o numero é positivo
 	{
-		strtol(charInput,charOutput,10); // função que converte binary, em uma string, para um decimal em outra string
-	}else if(charInput[0]=='1') // tratamento para numeros negativo
-	{
-		i=15;
-		aux=0;
-		while(aux==0 && i!=0)
-		{
-			if(charInput[i]=='0')
-			{
-				charInput[i]='1';					// Subtrai 1
-			}else if(charInput[i]=='1')   												
-			{
-				charInput[i]='0';
-				aux=1;    // a subtração de 1 de binários vai até quando 1-1 que o resuldado da 0 e acaba
-			}
-			i--;
-		}		
-		for(i=0;i<16;i++)
-		{
-			if(charInput[i]=='0')
-			{
-				charInput[i]='1';
-			}else if(charInput[i]=='1')				//inverte para binário positivo
-			{
-				charInput[i]='0';
-			}
-		}
-		aux=0;		
-		for(i=15;i>=0;i--)  // roda o vetor decrescentemente
-		{
-            if(charInput[i]=='0')
-            {
-                n+=0*(2^aux);
-            }else if(charInput[i]=='1')     // passa para inteiro;
-            {
-                n+=pow(2,aux);
-            }
-			aux++;
-		}
-		n=n*(-1);           //inverte o numero inteiro para negativo novamente
-		itoa(n,charOutput,10); // converte o inteiro negativo em string
+		strcpy(tempInput,charInput);
+		aux = strtol(tempInput, &charOutput, 2); // função que converte binary, em uma string, para um decimal em outra string
+		itoa ( aux, charOutput, 10 );
+		printf("teste apos: %ld\n", aux);
 	}
+	else // tratamento para numeros negativo
+	{
+		strcpy(tempInput,charInput);
+		not(tempInput);
+		aux = strtol( tempInput, &charOutput, 2);
+		aux = (aux+1) * -1 ;
+		itoa ( aux, charOutput, 10 );
+	}
+	strcpy(immediateAssembly,charOutput);
+}
+
+void Binary16ToCharU(char *charInput, char *charOutput)
+{
+	strtol(charInput,&charOutput,2); // função que converte binary, em uma string, para um decimal em outra string		
+	strcpy(immediateAssembly,charOutput);
 }
 
 
@@ -1130,6 +1112,8 @@ void concatenateIBinary()	//generates I type line Binary
 	strcat (outputLine, rdAssembly);  //rt na verdade
 	strcat (outputLine, ",");
 	Binary16ToChar(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
+	printf("teste imm: ");
+	puts(immediateAssembly);	
 	strcat (outputLine, immediateAssembly);  //necessita converter
 }
 
@@ -1138,7 +1122,7 @@ void concatenateIUBinary()	//generates I type line Binary
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, rtAssembly);  //rs na verdade
 	strcat (outputLine, rdAssembly);  //rt na verdade
-	strtol(immediateBinary,immediateAssembly,10);  // converte bits Unsigned to decimal
+	Binary16ToCharU(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
 	strcat (outputLine, immediateAssembly);
 }
 

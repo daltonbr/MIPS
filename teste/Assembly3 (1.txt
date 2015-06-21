@@ -1,0 +1,4 @@
+Loop:
+lw $t0,EndConstant4
+add $t0,$s0,$to
+sw $t0, 0($s1)
