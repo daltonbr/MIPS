@@ -129,6 +129,58 @@ void not (char *string)
 	} while (string[i] != '\0');
 }
 
+/* Função que percorre o arquivo todo colocando os labels no array de registros JumpAdressTable */
+void fillJumpAdressTable(){
+    
+    char line[129];
+    char label[16];
+    int lineCounter = 1, i = 0, jumpTableCounter = 0;
+    unsigned long numberOfLines = countLine();
+    FILE *file;
+    
+    file = fopen("./teste/assembly2.txt", "r");
+    
+    if (file == NULL){
+        printf( "\nNao pode abrir o arquivo!\n" );
+    }
+    else{
+        char ch;
+        while(lineCounter <= numberOfLines){
+            i = 0;
+            do{
+                ch = fgetc(file);
+                if(ch != '\n' && ch != EOF){
+                    line[i] = ch;
+                    i++;
+                }
+                else{
+                    line[i] = '\0';
+                }
+            }while(ch != '\n' && ch != EOF);
+            if(isLabel(line)){
+                i = 0;
+                do{
+                    ch = line[i];
+                    if(ch != ':'){
+                        label[i] = ch;
+                        i++;
+                    }
+                    else{
+                        label[i] = '\0';
+                    }
+                }while(ch != ':');
+                strcpy(JumpAdressTable[jumpTableCounter].label, label);
+                JumpAdressTable[jumpTableCounter].line = lineCounter;
+                jumpTableCounter++;
+            }
+            lineCounter++;
+            i = 0;
+        }
+    }
+    
+    fclose(file);
+}
+
 int searchLabel(char label[]){
 
 	int line, i = 0, found = 0;

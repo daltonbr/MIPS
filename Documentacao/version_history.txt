@@ -197,3 +197,7 @@
 * Aperfeicoado ripDataAssembly ( ) para extrair tambem os labels
 	- uso nas funcoes beq e bne 
 * Implementado void concatenateILabel()  // para montar beq e bne
+
+[0.9.2] 21/06/15 - Lucas
+* Inclusão da função fillJumpAdressTable(), responsável por criar um array de estruturas contendo informações sobre os labels presentes no arquivo
+* Inclusão da função searchLabel(), responsável por buscar um determinado label por nome, retornando o número da linha em que ele se encontra
