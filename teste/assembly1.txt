@@ -1,5 +1,5 @@
 main:         
-addi $t7,$s0,4              
+addi $t7,$zero,4              
 sw $t6,160($zero)   
 sw $t6,160($t7)              
 loop:
