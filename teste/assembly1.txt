@@ -1,6 +1,6 @@
 main:         
 addi $t7,$s0,4              
-sw $t6,160($0)   
+sw $t6,160($zero)   
 sw $t6,160($t7)              
 loop:
 addi $t3,$t0,-8
