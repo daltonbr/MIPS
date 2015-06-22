@@ -51,7 +51,12 @@ void printPointer(char *string, int length);
 int main () 
 {
 	fillJumpAdressTable();   // varre o arquivo de entrada em busca de Labels e cria uma tabela
-
+	int bosta;
+	bosta = searchLabel("main");
+	printf("\nbostinhas: %d", bosta);
+	bosta = searchLabel("loop");
+	printf("\nbostinhas2: %d", bosta);
+	
 	unsigned long totalLines = 0;
 	FILE *inputFile, *outputFile;
 		

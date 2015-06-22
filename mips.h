@@ -88,7 +88,8 @@ void ripBinaryLabel();
 void ripBinaryR();
 void ripBinaryI();
 void ripBinaryJ();
-void binary16ToChar(char *charInput, char *charOutput);  // converte binarios em decimal char C2
+void binary16ToChar(char *charInput, char *charOutput);
+void binary5ToCharU(char *charInput, char *charOutput);  // converte binarios em decimal char C2
 void binary16ToCharU(char *charInput, char *charOutput); // converte binarios em decimal char Unsigned
 void binary26ToCharU(char *charInput, char *charOutput);
 
@@ -331,12 +332,6 @@ void concatenateIU(char *outputLine)	//generates I type line
 	strcat (outputLine, immediateBinary);
 }
 
-void concatenateJ(char *outputLine)	//generates J type line
-{
-	strcpy (outputLine, opcodeBinary);
-	strcat (outputLine, addressBinary);
-}
-
 void addToBinary() // R
 {
 	strcpy (functBinary,"100000");	 	// fixo para o add
@@ -388,30 +383,56 @@ void bneToBinary() // I
 
 void jToBinary()  // J  -atencao
 {
+	int i = 2; //  recorta o label
+	do {
+		addressAssembly[i-2] = inputLine[i];
+		i++;
+	} while (inputLine[i] != '\n');
+	
+	int label;
+	label = searchLabel(addressAssembly);
+	itoa(label,addressAssembly,10);
+	
+	charTo26BitsU(addressAssembly, addressBinary);
 	strcpy (opcodeBinary,"000010");
-	concatenateJ(outputLine);   // "empacota" a linha
+	
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, addressBinary);
 }
 
 void jalToBinary()  // J   -atencao
 {
 	strcpy (opcodeBinary,"000011");
-	concatenateJ(outputLine);   // "empacota" a linha
-}
-
-void jrToBinary()   // R   --- provavelmente? zerar todo o resto!
-{					//  usar rs, rt ou rd ???
-	strcpy (functBinary,"001000");	
-	strcpy (opcodeBinary,"000000");	 	// fixo para R
-	strcpy (shamtBinary,"00000"); 		// fixo para R
+	int i = 4; //  recorta o label
+	do {
+		addressAssembly[i-4] = inputLine[i];
+		i++;
+	} while (inputLine[i] != '\n');
+	
+	int label;
+	label = searchLabel(addressAssembly);
+	itoa(label,addressAssembly,10);
+	
+	charTo26BitsU(addressAssembly, addressBinary);
 	
 	strcpy (outputLine, opcodeBinary);
-	strcat (outputLine, rsBinary);  //primeiro que extrai
-	strcat (outputLine, "00000");   //rt
-	strcat (outputLine, "00000");   //rd
+	strcat (outputLine, addressBinary);
+}
+
+void jrToBinary()   // R -  usar rs 
+{					
+	strcpy (functBinary,"001000");	
+	strcpy (opcodeBinary,"000000");	 	// fixo para R
+	strcpy (shamtBinary,"00000"); 	
+	strcpy (rsBinary,"00000"); 
+	strcpy (rdBinary,"00000"); 	// fixo para R
+	
+	strcpy (outputLine, opcodeBinary);
+	strcat (outputLine, rtBinary);  //primeiro que extrai - que deveria ser RS
+	strcat (outputLine, rsBinary);   //rt
+	strcat (outputLine, rdBinary);   //rd
 	strcat (outputLine, shamtBinary);
 	strcat (outputLine, functBinary);
-	
-	concatenateR(outputLine);   // "empacota" a linha
 }
 
 void lbuToBinary() // I
@@ -459,6 +480,7 @@ void orToBinary()   // R
 void oriToBinary() // I
 {
 	strcpy (opcodeBinary,"001101");
+	printf("deu merda2");
 	concatenateI(outputLine);   // "empacota" a linha	
 }		
 
@@ -489,7 +511,8 @@ void sltuToBinary() // R   e U how???
 void sllToBinary() // R    -- atencao tem shamt
 {
 	strcpy (opcodeBinary,"000000");
-	strcpy (functBinary,"000000");	
+	strcpy (functBinary,"000000");
+	strcpy (rsBinary ,"00000");
 	charTo5BitsU (immediateAssembly, shamtBinary ); //escreve no shamt
 	
 	strcpy (outputLine, opcodeBinary);  // concatena avulso por causa do shamt
@@ -504,6 +527,7 @@ void srlToBinary() // R   -- atencao tem shamt
 {
 	strcpy (opcodeBinary,"000000");
 	strcpy (functBinary,"000010");	
+	strcpy (rsBinary ,"00000");
 	charTo5BitsU (immediateAssembly, shamtBinary ); //escreve no shamt
 	
 	strcpy (outputLine, opcodeBinary);  // concatena avulso por causa do shamt
@@ -866,7 +890,17 @@ void binary16ToChar(char *charInput, char *charOutput)
 	strcpy(immediateAssembly,charOutput);
 }
 
-void binary16ToCharU(char *charInput, char *charOutput)
+void binary5ToCharU(char *charInput, char *charOutput)
+{
+	int aux=0;
+	char tempInput[6];
+	strcpy(tempInput,charInput);
+	aux = strtol(tempInput, &charOutput, 2); // função que converte binary, em uma string, para um decimal em outra string
+	itoa ( aux, charOutput, 10 );
+	strcpy(shamtAssembly,charOutput); // corrigir logica
+}
+
+void binary16ToCharU(char *charInput, char *charOutput) // funcao crasha para numero grandes
 {
 	int aux=0;
 	char tempInput[17];
@@ -917,12 +951,13 @@ void filterInstruction(char *instruction)
 	} else if (!(strcmp(instruction,"lui"))){
 		luiToBinary();
 	} else if (!(strcmp(instruction,"lw"))){
-		andToBinary();
+		lwToBinary();
 	} else if (!(strcmp(instruction,"nor"))){
 		norToBinary();
 	} else if (!(strcmp(instruction,"or"))){
 		orToBinary();
 	} else if (!(strcmp(instruction,"ori"))){
+		printf("deu merda1");
 		oriToBinary();
 	} else if (!(strcmp(instruction,"slt"))){
 		sltToBinary();
@@ -1126,9 +1161,9 @@ void instructionI ()
 	} else if (!(strcmp(opcodeBinary,"001100"))){
 		andiToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"000100"))){
-		beqToAssembly();     // I parenteses
+		beqToAssembly();     // I
 	} else if (!(strcmp(opcodeBinary,"000101"))){
-		bneToAssembly(); 	 // I parenteses	
+		bneToAssembly(); 	 // I	
 	} else if (!(strcmp(opcodeBinary,"100100"))){
 		lbuToAssembly(); 	 // I parenteses	
 	} else if (!(strcmp(opcodeBinary,"100101"))){
@@ -1173,9 +1208,9 @@ void concatenateIBinary()	//generates I type line Binary
 {
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, " ");
-	strcat (outputLine, rtAssembly);  //rs na verdade
+	strcat (outputLine, rsAssembly);  //rs na verdade
 	strcat (outputLine, ",");
-	strcat (outputLine, rdAssembly);  //rt na verdade
+	strcat (outputLine, rtAssembly);  //rt na verdade
 	strcat (outputLine, ",");	
 	strcat (outputLine, immediateAssembly);  //necessita converter
 }
@@ -1184,22 +1219,19 @@ void concatenateIBinaryParenthesis()	//generates I type line Binary
 {
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, " ");
-	strcat (outputLine, rtAssembly);  //rs na verdade
+	strcat (outputLine, rsAssembly);
 	strcat (outputLine, ",");
-	strcat (outputLine, immediateAssembly);  //necessita converter
+	strcat (outputLine, immediateAssembly); 
 	strcat (outputLine, "(");
-	strcat (outputLine, rdAssembly);  //rt na verdade
+	strcat (outputLine, rtAssembly);
 	strcat (outputLine, ")");	
 }
 
 void concatenateJBinary()	//generates J type line Binary
 {
+	binary26ToCharU (addressBinary, addressAssembly);
 	strcpy (outputLine, instructionAssembly);
 	strcat (outputLine, " ");
-	binary26ToCharU(addressBinary, addressAssembly);
-	printf("teste address: ");
-	puts(addressAssembly);
-	puts(addressBinary);
 	strcat (outputLine, addressAssembly);
 }
 
@@ -1225,7 +1257,10 @@ void andToAssembly() // R
 void jrToAssembly() // R
 {
 	strcpy(instructionAssembly,"jr");
-	concatenateRBinary(outputLine);   // "empacota" a linha
+	
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
+	strcat (outputLine, rsAssembly);
 }
 
 void norToAssembly() // R
@@ -1255,13 +1290,29 @@ void sltuToAssembly() // R
 void sllToAssembly() // R
 {
 	strcpy(instructionAssembly,"sll");
-	concatenateRBinary(outputLine);   // "empacota" a linha
+	
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
+	strcat (outputLine, rtAssembly);
+	strcat (outputLine, ",");
+	strcat (outputLine, rdAssembly);
+	strcat (outputLine, ",");
+	binary5ToCharU (shamtBinary, shamtAssembly);
+	strcat (outputLine, shamtAssembly);
 }
 
 void srlToAssembly() // R
 {
 	strcpy(instructionAssembly,"srl");
-	concatenateRBinary(outputLine);   // "empacota" a linha
+	
+	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
+	strcat (outputLine, rtAssembly);
+	strcat (outputLine, ",");
+	strcat (outputLine, rdAssembly);
+	strcat (outputLine, ",");
+	binary5ToCharU (shamtBinary, shamtAssembly);
+	strcat (outputLine, shamtAssembly);
 }
 
 void subToAssembly() // R
@@ -1290,18 +1341,18 @@ void andiToAssembly()  // I
 	concatenateIBinary(outputLine);   // "empacota" a linha
 }
 
-void beqToAssembly()  // I parenteses
+void beqToAssembly()  // I
 {
 	strcpy(instructionAssembly,"beq");
 	binary16ToChar(immediateBinary, immediateAssembly);
-	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+	concatenateIBinary(outputLine);   // "empacota" a linha
 }
 
-void bneToAssembly()  // I parenteses
+void bneToAssembly()  // I
 {
 	strcpy(instructionAssembly,"bne");
 	binary16ToChar(immediateBinary, immediateAssembly);
-	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+	concatenateIBinary(outputLine);   // "empacota" a linha
 }
 
 void lbuToAssembly()  // I parenteses
@@ -1332,11 +1383,11 @@ void luiToAssembly()    // I
 	concatenateIBinary(outputLine);   // "empacota" a linha
 }
 
-void lwToAssembly()    // I
+void lwToAssembly()    // I parenteses
 {
 	strcpy(instructionAssembly,"lw");
 	binary16ToChar(immediateBinary, immediateAssembly);
-	concatenateIBinary(outputLine);   // "empacota" a linha
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
 }
 
 void oriToAssembly()    // I
