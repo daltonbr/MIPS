@@ -5,11 +5,11 @@ srl $t0,$t0,1
 addi $t1,$gp,28
 sll $t0,$t0,2
 lw $t1,0($t1)
-9:
+loop:
 and $t5,$t1,$t2
 or $t5,$t1,$t2
 nor $t5,$t1,$t2
-beq $t0,$t1,9
+beq $t0,$t1,loop
 slt $t5,$t1,$t2
 lhu $t1,$gp,28
 slti $t1,$gp,-28

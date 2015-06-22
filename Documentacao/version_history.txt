@@ -232,3 +232,13 @@
 [0.11.0] 21/06/15 - Dalton
 * Criado uma funcao pra cada instrucao no modo binario->assembly
 	- Implementado mascara nas funcoes do tipo I com Parenthesis 
+	
+[1.0.0] 22/06/15 - Dalton
+* Release Candidate
+	- Finalmente a versao final (com muuitos bugs corrigidos)	
+
+[1.1.0] - 22/06/15 - Dalton
+* Atualizado caminho dos arquivos
+	- Agora basta colocar os arquivos na mesma pasta do main.exe
+	- Os arquivos devem se chamar OBRIGATORIAMENTE assembly.txt e binary.txt
+	- Os arquivos de saida sao gerados na mesma pasta

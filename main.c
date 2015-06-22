@@ -4,9 +4,9 @@ Primeiro faremos um PARSE
 
 autores:
 Dalton Lima - sacinopatinete@gmail.com
-Stephany ?
-Victor ?
-Tadeu tadeumartines@yahoo.com.br
+Stefany - stefanylacroux@hotmail.com
+Victor - victor_ribeiro.pira@hotmail.com
+Tadeu - tadeumartines@yahoo.com.br
 Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 
 */
@@ -51,12 +51,7 @@ void printPointer(char *string, int length);
 int main () 
 {
 	fillJumpAdressTable();   // varre o arquivo de entrada em busca de Labels e cria uma tabela
-	int bosta;
-	bosta = searchLabel("main");
-	printf("\nbostinhas: %d", bosta);
-	bosta = searchLabel("loop");
-	printf("\nbostinhas2: %d", bosta);
-	
+		
 	unsigned long totalLines = 0;
 	FILE *inputFile, *outputFile;
 		
@@ -66,11 +61,10 @@ int main ()
 totalLines = countLine ();
 printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
 
-
 char instructionName[6];  // guarda um nome de instrucao. Ex: "add", "sltu". Os casos maiores sao "addiu" + terminator = 6 espacos
 
-inputFile = fopen("./teste/assembly1.txt", "r");
-outputFile = fopen("./teste/outputBinary.txt", "w");
+inputFile = fopen("./assembly.txt", "r");
+outputFile = fopen("./outputBinary.txt", "w");
 			// "r"	Opens a file for reading. The file must exist.
 			// "w"	Creates an empty file for writing. If a file with the same name already exists, its content is erased and the file is considered as a new empty file.
 			// "a"	Appends to a file. Writing operations, append data at the end of the file. The file is created if it does not exist.
@@ -124,8 +118,8 @@ fclose(outputFile);
 inputLine[0] = '\0';  // zera a sujeira anterior
 outputLine[0] = '\0';
 
-inputFile = fopen("./teste/binary1.txt", "r");
-outputFile = fopen("./teste/outputAssembly.txt", "w");
+inputFile = fopen("./binary.txt", "r");
+outputFile = fopen("./outputAssembly.txt", "w");
 			
 	if (!outputFile)
 	{

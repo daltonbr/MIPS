@@ -1,0 +1,5 @@
+add $zero,$s0,$s1
+lw $t4,160($t2)
+addi $t1,$s2,-8
+addi $t1,$s2,-8
+subu $zero,$s0,$s1

@@ -62,7 +62,7 @@ unsigned long countLine ()
 {
 	unsigned long lineCount = 0;
 	FILE *file;
-	file = fopen(".\\teste\\binary1.txt", "r");
+	file = fopen("./binary.txt", "r");
 	
 	if ( file == NULL )
 	{
@@ -89,7 +89,7 @@ void readBinary ()
 {
 	FILE *binaryFile;
 	// open a file
-	binaryFile = fopen(".\\teste\\binary1.txt", "r");
+	binaryFile = fopen("./binary.txt", "r");
 		
 	/* fopen returns 0, the NULL pointer, on failure */
 	if ( binaryFile == NULL )
@@ -112,7 +112,7 @@ void readAssembly ()
 {
 	FILE *assemblyFile;
 	// open a file
-	assemblyFile = fopen(".\\teste\\assembly1.txt", "r");
+	assemblyFile = fopen("./assembly.txt", "r");
 		
 	/* fopen returns 0, the NULL pointer, on failure */
 	if ( assemblyFile == NULL )

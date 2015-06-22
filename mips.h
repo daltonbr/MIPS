@@ -180,7 +180,7 @@ void fillJumpAdressTable(){
     unsigned long numberOfLines = countLine();
     FILE *file;
     
-    file = fopen("./teste/assembly1.txt", "r");
+    file = fopen("./assembly.txt", "r");
     
     if (file == NULL){
         printf( "\nNao pode abrir o arquivo!\n" );
