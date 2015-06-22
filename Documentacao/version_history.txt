@@ -225,4 +225,7 @@
 
 [0.10.4] 21/06/15 - Dalton
 * BugFix - O registrador $zero nao era lido, pois era o unico que tinha 5 caracteres
-	
+
+[0.11.0] 21/06/15 - Dalton
+* Criado uma funcao pra cada instrucao no modo binario->assembly
+	- Implementado mascara nas funcoes do tipo I com Parenthesis 

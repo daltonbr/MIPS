@@ -100,9 +100,41 @@ void instructionI ();
 void instructionJ ();
 void concatenateRBinary();
 void concatenateIBinary();
+void concatenateIBinaryParenthesis();
 void concatenateILabel(char *outputLine);	//generates I type line
 void concatenateJBinary(); 
 
+// cabecalho das funcoes individuais binary -> Assembly
+void addToAssembly(); // R
+void adduToAssembly(); // R
+void andToAssembly(); // R
+void jrToAssembly(); // R
+void norToAssembly(); // R
+void orToAssembly(); // R
+void sltToAssembly(); // R
+void sltuToAssembly(); // R
+void sllToAssembly(); // R
+void srlToAssembly(); // R
+void subToAssembly(); // R
+void subuToAssembly(); // R
+void addiToAssembly();  // I
+void andiToAssembly();  // I
+void beqToAssembly();  // I parenteses
+void bneToAssembly();  // I parenteses
+void lbuToAssembly();  // I parenteses
+void lhuToAssembly();  // I parenteses
+void llToAssembly();  // I parenteses - rever
+void luiToAssembly();    // I
+void lwToAssembly();    // I
+void oriToAssembly();    // I
+void sltiToAssembly();    // I
+void sltiuToAssembly();    // IU
+void sbToAssembly();  // I parenteses
+void scToAssembly();  // I parenteses
+void shToAssembly();  // I parenteses
+void swToAssembly();  // I parenteses
+void jToAssembly();  // J
+void jalToAssembly();  // J
 
 // cabecalho
 unsigned long countLine ();
@@ -631,7 +663,7 @@ void ripDataAssembly (char *myLine)    	// primeira versao - soh extrai registro
 		
 	} while ( ch != '\0' );  // soh sai desse loop qdo \0 ou encontrar uma virgula seguida de um numerico
 	
-	if (!(strcmp(rs,"$ze")))
+	if (!(strcmp(rs,"$ze")))   // gambiarra pra converter $ze para $zero
 		strcpy(rs,"$zero");
 	if (!(strcmp(rt,"$ze")))
 		strcpy(rt,"$zero");
@@ -1048,88 +1080,82 @@ void registerToAssembly(char *registerBinary, char *registerAssembly)
 void instructionR ()
 {
 	if (!(strcmp(functBinary,"100000"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
-		strcpy(instructionAssembly,"add");
+		addToAssembly(); // R		
 	} else if (!(strcmp(functBinary,"100001"))){  		 
-		strcpy(instructionAssembly,"addu");
+		adduToAssembly(); // RU	
 	} else if (!(strcmp(functBinary,"100100"))){
-		strcpy(instructionAssembly,"and");
+		andToAssembly();  //R
 	} else if (!(strcmp(functBinary,"001000"))){
-		strcpy(instructionAssembly,"jr");
+		jrToAssembly();  //R
 	} else if (!(strcmp(functBinary,"100111"))){
-		strcpy(instructionAssembly,"nor");			
+		norToAssembly();  //R			
 	} else if (!(strcmp(functBinary,"100101"))){
-		strcpy(instructionAssembly,"or");
+		orToAssembly();  //R
 	} else if (!(strcmp(functBinary,"101010"))){
-		strcpy(instructionAssembly,"slt");
+		sltToAssembly();  //R
 	} else if (!(strcmp(functBinary,"101011"))){
-		strcpy(instructionAssembly,"sltu");
+		sltuToAssembly();  //R
 	} else if (!(strcmp(functBinary,"000000"))){
-		strcpy(instructionAssembly,"sll");
+		sllToAssembly();  //R
 	} else if (!(strcmp(functBinary,"000010"))){
-		strcpy(instructionAssembly,"srl");
+		srlToAssembly();  //R
 	} else if (!(strcmp(functBinary,"100010"))){
-		strcpy(instructionAssembly,"sub");
+		subToAssembly();  //R
 	} else if (!(strcmp(functBinary,"100011"))){
-		strcpy(instructionAssembly,"subu");
+		subuToAssembly();  //RU
 	} else {
 		strcpy(instructionAssembly ,"Rxxxx");    //caso de Erro, nenhum instruction compativel encontrado
 	}	
-	concatenateRBinary(); // monta a linha
 }
 
 void instructionJ ()
 {
 	if (!(strcmp(opcodeBinary,"000010"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
-		strcpy(instructionAssembly,"j");
-	} else if (!(strcmp(opcodeBinary,"000011"))){  		 
-		strcpy(instructionAssembly,"jal");
+		jToAssembly(); 
+	} else if (!(strcmp(opcodeBinary,"000011"))){
+		jalToAssembly();   		 
 	} else {
 		strcpy(instructionAssembly ,"Jxxxx");    //caso de Erro, nenhum instruction compativel encontrado
-	}	
-	concatenateJBinary(); // monta a linha
-	
+	}		
 }
 
 void instructionI ()
 {
 	if (!(strcmp(opcodeBinary,"001000"))){  		  //retorna 0 se iguais, portanto !0 = verdadeiro
-		strcpy(instructionAssembly,"addi");
-	} else if (!(strcmp(opcodeBinary,"001001"))){  		 
-		strcpy(instructionAssembly,"addiu");
+		addiToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"001100"))){
-		strcpy(instructionAssembly,"andi");
+		andiToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"000100"))){
-		strcpy(instructionAssembly,"beq");
+		beqToAssembly();     // I parenteses
 	} else if (!(strcmp(opcodeBinary,"000101"))){
-		strcpy(instructionAssembly,"bne");			
+		bneToAssembly(); 	 // I parenteses	
 	} else if (!(strcmp(opcodeBinary,"100100"))){
-		strcpy(instructionAssembly,"lbu");
+		lbuToAssembly(); 	 // I parenteses	
 	} else if (!(strcmp(opcodeBinary,"100101"))){
-		strcpy(instructionAssembly,"lhu");
+		lhuToAssembly(); 	 // I parenteses
 	} else if (!(strcmp(opcodeBinary,"110000"))){
-		strcpy(instructionAssembly,"ll");
+		llToAssembly(); // I parenteses - rever
 	} else if (!(strcmp(opcodeBinary,"001111"))){
-		strcpy(instructionAssembly,"lui");
+		luiToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"100011"))){
-		strcpy(instructionAssembly,"lw");
+		lwToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"001101"))){
-		strcpy(instructionAssembly,"ori");
+		oriToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"001010"))){
-		strcpy(instructionAssembly,"slti");
+		sltiToAssembly();    // I
 	} else if (!(strcmp(opcodeBinary,"001011"))){
-		strcpy(instructionAssembly,"sltiu");
+		sltiuToAssembly();    // IU
 	} else if (!(strcmp(opcodeBinary,"101000"))){
-		strcpy(instructionAssembly,"sb");
+		sbToAssembly();    // I parenteses
 	} else if (!(strcmp(opcodeBinary,"111000"))){
-		strcpy(instructionAssembly,"sc");
+		scToAssembly();    // I ??
 	} else if (!(strcmp(opcodeBinary,"101001"))){
-		strcpy(instructionAssembly,"sh");
+		shToAssembly();    // I parenteses
 	} else if (!(strcmp(opcodeBinary,"101011"))){
-		strcpy(instructionAssembly,"sw");
+		swToAssembly();    // I ??
 	} else {
 		strcpy(instructionAssembly ,"Ixxxx");    //caso de Erro, nenhum instruction compativel encontrado
 	}	
-	concatenateIBinary(); // monta a linha
 }
 
 void concatenateRBinary()  //generates R type line Binary
@@ -1150,20 +1176,20 @@ void concatenateIBinary()	//generates I type line Binary
 	strcat (outputLine, rtAssembly);  //rs na verdade
 	strcat (outputLine, ",");
 	strcat (outputLine, rdAssembly);  //rt na verdade
-	strcat (outputLine, ",");
-	binary16ToChar(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
-	printf("teste imm: ");
-	puts(immediateAssembly);	
+	strcat (outputLine, ",");	
 	strcat (outputLine, immediateAssembly);  //necessita converter
 }
 
-void concatenateIUBinary()	//generates I type line Binary
+void concatenateIBinaryParenthesis()	//generates I type line Binary
 {
 	strcpy (outputLine, instructionAssembly);
+	strcat (outputLine, " ");
 	strcat (outputLine, rtAssembly);  //rs na verdade
+	strcat (outputLine, ",");
+	strcat (outputLine, immediateAssembly);  //necessita converter
+	strcat (outputLine, "(");
 	strcat (outputLine, rdAssembly);  //rt na verdade
-	binary16ToCharU(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
-	strcat (outputLine, immediateAssembly);
+	strcat (outputLine, ")");	
 }
 
 void concatenateJBinary()	//generates J type line Binary
@@ -1175,6 +1201,203 @@ void concatenateJBinary()	//generates J type line Binary
 	puts(addressAssembly);
 	puts(addressBinary);
 	strcat (outputLine, addressAssembly);
+}
+
+//  ### bloco de cada funcado de binary -> assembly
+void addToAssembly() // R
+{
+	strcpy(instructionAssembly,"add");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void adduToAssembly() // R
+{
+	strcpy(instructionAssembly,"addu");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void andToAssembly() // R
+{
+	strcpy(instructionAssembly,"and");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void jrToAssembly() // R
+{
+	strcpy(instructionAssembly,"jr");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void norToAssembly() // R
+{
+	strcpy(instructionAssembly,"nor");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void orToAssembly() // R
+{
+	strcpy(instructionAssembly,"or");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void sltToAssembly() // R
+{
+	strcpy(instructionAssembly,"slt");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void sltuToAssembly() // R
+{
+	strcpy(instructionAssembly,"sltu");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void sllToAssembly() // R
+{
+	strcpy(instructionAssembly,"sll");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void srlToAssembly() // R
+{
+	strcpy(instructionAssembly,"srl");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void subToAssembly() // R
+{
+	strcpy(instructionAssembly,"sub");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+
+void subuToAssembly() // R
+{
+	strcpy(instructionAssembly,"subu");
+	concatenateRBinary(outputLine);   // "empacota" a linha
+}
+// tipo I
+void addiToAssembly()  // I
+{
+	strcpy(instructionAssembly,"addi");
+	binary16ToChar(immediateBinary, immediateAssembly);   // converte os bits C2 para decimal
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void andiToAssembly()  // I
+{
+	strcpy(instructionAssembly,"andi");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void beqToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"beq");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void bneToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"bne");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void lbuToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"lbu");
+	binary16ToCharU(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void lhuToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"lhu");
+	binary16ToCharU(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void llToAssembly()  // I parenteses - rever
+{
+	strcpy(instructionAssembly,"ll");
+	binary16ToCharU(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void luiToAssembly()    // I
+{
+	strcpy(instructionAssembly,"lui");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void lwToAssembly()    // I
+{
+	strcpy(instructionAssembly,"lw");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void oriToAssembly()    // I
+{
+	strcpy(instructionAssembly,"ori");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void sltiToAssembly()    // I
+{
+	strcpy(instructionAssembly,"slti");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void sltiuToAssembly()    // IU
+{
+	strcpy(instructionAssembly,"sltiu");
+	binary16ToCharU(immediateBinary, immediateAssembly);
+	concatenateIBinary(outputLine);   // "empacota" a linha
+}
+
+void sbToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"sb");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void scToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"sc");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void shToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"sh");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void swToAssembly()  // I parenteses
+{
+	strcpy(instructionAssembly,"sw");
+	binary16ToChar(immediateBinary, immediateAssembly);
+	concatenateIBinaryParenthesis(outputLine);   // "empacota" a linha
+}
+
+void jToAssembly()  // J
+{
+	strcpy(instructionAssembly,"j");
+	concatenateJBinary(); // monta a linha
+}
+
+void jalToAssembly()  // J
+{
+	strcpy(instructionAssembly,"jal");
+	concatenateJBinary(); // monta a linha
 }
 
 #endif
