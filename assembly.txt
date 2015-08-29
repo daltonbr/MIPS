@@ -1,21 +1,6 @@
-sw $t6,160($zero)
-add $t2,$t0,$t1
-lw $t0,0($gp)
-srl $t0,$t0,1
-addi $t1,$gp,28
-sll $t0,$t0,2
-lw $t1,0($t1)
-loop:
-and $t5,$t1,$t2
-or $t5,$t1,$t2
-nor $t5,$t1,$t2
-beq $t0,$t1,loop
-slt $t5,$t1,$t2
-lhu $t1,$gp,28
-slti $t1,$gp,-28
-lbu $t1,0($t1)
-sh $t1,1($t1)
-lb $t1,1($t1)
-sb $t1,1($t1)
-sub $t2,$t0,$t1
-subu $t1,$gp,$s3
+lw $t0,4($t2)
+subi $t2,$t3,4
+add $t0,$t1,$t2
+beq $t0,$t1,1
+addi $t2,$t3,4
+sw $t0,8($t1)

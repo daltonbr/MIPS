@@ -1,0 +1,19 @@
+000000
+
+01001  RR1
+01010  RR2
+01000  WR
+00000
+
+100000
+
+
+SignalExtend
+
+16 bits -> 32 bits
+
+addi 
+
+opc + rs + rt + imm
+6   +  5 +  5 + 16
+

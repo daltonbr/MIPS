@@ -1,0 +1,19 @@
+Para esta segunda parte do trabalho, optamos por criar um programa independente,
+ optando por reutilizar a estrutura de Parser de arquivos binarios e identificacao 
+ das funcoes.
+
+Criamos 3 grandes estruturas:
+
+*InstructionMemory
+*RegisterFile
+*DataMemory
+
+Optamos por deixar as instrucoes ja devidamente escritas dentro do algoritmo (hardcoded)
+
+A DataMemory ja comecava com alguns valores pre-estabelecidos.
+
+Ao final do ciclo de instrucoes, checamos o valores presentes nas memorias e conferimos
+se todas as instrucoes foram executadas corretamente.
+
+Usamos para referencia o DataPath presente na pagina 307 da 3a edicao do livro.
+

@@ -242,3 +242,12 @@
 	- Agora basta colocar os arquivos na mesma pasta do main.exe
 	- Os arquivos devem se chamar OBRIGATORIAMENTE assembly.txt e binary.txt
 	- Os arquivos de saida sao gerados na mesma pasta
+	
+## Parte 2 do trabalho ##
+	
+[2.0.0] - 29/08/15 - Dalton
+* Criado mips.c e mips2.h
+	- Segundo modulo do programa.
+	- Usaremos menos estruturas e so trabalharemos com a parte binaria do programa
+		e focaremos em executar algumas instrucoes atualizando
+	- 3 structs criados memory, data e registers 
