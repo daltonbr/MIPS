@@ -1,7 +1,7 @@
-lw $t0,4($t2)
-addi $t2,$t3,4
-add $t0,$t1,$t2
-beq $t0,$t1,loop
-addi $t2,$t3,4
+lw $t0,4($t1)
+addi $t1,$zero,8
+add $t2,$t0,$t1
+beq $t2,$t3,loop
+addi $t3,$zero,0
 loop:
-sw $t0,8($t1)
+sw $t3,4($t1) 

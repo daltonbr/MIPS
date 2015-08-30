@@ -1,19 +1,106 @@
-000000
-
+000000 opcode
 01001  RR1
 01010  RR2
 01000  WR
 00000
+100000 funct
 
-100000
+
+/* 16 bits -> 32 bits
+funcao que recebe uma cadeia de 16bits (immediate)
+ e retorna esse numero com 32 bits (completa com zeros
+esquerda)
+*/
+int SignalExtend (int imm)
 
 
-SignalExtend
+/* ALU
+Recebe 2 int de 32 bits e opera com eles, de acordo com o sinal de controle aluOp (input de 2 bits, 4 possibildades)
+A saida pode ser um int 32 bits ou uma saida de 1 bit (chamada zero, usada pra definir os branch, beq e bne)
+*/
+int alu (int op1, int op2, int aluOp)
 
-16 bits -> 32 bits
+/*
+operacoes matematicas da ALU
+
+*/shift
+Recebe uma cadeia de 32 bits e faz shift de 'n' posicoes
+a esquerda ou direita
+31 < n < -31
+*/
+int shift(int word)
+
+
+/* Registers - pagina 295
+recebe 3 input de 5 bits:
+readRegister1 (5 bits)
+readRegister2 (5 bits)
+writeRegister (5 bits)
+writeData (32 bits)
+regWrite (controle 1 bit)
+
+output
+readData1 (32 bits)
+readData2 (32 bits)
 
 addi 
-
 opc + rs + rt + imm
 6   +  5 +  5 + 16
 
+
+Codigo
+lw $t0,4($t1)   // carrega em t0 t1+4 = [4+4] = [8] = 10  // t0 = 10
+
+addi $t1,$zero,8  // t1 <= 0+8 = 8
+add $t2,$t0,$t1   // t2 <= t0 + t1 = 10 + 8 = 18
+beq $t2,$t3,loop  // compara t2 e t3 - Devem ser iguais 18 = 18
+addi $t3,$zero,0  // pulamos esta linha (que setaria t3 = 0)
+loop:
+sw $t3,4($t1)     // guardamos o valor de t3 (18) na memoria em t1+4 = 8+4 = 12a posicao da memoria (4 linha)
+
+valores iniciais registradores
+$t0 00000 = 0
+$t1 00100 = 4
+$t2 00000 = 0
+$t3 10010 = 18
+
+valores iniciais memoria
+[00] 00000
+[04] 00000
+[08] 01010 = 10
+[12] 00000 
+[16] 00000
+[20] 00000
+
+primeira instrucao ( lw $t0,4($t1) ) - registradores
+$t0 01010 = 10
+$t1 00100 = 4
+$t2 00000 = 0
+$t3 10010 = 18
+
+segunda instrucao ( addi $t1,$zero,8 ) - registradores
+$t0 01010 = 10
+$t1 01000 = 8
+$t2 00000 = 0
+$t3 10010 = 18
+
+terceira instrucao ( add $t2,$t0,$t1 ) - registradores
+$t0 01010 = 10
+$t1 01000 = 8
+$t2 10010 = 18
+$t3 10010 = 18
+
+quarta instrucao ( beq $t2,$t3,loop )
+Comparamos t2 e t3 e como eles sao iguais, tomamos o branch e pulamos a linha seguinte
+
+quinta instrucao ( sw $t3,4($t1) )
+Guardamos o valor de t3 (18) em t1+4 (base + offset) = (8+4) = 12
+Assim a memoria ma posicao 12 deverá conter 18 ao final do programa.
+
+valores finais da memoria
+[00] 00000
+[04] 00000
+[08] 01010 = 10
+[12] 10010 = 18
+[16] 00000
+[20] 00000
