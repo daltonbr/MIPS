@@ -254,3 +254,6 @@
 	
 [2.1.0] - 29/08/15 - Dalton
 * Reestruturando o parse das instrucoes
+
+[2.1.1] - 29/08/15 - Dalton
+* Alterado algumas instrucoes - somente dados

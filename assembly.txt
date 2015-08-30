@@ -1,6 +1,7 @@
 lw $t0,4($t2)
-subi $t2,$t3,4
-add $t0,$t1,$t2
-beq $t0,$t1,1
 addi $t2,$t3,4
+add $t0,$t1,$t2
+beq $t0,$t1,loop
+addi $t2,$t3,4
+loop:
 sw $t0,8($t1)
