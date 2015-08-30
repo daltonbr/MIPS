@@ -68,9 +68,6 @@ void charTo16BitsU (char *charInput, char *charOutput);
 void charTo5BitsU (char *charInput, char *charOutput);
 void charTo26BitsU (char *charInput, char *charOutput); // usada nas funcoes J  //ou nao?
 void ripBinaryLabel();
-void ripBinaryR();
-void ripBinaryI();
-void ripBinaryJ();
 void binary16ToChar(char *charInput, char *charOutput);
 void binary5ToCharU(char *charInput, char *charOutput);  // converte binarios em decimal char C2
 void binary16ToCharU(char *charInput, char *charOutput); // converte binarios em decimal char Unsigned
@@ -543,44 +540,21 @@ void getOpcodeBinary (char *inputLine)
 
 void ripDataBinary(char *opcodeBinary)
 {
+	strncpy(rsBinary, inputLine + 6, 5);  // faz o split de acordo com a funcao R
+	strncpy(rtBinary, inputLine + 11, 5);
+	strncpy(rdBinary, inputLine + 16, 5);
+	strncpy(shamtBinary, inputLine + 21, 5);
+	strncpy(functBinary, inputLine + 26, 6);
+	strncpy(addressBinary, inputLine + 6, 26);   // faz o split de acordo com a funcao J
+	strncpy(immediateBinary, inputLine + 16, 16);
+
 	if (!(strcmp(opcodeBinary,"000000"))){  // R
-		ripBinaryR();
+		instructionR();
 	} else if ( (!(strcmp(opcodeBinary,"000010"))) || (!(strcmp(opcodeBinary,"000011"))) ){  // J
-		ripBinaryJ();
+		instructionJ();
 	} else {  // I
-		ripBinaryI();
+		instructionI();
 	}
-}
-
-void ripBinaryR()
-{
-	strncpy(rsBinary, inputLine+6, 5);  // faz o split de acordo com a funcao R
-	strncpy(rtBinary, inputLine+11, 5);
-	strncpy(rdBinary, inputLine+16, 5);
-	strncpy(shamtBinary, inputLine+21, 5);
-	strncpy(functBinary, inputLine+26, 6);
-	
-	//registerToAssembly(rsBinary, rsAssembly);  // converte os registros
-	//registerToAssembly(rtBinary, rtAssembly);
-	//registerToAssembly(rdBinary, rdAssembly);
-	instructionR ();  // escreve o funct na global
-}
-
-void ripBinaryJ()
-{
-	strncpy(addressBinary, inputLine+6, 26);   // faz o split de acordo com a funcao J
-	instructionJ ();  // escreve o funct na global
-}
-
-void ripBinaryI()
-{
-	strncpy(rsBinary, inputLine+6, 5);   // faz o split de acordo com a funcao I
-	strncpy(rtBinary, inputLine+11, 5);
-	strncpy(immediateBinary, inputLine+16, 16);
-	
-//	registerToAssembly(rsBinary, rsAssembly);  // converte os registros
-//	registerToAssembly(rtBinary, rtAssembly);
-	instructionI ();
 }
 
 // funcao que converte um registro binario em assembly

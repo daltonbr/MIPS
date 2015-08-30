@@ -251,3 +251,6 @@
 	- Usaremos menos estruturas e so trabalharemos com a parte binaria do programa
 		e focaremos em executar algumas instrucoes atualizando
 	- 3 structs criados memory, data e registers 
+	
+[2.1.0] - 29/08/15 - Dalton
+* Reestruturando o parse das instrucoes

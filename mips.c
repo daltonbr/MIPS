@@ -19,6 +19,9 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 #include "mips2.h"
 //#include "filemanager.h"
 
+//#define INSTRUCTION_LENGTH = 6
+static const int INSTRUCTION_LENGTH = 6;
+
 //Global Variables
 char inputLine[33];
 
@@ -64,10 +67,13 @@ void clearScreen()
 int main () 
 {
 	char opcao = ' ';
-	instruction instructionMemory[3] = {
-		{0,"00000000111111110000000011111111"},
-		{1,"22222222333333332222222233333333"},
-		{2,"44444444555555554444444455555555"}
+	instruction instructionMemory[6] = {
+		{0,"10001101000010100000000000000100"},
+		{1,"10001101000010100000000000000100"},
+		{2,"00000001010010000100100000100000"},
+		{3,"00010001000010011111111111111011"},
+		{4,"00100001010010110000000000000100"},
+		{5,"10101101000010010000000000001000"}
     };
 	
 		data dataMemory[5] = 
@@ -88,42 +94,47 @@ int main ()
 		{"00100","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}  //4
 	};
 
-printf("MIPS!\n" );
+	clearScreen();
+	printf("MIPS!\n" );
 
-// Trabalharemos somente com binarios
+	// Trabalharemos somente com binarios
 
-inputLine[0] = '\0';  // zera a linha de entrada
-int i = 0;
-for ( i = 0; i < 3; i++ )
-{
-	//printf("\nOpcao: %c", opcao);
-
-	strcpy(inputLine, instructionMemory[i].instructionLine); //copia a instrucao para um buffer temporario
-
-	printf("\nInstrucao %d:", instructionMemory[i].instructionAddress);  //imprime o indice da instrucao
-	puts (inputLine);			// inputLine contem a instrucao a ser trabalhada
-/*	
-	getOpcodeBinary(inputLine);
-	ripDataBinary(opcodeBinary);
+	inputLine[0] = '\0';  // zera a linha de entrada
+	int i;
 	
-	printf("RS:");
-	puts(rsBinary);
-	printf("RT:");
-	puts(rtBinary);
-	printf("RD:");
-	puts(rdBinary);
-	printf("Shamt:");
-	puts(shamtBinary);
-	printf("Funct:");
-	puts(functBinary);
-	printf("immed:");
-	puts(immediateBinary);
-	printf("Address:");
-	puts(addressBinary);
-*/
-	printf("\nDigite 0 para sair, ou qualquer outra tecla pra continuar...");
-	scanf(" %c", &opcao);
-}
+	for ( i = 0 ; i < INSTRUCTION_LENGTH; i++ )  //efetua um ciclo, ate o fim das instrucoes
+	{
+		//printf("\nOpcao: %c", opcao);
+
+		strcpy(inputLine, instructionMemory[i].instructionLine); //copia a instrucao para um buffer temporario
+
+		printf("\nInstrucao %d:\n", instructionMemory[i].instructionAddress);  //imprime o indice da instrucao
+		puts (inputLine);			// inputLine contem a instrucao a ser trabalhada
+	
+		getOpcodeBinary(inputLine);  // ripa o OpCode
+		printf("\nOpcode: "); puts(opcodeBinary);
+		ripDataBinary(opcodeBinary); // ripa o restante dos dados
+					
+		printf("RS:");
+		puts(rsBinary);
+		printf("RT:");
+		puts(rtBinary);
+		printf("RD:");
+		puts(rdBinary);
+		printf("Shamt:");
+		puts(shamtBinary);
+		printf("Funct:");
+		puts(functBinary);
+		printf("immed:");
+		puts(immediateBinary);
+		printf("Address:");
+		puts(addressBinary);
+	
+		printf("\nDigite qualquer tecla pra continuar...");
+		getch();
+		clearScreen();
+		//scanf(" %c", &opcao);
+	}
 
 return 0;
 }
