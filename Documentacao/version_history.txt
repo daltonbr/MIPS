@@ -257,3 +257,6 @@
 
 [2.1.1] - 29/08/15 - Dalton
 * Alterado algumas instrucoes - somente dados
+
+[2.1.2] - 30/08/15 - Dalton
+* Registradores adicionados e algumas melhorias em dados
