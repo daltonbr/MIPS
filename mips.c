@@ -146,9 +146,9 @@ void printRegisters()
 
 void printDataMemory()
 {
-	printf("\n ### DataMemory ###\n"); //0 a 4
+	printf("\n ### DataMemory ###\n"); //1 a 3
 	int i;
-	for (i = 0; i < 5; i++)
+	for (i = 1; i < 4; i++)
 	{
 		printf("Posicao: %d - Dados: ", (dataMemory[i]).dataAddress);
 		puts((dataMemory[i]).DataLine);
@@ -214,8 +214,8 @@ void alu()
 			AluZero = '1';  // valores iguais, sinal de controle asserted
 		}
 		printf(" %c", AluZero);
-		puts(reg1Out);
-		puts(aluSource2);
+		//puts(reg1Out);
+		//puts(aluSource2);
 	}
 }
 
@@ -224,20 +224,54 @@ void registerOut()
 	int i;
 	for (i = 0; i < 32; i++)
 	{
-		if (strcmp(rsBinary, registerFile[i].RegisterNumber))
+		if (! strcmp(opcodeBinary, "000000") )  //se for instrucao tipo R, beq ou bne...
 		{
-			strcpy(reg1Out, registerFile[i].registerData);
-			break;
+			if (!strcmp(rsBinary, registerFile[i].RegisterNumber))  //pegamos reg1 do RS
+			{
+				strcpy(reg1Out, registerFile[i].registerData);
+				break;
+			}
+		}
+		else  // tipo I ou J, entao pegamos reg1 do RT
+		{
+			if (!strcmp(rtBinary, registerFile[i].RegisterNumber))
+			{
+				strcpy(reg1Out, registerFile[i].registerData);
+				break;
+			}
 		}
 	}
 	for (i = 0; i < 32; i++)
 	{
-		if (strcmp(rtBinary, registerFile[i].RegisterNumber))
+		if ((!strcmp(opcodeBinary, "000100")) || (!strcmp(opcodeBinary, "000101")))
+		{
+			if (!strcmp(rtBinary, registerFile[i].RegisterNumber))
+			{
+				strcpy(reg2Out, registerFile[i].registerData);
+				break;
+			}
+		}
+		else
+		if (!strcmp(rdBinary, registerFile[i].RegisterNumber))
 		{
 			strcpy(reg2Out, registerFile[i].registerData);
 			break;
 		}
 	}
+	
+	if (!strcmp(opcodeBinary, "101011")) // especial para o SW
+	{
+		for (i = 0; i < 32; i++)
+		{
+			if (!strcmp(rsBinary, registerFile[i].RegisterNumber))
+			{
+				strcpy(reg2Out, registerFile[i].registerData);
+				break;
+			}
+		}
+	}
+	printf("\nReg1Out: "); puts(reg1Out);
+	printf("Reg2Out: "); puts(reg2Out);
 }
 
 int verifyBranch()
@@ -255,45 +289,129 @@ int verifyBranch()
 		return 0;
 }
 
+void memoryHandler()
+{
+	int memoryAddress;
+	char temp[33];
+	if (memWrite == '1')
+	{
+		memoryAddress = binary32ToChar(aluOut, temp);
+		//memoryAddress = atoi(aluOut);  // converte endereco para decimal inteiro
+		printf("Debug: MemoryAddress to be Written %d (integer) / 4 = %d ", memoryAddress, memoryAddress / 4); // endereco onde escrevemos na memoria
+		strcpy( dataMemory[memoryAddress/4].DataLine, reg2Out ); //copia os dados na memoria
+		printf("\nDados do Registrador 2 a serem escritos: "); puts(reg2Out);
+	}
+
+	if (memRead == '1')
+	{
+		memoryAddress = binary32ToChar(aluOut, temp);
+		printf("Debug: MemoryAddress to be Read %d (integer) / 4 = %d ", memoryAddress, memoryAddress/4); // endereco onde leremos da memoria
+		strcpy(memOut, dataMemory[memoryAddress/4].DataLine); //copia os dados na memoria
+		printf("\nDados a serem lidos da memoria: "); puts(memOut);
+	}
+
+}
+
+void writeBack() // no banco de registradores
+{
+	char writeAddress[6];
+	char writeData[33];
+	int i;
+		
+	if (regWrite == '1')   //se formos escrever
+	{
+		if (regDst == '1') // Define em qual registrador sera escrito
+		{   // add
+			strcpy(writeAddress, rtBinary);
+		}
+		else
+		{   // addi, lw, sw, beq (os dois ultimos nao fazem Write Back)
+			strcpy(writeAddress, rsBinary);
+		}
+
+		if (memToReg == '1')  // define de onde vem os dados a serem escritos
+		{
+			strcpy(writeData, memOut);  // dados vem da saida de memoria
+		}
+		else
+		{
+			strcpy(writeData, aluOut);  // dados vem diretamente da Alu
+		}
+
+		// escrevendo efetivamente os dados
+		for (i = 0; i < 32; i++)
+		{
+			if  (!strcmp(registerFile[i].RegisterNumber, writeAddress) )
+			{
+				strcpy(registerFile[i].registerData, writeData);
+				break;
+			}
+		}
+	}
+}
+
 int main () 
 {
 	clearScreen();
-	// Trabalharemos somente com binarios
+
+	printf("\n --== Estados iniciais da Memoria e dos Registradores ==--\n\n");
+	printDataMemory(); //  imprime estado da Memoria
+	printRegisters();  //  imprime estado dos registradores
+
+	printf("\nDigite qualquer tecla pra continuar...");
+	getch();
+	clearScreen();
 
 	inputLine[0] = '\0';  // zera a linha de entrada
-	int PC;
+	int PC;  // nosso Program Counter
 	
-	for ( PC = 0 ; PC < INSTRUCTION_LENGTH; PC++ )  //efetua um ciclo, ate o fim das instrucoes
+	for ( PC = 0 ; PC < INSTRUCTION_LENGTH; PC++ )  //efetua um ciclo, ate o fim das instrucoes, o numero de instrucoes eh fixo
 	{
-		// ### Instruction Fetch
+		// ### (1o estagio) Instruction Fetch
 		strcpy(inputLine, instructionMemory[PC].instructionLine); //copia a instrucao para um buffer temporario
 
 		printf("\nInstrucao %d:\n", instructionMemory[PC].instructionAddress);  //imprime o indice da instrucao
 		puts (inputLine);			// inputLine contem a instrucao a ser trabalhada
 	
-		// ### instuction Decode - Parse
+		// ### (2o estagio) instuction Decode - Parse
 		getOpcodeBinary(inputLine);  // ripa o OpCode
 		printf("\nOpcode: "); puts(opcodeBinary);
-		ripDataBinary(opcodeBinary); // ripa o restante dos dados
+		ripDataBinary(opcodeBinary); // ripa o restante dos dados - parse
 					
-		signExtender(); // entendo o immediate
+		signExtender(); // entende o immediate
 		
 		registerOut(); // retorna os valores de saida de registradores para buffers (variaveis globais)
+		
+		// ### (3o estagio) Execution		
 		alu();         // operacoes aritmeticas da ALU
 		PC = PC + verifyBranch();    // verifica atraves de "AluZero" e "Branch" e em caso necessario, altera o PC para tomarmos o branch
-		
-		// ### somente imprimindo dados para conferencia na tela
+
+		// ### somente imprimindo dados para conferencia
 		printInstruction(); // imprime as instrucoes ja devidamente separadas
 		printDataMemory(); //  imprime estado da Memoria
 		printRegisters();  //  imprime estado dos registradores
+
+		// ### (4o estagio) Memory 
+		memoryHandler();  // gerencia as operacoes na memoria
+						  
+		// ### (5o estagio) WriteBack
+		writeBack();
+
 		
+
 		printf("\nDigite qualquer tecla pra continuar...");
 		getch();
-		clearScreen();
-
-
-
+		clearScreen();		
 	}
 
+	// checagem final das memorias e dos registradores!
+	printf("\n --== Resultado Final ==--\n\n");
+
+	printDataMemory(); //  imprime estado da Memoria
+	printRegisters();  //  imprime estado dos registradores
+
+	printf("\nDigite qualquer tecla pra finalizar!");
+	getch();
+	
 return 0;
 }

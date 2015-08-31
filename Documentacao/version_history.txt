@@ -260,3 +260,9 @@
 
 [2.1.2] - 30/08/15 - Dalton
 * Registradores adicionados e algumas melhorias em dados
+
+[3.0.0] - 31/08/15 - Dalton
+* Programa concluido
+	- Executando todas as operacoes propostas (lw, add, addi, beq, sw)
+	- Sinais de controle funcionando para definir o fluxo das instrucoes
+	- Banco de memorias, registradores iniciam e terminam com os valores esperados
