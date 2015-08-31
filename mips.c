@@ -17,9 +17,7 @@ Lucas Pinheiro - pinheiro.lucasaugusto@gmail.com
 #include <stdlib.h>
 #include <string.h>  //strcpy()
 #include "mips2.h"
-//#include "filemanager.h"
 
-//#define INSTRUCTION_LENGTH = 6
 static const int INSTRUCTION_LENGTH = 6;
 
 //Global Variables
@@ -34,8 +32,25 @@ char functBinary[7];
 char immediateBinary[17];   // exclusive type I
 char addressBinary[27]; 	// exclusive type J
 
-char instructionAssembly[6];     // G Var for Assembly
+// buffers de saida
+char signExtend[33];
+char reg1Out[33];   // saidas dos banco de registradores
+char reg2Out[33];
+char aluOut[33];    // saida da ALU principal
+char memOut[33];	// saida da memoria
 
+// sinais de controle
+char regWrite = '0';
+char regDst = '0';
+char AluSrc = '0';
+char AluOp = '0';
+char AluZero = '0';
+char memRead = '0';
+char memWrite = '0';
+char memToReg = '0';
+char branch = '0';
+
+char instructionAssembly[6];     // G Var for Assembly
 int PC = 0;         		// Program Counter
 
 struct instruction {
@@ -119,7 +134,7 @@ void clearScreen()
 
 void printRegisters()
 {	
-	printf("\nRegistradores:\n"); //8 a 11
+	printf("\n ### Registradores ###\n"); //8 a 11
 	int i;
 	for (i = 8; i < 12; i++)
 	{
@@ -131,7 +146,7 @@ void printRegisters()
 
 void printDataMemory()
 {
-	printf("\nDataMemory:\n"); //0 a 4
+	printf("\n ### DataMemory ###\n"); //0 a 4
 	int i;
 	for (i = 0; i < 5; i++)
 	{
@@ -140,54 +155,142 @@ void printDataMemory()
 	}
 }
 
+void printInstruction()
+{
+	printf("RS:");	puts(rsBinary);
+	printf("RT:");	puts(rtBinary);
+	printf("RD:"); 	puts(rdBinary);
+	printf("Shamt:"); puts(shamtBinary);
+	printf("Funct:"); puts(functBinary);
+	printf("immed:"); puts(immediateBinary);
+	printf("Address:");	puts(addressBinary);
+	printf("SignExtended: "); puts(signExtend);
+	printf("AluOut: "); puts(aluOut);
+	printf("AluZero: %c", AluZero);
+}
+
+void signExtender()
+{
+	strcpy(signExtend, immediateBinary);
+	padZero(signExtend, 32);
+}
+
+void alu()
+{
+	char aluSource2[33];
+	char temp1[33];
+	char temp2[33];
+	int int1, int2, soma;
+	AluZero = '0';  // soh pra resetar
+
+	if (AluSrc == '0')
+	{
+		strcpy(aluSource2, reg2Out);
+	}
+	else
+	{
+		strcpy(aluSource2, signExtend);
+	}
+
+	if (AluOp == '0') //soma
+	{
+		int1 = binary32ToChar(reg1Out, temp1);  //converte pra inteiro as entradas
+		int2 = binary32ToChar(aluSource2, temp2);
+		soma = int1 + int2;  // soma os inteiros
+		itoa(soma, temp1, 10);  // converte pra texto
+		charTo32Bits(temp1, aluOut);  // converte pra texto binario e ja da a saida
+	}
+	else // beq - compara igualdade entre os operando
+	{
+		printf("\nALu em modo igualdade\n");
+		printf("Alu1: "); puts(reg1Out);
+		printf("Alu2: "); puts(aluSource2);
+		if (strcmp(reg1Out, aluSource2)) // retorna 0 qdo iguais 
+		{
+			AluZero = '0';  // valores diferentes
+		}
+		else
+		{
+			AluZero = '1';  // valores iguais, sinal de controle asserted
+		}
+		printf(" %c", AluZero);
+		puts(reg1Out);
+		puts(aluSource2);
+	}
+}
+
+void registerOut()
+{
+	int i;
+	for (i = 0; i < 32; i++)
+	{
+		if (strcmp(rsBinary, registerFile[i].RegisterNumber))
+		{
+			strcpy(reg1Out, registerFile[i].registerData);
+			break;
+		}
+	}
+	for (i = 0; i < 32; i++)
+	{
+		if (strcmp(rtBinary, registerFile[i].RegisterNumber))
+		{
+			strcpy(reg2Out, registerFile[i].registerData);
+			break;
+		}
+	}
+}
+
+int verifyBranch()
+{
+	int signExtInteger = atoi(signExtend);
+
+	if (branch == '1' && AluZero == '1')
+	{
+		PC = PC + signExtInteger;
+		printf("\nDebug: Tomando o branch incrementando %d instrucoes\n", signExtInteger);
+		//printf("\nDebug: %d\n", PC);
+		return signExtInteger;
+	}
+	else
+		return 0;
+}
 
 int main () 
 {
-	char opcao = ' ';
-
 	clearScreen();
 	// Trabalharemos somente com binarios
 
 	inputLine[0] = '\0';  // zera a linha de entrada
-	int i;
+	int PC;
 	
-	for ( i = 0 ; i < INSTRUCTION_LENGTH; i++ )  //efetua um ciclo, ate o fim das instrucoes
+	for ( PC = 0 ; PC < INSTRUCTION_LENGTH; PC++ )  //efetua um ciclo, ate o fim das instrucoes
 	{
-		//printf("\nOpcao: %c", opcao);
+		// ### Instruction Fetch
+		strcpy(inputLine, instructionMemory[PC].instructionLine); //copia a instrucao para um buffer temporario
 
-		strcpy(inputLine, instructionMemory[i].instructionLine); //copia a instrucao para um buffer temporario
-
-		printf("\nInstrucao %d:\n", instructionMemory[i].instructionAddress);  //imprime o indice da instrucao
+		printf("\nInstrucao %d:\n", instructionMemory[PC].instructionAddress);  //imprime o indice da instrucao
 		puts (inputLine);			// inputLine contem a instrucao a ser trabalhada
 	
+		// ### instuction Decode - Parse
 		getOpcodeBinary(inputLine);  // ripa o OpCode
 		printf("\nOpcode: "); puts(opcodeBinary);
 		ripDataBinary(opcodeBinary); // ripa o restante dos dados
 					
-		printf("RS:");
-		puts(rsBinary);
-		printf("RT:");
-		puts(rtBinary);
-		printf("RD:");
-		puts(rdBinary);
-		printf("Shamt:");
-		puts(shamtBinary);
-		printf("Funct:");
-		puts(functBinary);
-		printf("immed:");
-		puts(immediateBinary);
-		printf("Address:");
-		puts(addressBinary);
+		signExtender(); // entendo o immediate
 		
-		printDataMemory(); //imprime estado da Memoria
-		printRegisters();  //imprime estado dos registradores
-
+		registerOut(); // retorna os valores de saida de registradores para buffers (variaveis globais)
+		alu();         // operacoes aritmeticas da ALU
+		PC = PC + verifyBranch();    // verifica atraves de "AluZero" e "Branch" e em caso necessario, altera o PC para tomarmos o branch
+		
+		// ### somente imprimindo dados para conferencia na tela
+		printInstruction(); // imprime as instrucoes ja devidamente separadas
+		printDataMemory(); //  imprime estado da Memoria
+		printRegisters();  //  imprime estado dos registradores
+		
 		printf("\nDigite qualquer tecla pra continuar...");
 		getch();
 		clearScreen();
 
-
-		//scanf(" %c", &opcao);
 
 
 	}

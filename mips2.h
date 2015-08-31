@@ -16,8 +16,26 @@ extern char functBinary[7];
 extern char immediateBinary[17];   // exclusive type I
 extern char addressBinary[27]; 	// exclusive type J
 
-extern char instructionAssembly[6];     // G Var for Assembly
+// buffers de saida
+extern char signExtend[33];
+extern char reg1Out[33];   // saidas dos banco de registradores
+extern char reg2Out[33];
+extern char aluOut[33];    // saida da ALU principal
+extern char memOut[33];	// saida da memoria
 
+
+// sinais de controle
+extern char regWrite;
+extern char regDst;
+extern char AluSrc;
+extern char AluOp;
+extern char AluZero;
+extern char memRead;
+extern char memWrite;
+extern char memToReg;
+extern char branch;
+
+extern char instructionAssembly[6];     // G Var for Assembly
 extern int PC;         // Program Counter
 
 // fim da declaracao de Global Variables
@@ -67,11 +85,13 @@ void charTo16Bits (char *charInput, char *charOutput);
 void charTo16BitsU (char *charInput, char *charOutput);
 void charTo5BitsU (char *charInput, char *charOutput);
 void charTo26BitsU (char *charInput, char *charOutput); // usada nas funcoes J  //ou nao?
+void charTo32Bits(char *charInput, char *charOutput);
 void ripBinaryLabel();
 void binary16ToChar(char *charInput, char *charOutput);
 void binary5ToCharU(char *charInput, char *charOutput);  // converte binarios em decimal char C2
 void binary16ToCharU(char *charInput, char *charOutput); // converte binarios em decimal char Unsigned
-void binary26ToCharU(char *charInput, char *charOutput);
+int binary32ToChar(char *charInput, char *charOutput);
+void not (char *string); // inverte 0 pra 1 e vice-versa
 
 // # funcoes Assembly -> Binary
 void registerToAssembly(char *registerBinary, char *registerAssembly);
@@ -112,7 +132,30 @@ void swToAssembly();  // I parenteses
 void jToAssembly();  // J
 void jalToAssembly();  // J
 
+//recebe duas strings por referencia, sendo a primeiro uma string em binário 32bits
+//segunda("a saída") em uma string representando inteiro
+int binary32ToChar(char *charInput, char *charOutput)
+{
+	int aux = 0;
+	char tempInput[33];
 
+	if (charInput[0] == '0') // o ultimo bit, em complemento de 2, é reservado para a representação de sinal, entao se ele for '0' significa que o numero é positivo
+	{
+		strcpy(tempInput, charInput);
+		aux = strtol(tempInput, &charOutput, 2); // função que converte binary, em uma string, para um decimal em outra string
+		itoa(aux, charOutput, 10);
+		//printf("Debug valor conversao: %ld\n", aux);
+	}
+	else // tratamento para numeros negativo
+	{
+		strcpy(tempInput, charInput);
+		not(tempInput);
+		aux = strtol(tempInput, &charOutput, 2);
+		aux = (aux + 1) * -1;
+		itoa(aux, charOutput, 10);
+	}
+	return aux;
+}
 
 //soma binaria - desconsidera carry - nao verifica inputs
 int xor(int a, int b)
@@ -472,6 +515,36 @@ void charTo26BitsU (char *charInput, char *charOutput)
 	}
 }
 
+// recebe duas strings por referencia, a primeira eh a entrada ("numeros")
+//  a segunda devolve a string de binário em Complemento de 2 em 32 bits
+void charTo32Bits(char *charInput, char *charOutput)
+{
+
+	int num = atoi(charInput);   //num receberá o char passado para int	
+
+	if (-32768 <= num < 32768)
+	{
+		if (num >= 0) // se o numero é maior que 0, é passado pra binário normalmente
+		{
+			//itoa(int ,char* ,base int);
+			itoa(num, charOutput, 2); // converte o numero intero 'num' em um binário de base 2 e coloca na string 'charBinary'
+			padZero(charOutput, 32);  //completa com zeros
+		}
+		else
+		{
+			itoa((num*(-1)) - 1, charOutput, 2); // se o numero é negativo, ele é passado pra positivo (e subtraimos 1)
+			padZero(charOutput, 32);  //completa com zeros
+			not (charOutput);   	// complemento do array
+		}
+	}
+	else
+	{
+		printf("Debug: Erro na funcao charTo32Bits!");
+		strcpy(charOutput, "XXXXXXXXXXXXXXXX");  // saida de erro
+	}
+}
+
+
 /*
 //recebe duas strings por referencia, sendo a primeiro uma string em binário 16bits
 //segunda("a saída") em uma string representando inteiro
@@ -629,11 +702,18 @@ void registerToAssembly(char *registerBinary, char *registerAssembly)
 	}
 }
 
-
 //  ### bloco de cada funcado de binary -> assembly
 void addToAssembly() // R
 {
 	strcpy(instructionAssembly, "add");
+	regWrite = '1';
+	regDst = '1';
+	AluSrc = '0';
+	AluOp = '0';
+	memRead = '0';
+	memWrite = '0';
+	memToReg = '0';
+	branch = '0';
 }
 
 void adduToAssembly() // R
@@ -694,6 +774,14 @@ void subuToAssembly() // R
 void addiToAssembly()  // I
 {
 	strcpy(instructionAssembly, "addi");
+	regWrite = '1';
+	regDst = '0';
+	AluSrc = '1';
+	AluOp = '0';
+	memRead = '0';
+	memWrite = '0';
+	memToReg = '0';
+	branch = '0';
 }
 
 void andiToAssembly()  // I
@@ -704,6 +792,14 @@ void andiToAssembly()  // I
 void beqToAssembly()  // I
 {
 	strcpy(instructionAssembly, "beq");
+	regWrite = '0';
+	regDst = '0';
+	AluSrc = '0';
+	AluOp = '1';
+	memRead = '1';
+	memWrite = '0';
+	memToReg = '0';
+	branch = '1';
 }
 
 void bneToAssembly()  // I
@@ -734,6 +830,14 @@ void luiToAssembly()    // I
 void lwToAssembly()    // I parenteses
 {
 	strcpy(instructionAssembly, "lw");
+	regWrite = '1';
+	regDst = '0';
+	AluSrc = '1';
+	AluOp = '0';
+	memRead = '1';
+	memWrite = '0';
+	memToReg = '1';
+	branch = '0';
 }
 
 void oriToAssembly()    // I
@@ -769,6 +873,14 @@ void shToAssembly()  // I parenteses
 void swToAssembly()  // I parenteses
 {
 	strcpy(instructionAssembly, "sw");
+	regWrite = '0';
+	regDst = '0';
+	AluSrc = '1';
+	AluOp = '0';
+	memRead = '0';
+	memWrite = '1';
+	memToReg = '0';
+	branch = '0';
 }
 
 void jToAssembly()  // J

@@ -50,7 +50,6 @@ opc + rs + rt + imm
 
 Codigo
 lw $t0,4($t1)   // carrega em t0 t1+4 = [4+4] = [8] = 10  // t0 = 10
-
 addi $t1,$zero,8  // t1 <= 0+8 = 8
 add $t2,$t0,$t1   // t2 <= t0 + t1 = 10 + 8 = 18
 beq $t2,$t3,loop  // compara t2 e t3 - Devem ser iguais 18 = 18
@@ -104,3 +103,53 @@ valores finais da memoria
 [12] 10010 = 18
 [16] 00000
 [20] 00000
+
+### lw
+regWrite = '1';
+regDst = '0';
+AluSrc = '1';
+AluOp = '0';
+memRead = '1';
+memWrite = '0';
+memToReg = '1';
+branch = '0';
+
+### add
+regWrite = '1';
+regDst = '1';
+AluSrc = '0';
+AluOp = '0';
+memRead = '0';
+memWrite = '0';
+memToReg = '0';
+branch = '0';
+
+### addi
+regWrite = '1';
+regDst = '0';
+AluSrc = '0';
+AluOp = '1';
+memRead = '0';
+memWrite = '0';
+memToReg = '0';
+branch = '0';
+
+### beq
+regWrite = '0';
+regDst = '0';
+AluSrc = '0';
+AluOp = '1';
+memRead = '1';
+memWrite = '0';
+memToReg = '0';
+branch = '1';
+
+### sw
+regWrite = '0';
+regDst = '0';
+AluSrc = '1';
+AluOp = '0';
+memRead = '0';
+memWrite = '1';
+memToReg = '0';
+branch = '0';
