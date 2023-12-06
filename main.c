@@ -41,16 +41,16 @@ char shamtAssembly[3];      // 2^5 = 32 (max) - 2 caracteres
 //char functAssembly[6];
 
 char immediateAssembly[6];   // 2^16 = 65538 (max) - 5 caracteres
-char addressAssembly[27]; 	// definimos address com 
-char labelAssembly[20];    // label para funcoes bne e beq
-int pcAssembly = 0;         // Program Counter Assembly (numero da linha lida)
+char addressAssembly[27]; 	// we define address with
+char labelAssembly[20];    // label for bne and beq functions
+int pcAssembly = 0;         // Program Counter Assembly (line number read)
 
-// fim da declaracao de Global Variables
+// end of Global Variables declaration
 void printPointer(char *string, int length);
 
 int main () 
 {
-	fillJumpAdressTable();   // varre o arquivo de entrada em busca de Labels e cria uma tabela
+	fillJumpAdressTable();   // scans the input file for Labels and creates a table
 		
 	unsigned long totalLines = 0;
 	FILE *inputFile, *outputFile;
@@ -59,9 +59,9 @@ int main ()
 
 //conta linha do binary1.txt
 totalLines = countLine ();
-printf("\nNumero de linhas em binary1.txt : %lu \n", totalLines);
+printf("\nNumber of lines in binary1.txt : %lu \n", totalLines);
 
-char instructionName[6];  // guarda um nome de instrucao. Ex: "add", "sltu". Os casos maiores sao "addiu" + terminator = 6 espacos
+char instructionName[6];  // stores an instruction name. Ex: "add", "sltu". The largest cases are "addiu" + terminator = 6 spaces
 
 inputFile = fopen("./assembly.txt", "r");
 outputFile = fopen("./outputBinary.txt", "w");
@@ -73,37 +73,37 @@ outputFile = fopen("./outputBinary.txt", "w");
 			// "a+"	Opens a file for reading and appending.
 	if (!outputFile)
 	{
-		printf("\nerro ao abrir arquivo de escrita!\n");
+		printf("\nerror opening writing file!\n");
 	}
-	else  // arquivo de escrita aberto corretamente
+	else  // write file opened correctly
 	{
 		if (!inputFile)
 		{
-			printf("\nerro ao abrir arquivo de leitura!\n");
+			printf("\nerror opening reading file!\n");
 		}
-		else   // arquivo de leitura aberto corretamente
+		else   // read file opened correctly
 		{
-			printf("\narquivo Assembly aberto com sucesso!\n");				
+			printf("\nAssembly file opened successfully!\n");				
 			while (fgets (inputLine, 129, inputFile) ) 
 			{	
 				printf("\nInput Assembly: ");
-				puts (inputLine);				// inputLine contem a linha a ser trabalhada
-				pcAssembly++;    //var global que conta o Program Counter (Assembly)
-				printf("\nLinha (pc) = %d \n", pcAssembly);  //soh imprime a linha atual
+				puts (inputLine);				// inputLine contains the line to be worked on
+				pcAssembly++;    //global var that counts the Program Counter (Assembly)
+				printf("\nLine (pc) = %d \n", pcAssembly);  //prints current line
 				
-				if ( !isLabel(inputLine) ) // se a linha eh um NAO eh label executa a linha, senao incrementa o PC e vai pra proxima linha			
+				if ( !isLabel(inputLine) ) // if the line is a NO, the label executes the line, otherwise it increments the PC and goes to the next line		
 				{
-					strcpy (instructionName, getNameAssembly(inputLine) );  //extrai a primeira palavra e copia em instructionName
-					ripDataAssembly(inputLine);   // extrai alguns elementos da linha (registros e immediates) e poe em variaveis globais
+					strcpy (instructionName, getNameAssembly(inputLine) );  //extract the first word and copy it into instructionName
+					ripDataAssembly(inputLine);   // extracts some elements from the line (records and immediates) and puts them in global variables
 							
-					strcpy (rsBinary, registerToBinary(rsAssembly)); //convertendo assembly to binary (ainda em variaveis globais)
+					strcpy (rsBinary, registerToBinary(rsAssembly)); //converting assembly to binary (still in global variables)
 					strcpy (rtBinary, registerToBinary(rtAssembly));
 					strcpy (rdBinary, registerToBinary(rdAssembly));
 											
-					filterInstruction(instructionName);   //filtra de acordo com cada instruction (encaminha para outra subfuncao)					
+					filterInstruction(instructionName);   //filters according to each instruction (forwards to another subfunction)			
 					printf("\nOutput Binary: ");
-					puts(outputLine);			// imprime na tela a saida
-					fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
+					puts(outputLine);			// prints the output on the screen
+					fputs(outputLine, outputFile);  // print the line in the output file
 					fputs("\n", outputFile);  //    \n
 				}
 			}
@@ -113,9 +113,9 @@ outputFile = fopen("./outputBinary.txt", "w");
 fclose(inputFile);
 fclose(outputFile);
 
-//### aqui termina a conversar Ass -> Bin e comeca a contraria
+//### here the conversation ends Assembly -> Binary and the opposite begins
 
-inputLine[0] = '\0';  // zera a sujeira anterior
+inputLine[0] = '\0';  // eliminates previous dirt
 outputLine[0] = '\0';
 
 inputFile = fopen("./binary.txt", "r");
@@ -123,21 +123,21 @@ outputFile = fopen("./outputAssembly.txt", "w");
 			
 	if (!outputFile)
 	{
-		printf("\nerro ao abrir arquivo de escrita!\n");	
+		printf("\nerror opening writing file!\n");	
 	}
-	else  // arquivo de escrita aberto corretamente
+	else  // write file opened correctly
 	{
 		if (!inputFile)
 		{
-			printf("\nerro ao abrir arquivo de leitura!\n");
+			zf("\nerror opening reading file!\n");
 		}
-		else   // arquivo de leitura aberto corretamente
+		else   // read file opened correctly
 		{
-			printf("\narquivo Binario aberto com sucesso!\n");
+			printf("\nBinary file opened successfully!\n");
 			while (fgets (inputLine, 129, inputFile) ) 
 			{
-				printf("\nLinha Binaria:");
-				puts (inputLine);			// inputLine contem a linha a ser trabalhada
+				printf("\nBinary Line:");
+				puts (inputLine);			// inputLine contains the line to be worked on
 				
 				getOpcodeBinary(inputLine);
 				ripDataBinary(opcodeBinary);
@@ -162,9 +162,9 @@ outputFile = fopen("./outputAssembly.txt", "w");
 				printf("Instruction:");
 				puts(instructionAssembly);
 				
-				puts(outputLine);			// imprime na tela a saida
-				fputs(outputLine, outputFile);  // imprime a linha no arquivo de saida
-				fputs("\n", outputFile);  //    \n  pula linha se precisar
+				puts(outputLine);			// prints the output on the screen
+				fputs(outputLine, outputFile);  // print the line in the output file
+				fputs("\n", outputFile);  //    \n  
 				
 			}
 		}
